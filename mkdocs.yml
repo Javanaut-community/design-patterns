@@ -9,11 +9,11 @@ theme:
     - content.code.copy
     - content.code.select
     - content.code.annotate
-    - navigation.instant
     - navigation.tabs
 
 nav:
   - Home: index.md
+  - Catalog: catalog/catalog-overview.md
   - Blog:
       - blog/index.md
 markdown_extensions:
