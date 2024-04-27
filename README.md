@@ -1,6 +1,6 @@
 <a id="top"></a>
 <p align="center">
-    <img src="https://raw.githubusercontent.com/Javanaut-community/design-patterns/main/docs/art/java-cup-screen.png" style="height:225px;"/>
+    <img src="https://raw.githubusercontent.com/Javanaut-community/design-patterns/main/docs/art/java-cup-screen.png" />
 </p>
 <p align="center">
     <i>

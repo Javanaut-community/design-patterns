@@ -1,4 +1,4 @@
-site_name: My Docs
+site_name: Java Design Patterns Cookbook
 theme:
   name: material
   palette:
@@ -11,15 +11,31 @@ theme:
     - content.code.annotate
     - navigation.instant
     - navigation.tabs
-    
+
+nav:
+  - Home: index.md
+  - Blog:
+      - blog/index.md
 markdown_extensions:
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      check_paths: true
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.inlinehilite
   - pymdownx.superfences
+  - pymdownx.details
+  - attr_list
+  #- pymdownx.emoji:
+  #    emoji_index: !!python/name:materialx.emoji.twemoji
+  #    emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
+  - def_list
+  - toc:
+      permalink: "#"
 plugins:
   - blog
   - search
@@ -28,7 +44,4 @@ extra:
   analytics:
     provider: plausible
     domain: example.com
-nav:
-  - Home: index.md
-  - Blog:
-    - blog/index.md
+
