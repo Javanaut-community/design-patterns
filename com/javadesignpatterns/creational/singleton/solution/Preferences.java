@@ -2,11 +2,11 @@ package com.javadesignpatterns.creational.singleton.solution;
 
 class Preferences {
 
-    private static Preferences instance;
+    private static Preferences instance; //(1)!
 
-    private Preferences() {}
+    private Preferences() {} //(2)!
 
-    public static Preferences getInstance() {
+    public static Preferences getInstance() { //(3)!
         if (instance == null) {
             instance = new Preferences();
         }
@@ -26,7 +26,7 @@ class Preferences {
 
 class Window {
 
-    public void painWindow() {
+    public void painWindow() { //(4)!
         System.out.println("Painting window: " + Preferences.getInstance().getColor());
     }
 
@@ -35,12 +35,12 @@ class Window {
 class App {
 
     public static void main(String[] args) {
-        Preferences.getInstance().setColor("blue");
+        Preferences.getInstance().setColor("blue"); //(5)!
         Window window = new Window();
         window.painWindow();
 
         Preferences.getInstance().setColor("black");
-        window.painWindow(); //(1)
+        window.painWindow();
     }
 
 }

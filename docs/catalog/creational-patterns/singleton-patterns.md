@@ -43,59 +43,20 @@ Implementing the Singleton pattern in Java can be a bit tricky, as there are sev
 The Singleton pattern is often used in situations where there is a need to limit the number of instances of a class to one. This can be useful in a variety of scenarios, such as when working with database connections, logging, and caching. By ensuring that there is only one instance of a class, the Singleton pattern can help to reduce memory usage and improve performance.
 
 
-## Example
+## Singleton Pattern applied to our example
 
-Here's an example where a **Logger** class is implemented as a Singleton
+In our example the **Preferences** class is implemented as a Singleton
 
 ``` java
---8<-- "com/javadesignpatterns/creational/singleton/Preferences.java"
+--8<-- "com/javadesignpatterns/creational/singleton/solution/Preferences.java"
 ```
 
+1. The **Preferences** class has a private static instance variable to hold the single instance of the class.
+2. The constructor is private to prevent instantiation from outside the class.
+3. The **getInstance()** method is public and provides access to the single instance. If the instance doesn't exist, it creates one; otherwise, it returns the existing instance.
+4. The **Window** now directly uses the **Preferences** class
+5. The **Preferences** class can be accessed from everywhere and the colour can be changed
 
-``` mermaid
-graph LR
-  A[Start] --> B{Error?};
-  B -->|Yes| C[Hmm...];
-  C --> D[Debug];
-  D --> B;
-  B ---->|No| E[
-  
-  Yay!];
-```
-
-
-{==
-
-Formatting can also be applied to blocks by putting the opening and closing
-tags on separate lines and adding new lines between the tags and the content.
-
-==}
-
-
-In this example:
-
-- The **Logger** class has a private static instance variable to hold the single instance of the class.
-- The constructor is private to prevent instantiation from outside the class.
-- The **getInstance()** method is public and provides access to the single instance. If the instance doesn't exist, it creates one; otherwise, it returns the existing instance.
-
-Now, let's use the Logger in another class:
-
-```java
-public class SomeClass {
-    public static void main(String[] args) {
-        // Get the instance of the Logger
-        Logger logger = Logger.getInstance();
-
-        // Use the logger to log messages
-        logger.log("This is a log message.");
-
-        // Since Logger is a singleton, calling getInstance() again will return the same instance
-        Logger anotherLogger = Logger.getInstance();
-        System.out.println("Are the instances the same? " + (logger == anotherLogger));
-    }
-}
-```
-In this example, even though we call **getInstance**() twice, it returns the same instance of the **Logger**. This ensures that there's only one Logger instance in the entire application, making it a useful pattern for managing shared resources or centralizing control over certain operations.
 
 ## Singleton Pattern Basics
 
@@ -118,14 +79,12 @@ In this example, even though we call **getInstance**() twice, it returns the sam
 === "Java"
 
     ```java
-    --8<-- "com/javadesignpatterns/creational/singleton/Preferences.java"
+    --8<-- "com/javadesignpatterns/creational/singleton/solution/Singleton.java"
     ```
 
-Explanation:
-
-- **static instance**: Singleton declares a private static instance of the Singleton class. This will hold the sole instance of the class.
-- **Singleton()** marks the constructor as private to prevent instantiation from outside the class.
-- **static getInstance()**: Singleton is a public static method that controls access to the singleton instance. This method creates a new instance of the class if one does not already exist, or returns the existing instance if it does.
+    1. **static instance**: Singleton declares a private static instance of the Singleton class. This will hold the sole instance of the class.
+    2. **Singleton()** marks the constructor as private to prevent instantiation from outside the class.
+    3. **static getInstance()**: Singleton is a public static method that controls access to the singleton instance. This method creates a new instance of the class if one does not already exist, or returns the existing instance if it does.
 
 ### Usage
 
@@ -264,3 +223,11 @@ Depending on specific requirements, alternatives like Dependency Injection, Fact
 
 ## Conclusion
 The Singleton pattern is a powerful tool in Java development. It ensures a class has only one instance and provides a global point of access to that instance. However, it's important to use it judiciously, considering potential trade-offs. With proper use and careful consideration, the Singleton pattern can enhance application performance and reliability.
+
+
+{==
+
+Formatting can also be applied to blocks by putting the opening and closing
+tags on separate lines and adding new lines between the tags and the content.
+
+==}
