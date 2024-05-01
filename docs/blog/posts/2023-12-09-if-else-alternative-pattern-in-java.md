@@ -3,15 +3,13 @@ draft: false
 authors: 
   - StijnDeMulder
 date: 2024-01-31 
-title: Avoid using If Else
+title: Avoid using If Else statement using Design Patterns
 categories:
   - Hello
   - World
 ---
 
-![Image title](https://dummyimage.com/400x300/eee/aaa){ align=left }
 Design patterns are reusable solutions to common programming problems. They provide a structured approach to solving problems and promote code reuse, flexibility, and maintainability. Java Design Patterns offer a set of best practices for designing and implementing software applications. They provide a framework for developers to create code that is easy to understand, maintain, and extend.
-
 
 <!-- more -->
 
