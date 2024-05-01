@@ -36,7 +36,7 @@ class App {
         window.painWindow();
 
         Preferences second = new Preferences("black");
-        window.painWindow(); //(1)
+        window.painWindow(); //(1)!
     }
 
 }
