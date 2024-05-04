@@ -33,6 +33,18 @@ nav:
           - Flyweight Pattern: catalog/structural-patterns/flyweight-pattern.md
           - Bridge Pattern: catalog/structural-patterns/bridge-pattern.md
           - Decorator Pattern: catalog/structural-patterns/decorator-pattern.md
+      - Behavioral Patterns:
+          - Chain of responsibility Pattern: catalog/behavioral-patterns/chain-of-responsibility-pattern.md
+          - Command Pattern: catalog/behavioral-patterns/command-pattern.md
+          - Interpreter Pattern: catalog/behavioral-patterns/interpreter-pattern.md
+          - Iterator Pattern: catalog/behavioral-patterns/iterator-pattern.md
+          - Mediator Pattern: catalog/behavioral-patterns/mediator-pattern.md
+          - Memento Pattern: catalog/behavioral-patterns/memento-pattern.md
+          - Observer Pattern: catalog/behavioral-patterns/observer-pattern.md
+          - State Pattern: catalog/behavioral-patterns/state-pattern.md
+          - Strategy Pattern: catalog/behavioral-patterns/strategy-pattern.md
+          - Template Method Pattern: catalog/behavioral-patterns/template-method-pattern.md
+          - Visitor Pattern: catalog/behavioral-patterns/visitor-pattern.md
 
 
 
