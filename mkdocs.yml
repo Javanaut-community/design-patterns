@@ -25,6 +25,14 @@ nav:
           - Abstract Factory Pattern: catalog/creational-patterns/abstract-factory-pattern.md
           - Factory Method Pattern: catalog/creational-patterns/factory-method-pattern.md
           - Prototype Pattern: catalog/creational-patterns/prototype-pattern.md
+      - Structural Patterns:
+          - Façade Pattern: catalog/structural-patterns/facade-pattern.md
+          - Adapter Pattern: catalog/structural-patterns/adapter-pattern.md
+          - Composite Pattern: catalog/structural-patterns/composite-pattern.md
+          - Proxy Pattern: catalog/structural-patterns/proxy-pattern.md
+          - Flyweight Pattern: catalog/structural-patterns/flyweight-pattern.md
+          - Bridge Pattern: catalog/structural-patterns/bridge-pattern.md
+          - Decorator Pattern: catalog/structural-patterns/decorator-pattern.md
 
 
 

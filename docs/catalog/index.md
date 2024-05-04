@@ -5,7 +5,7 @@
 Creational design patterns are a category of design patterns in software engineering that deal with object creation mechanisms. The aim of these patterns is to create objects in a manner suitable to the situation, enhancing flexibility and reuse of existing code. Rather than creating objects directly using constructors, these patterns provide a way to encapsulate and abstract the instantiation process. This helps to make a system independent of how its objects are created, composed, and represented.
 
 
-### :material-table: Creational Patterns Table
+### :material-table: Creational Patterns List
 
 | Pattern                                                                | Description                          | Usage                                                                                                                                                                                                                                             | 
 |------------------------------------------------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -14,3 +14,11 @@ Creational design patterns are a category of design patterns in software enginee
 | 🏭 [Abstract Factory](creational-patterns/abstract-factory-pattern.md) | Provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern allows a client to work with various product families without being tied to the concrete classes of the products. | Widely used in UI toolkits and libraries to manage and maintain families of objects like buttons, checkboxes, and windows that share a common theme or platform dependency without hard-coding their classes.                                     |
 | 🧱 [Factory Method](creational-patterns/factory-method-pattern.md)     | Defines an interface for creating an object, but lets subclasses decide which class to instantiate. The Factory Method lets a class defer instantiation to subclasses. | Utilized in applications where class instantiation may depend on user input or configuration settings. It's often seen in application frameworks where the library code needs to instantiate classes that are extended by application developers. |
 | 🔁 [Prototype](creational-patterns/prototype-pattern.md)               | Used to create duplicate objects while keeping performance in mind. This pattern involves copying existing objects without the intricacies of creating them from scratch, typically using a 'clone' method. | Useful in scenarios where object creation is costly or complex but a similar object is already existing. This pattern is often used in gaming for creating multiple instances of complex objects like characters, trees, or even entire levels.   |
+
+
+## :material-tools: Behavioral Patterns
+
+Creational design patterns are a category of design patterns in software engineering that deal with object creation mechanisms. The aim of these patterns is to create objects in a manner suitable to the situation, enhancing flexibility and reuse of existing code. Rather than creating objects directly using constructors, these patterns provide a way to encapsulate and abstract the instantiation process. This helps to make a system independent of how its objects are created, composed, and represented.
+
+
+### :material-table: Behavioral Patterns List
