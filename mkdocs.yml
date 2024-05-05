@@ -1,4 +1,5 @@
 site_name: The Java Design Patterns Manual
+site_url: https://javadesignpatterns.com
 theme:
   name: material
   custom_dir: docs/overrides
