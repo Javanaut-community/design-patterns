@@ -256,15 +256,15 @@ The Adaptor Design Pattern is one of the many design patterns that can be used t
 
 ### Decorator Pattern
 
-The [Decorator Pattern]({% link _posts/2023-11-26-decorator-pattern-in-java.md %}) is another structural pattern that allows you to add functionality to an object dynamically. Unlike the Adapter Pattern, which focuses on adapting one interface to another, the Decorator Pattern focuses on adding behavior to an object without changing its interface. This pattern is useful when you want to add functionality to an object without subclassing it.
+The [Decorator Pattern](decorator-pattern.md) is another structural pattern that allows you to add functionality to an object dynamically. Unlike the Adapter Pattern, which focuses on adapting one interface to another, the Decorator Pattern focuses on adding behavior to an object without changing its interface. This pattern is useful when you want to add functionality to an object without subclassing it.
 
 ### Facade Pattern
 
-The [Facade Pattern]({% link _posts/2023-11-26-facade-pattern-in-java.md %}) is a structural pattern that provides a simplified interface to a complex subsystem. The Facade Pattern is similar to the Adapter Pattern in that it provides a bridge between two interfaces. However, the Facade Pattern is used to simplify a complex subsystem, while the Adapter Pattern is used to adapt one interface to another.
+The [Facade Pattern](facade-pattern.md) is a structural pattern that provides a simplified interface to a complex subsystem. The Facade Pattern is similar to the Adapter Pattern in that it provides a bridge between two interfaces. However, the Facade Pattern is used to simplify a complex subsystem, while the Adapter Pattern is used to adapt one interface to another.
 
 ### Other Design Patterns
 
-There are many other design patterns that can be used in conjunction with the Adapter Pattern to solve specific problems. For example, the [Bridge Pattern]({% link _posts/2023-11-26-bridge-pattern-in-java.md %}) is a structural pattern that separates an abstraction from its implementation, allowing them to vary independently. The [Proxy Pattern]({% link _posts/2023-11-11-proxy-pattern-in-java.md %}) is a structural pattern that provides a surrogate or placeholder for another object to control access to it. Finally, the [Composite Pattern]({% link _posts/2023-11-26-composite-pattern-in-java.md %}) is a structural pattern that allows you to treat a group of objects as a single object.
+There are many other design patterns that can be used in conjunction with the Adapter Pattern to solve specific problems. For example, the [Bridge Pattern](bridge-pattern.md) is a structural pattern that separates an abstraction from its implementation, allowing them to vary independently. The [Proxy Pattern](proxy-pattern.md) is a structural pattern that provides a surrogate or placeholder for another object to control access to it. Finally, the [Composite Pattern](composite-pattern.md) is a structural pattern that allows you to treat a group of objects as a single object.
 
 Overall, understanding the different design patterns and how they relate to each other can help you choose the right pattern for your specific use case. By using the right pattern, you can write more maintainable and scalable code that is easier to understand and modify.
 

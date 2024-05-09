@@ -60,23 +60,23 @@ Creational Design Patterns are concerned with the process of object creation, pr
 
 ### Singleton Pattern
 
-The [Singleton Pattern]() is a creational design pattern that restricts the instantiation of a class to one object. This pattern is useful when you need to ensure that only one instance of a class is created and that the instance can be easily accessed throughout the application. The Singleton pattern is widely used in applications that require global access to a single object.
+The [Singleton Pattern](../../catalog/creational-patterns/singleton-pattern.md) is a creational design pattern that restricts the instantiation of a class to one object. This pattern is useful when you need to ensure that only one instance of a class is created and that the instance can be easily accessed throughout the application. The Singleton pattern is widely used in applications that require global access to a single object.
 
 ### Factory Pattern
 
-The [Factory Pattern]({% link _posts/2023-11-05-factory-pattern-in-java.md %}) is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. This pattern is useful when you need to create objects of different types based on a set of conditions. The Factory pattern is widely used in applications that require the creation of objects based on user input or system configuration.
+The [Factory Pattern](../../catalog/creational-patterns/factory-method-pattern.md) is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. This pattern is useful when you need to create objects of different types based on a set of conditions. The Factory pattern is widely used in applications that require the creation of objects based on user input or system configuration.
 
 ### Abstract Factory Pattern
 
-The [Abstract Factory]({% link _posts/2023-11-05-abstract-factory-pattern-in-java.md %}) pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is useful when you need to create objects that are related to each other, but the exact types of objects are not known at runtime. The Abstract Factory pattern is widely used in applications that require the creation of complex objects that are composed of smaller, related objects.
+The [Abstract Factory](../../catalog/creational-patterns/abstract-factory-pattern.md) pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is useful when you need to create objects that are related to each other, but the exact types of objects are not known at runtime. The Abstract Factory pattern is widely used in applications that require the creation of complex objects that are composed of smaller, related objects.
 
 ### Builder Pattern
 
-The [Builder pattern]({% link _posts/2023-11-05-builder-pattern-in-java.md %}) is a creational design pattern that separates the construction of a complex object from its representation, allowing the same construction process to create different representations. This pattern is useful when you need to create objects that have many optional parameters or complex initialization logic. The Builder pattern is widely used in applications that require the creation of complex objects that can be configured in different ways.
+The [Builder pattern](../../catalog/creational-patterns/builder-pattern.md) is a creational design pattern that separates the construction of a complex object from its representation, allowing the same construction process to create different representations. This pattern is useful when you need to create objects that have many optional parameters or complex initialization logic. The Builder pattern is widely used in applications that require the creation of complex objects that can be configured in different ways.
 
 ### Prototype Pattern
 
-The [Prototype pattern]({% link _posts/2023-11-05-prototype-pattern-in-java.md %}) is a creational design pattern that allows you to create new objects by cloning existing ones. This pattern is useful when you need to create objects that are similar to existing ones, but with different values or properties. The Prototype pattern is widely used in applications that require the creation of many similar objects.
+The [Prototype pattern](../../catalog/creational-patterns/prototype-pattern.md) is a creational design pattern that allows you to create new objects by cloning existing ones. This pattern is useful when you need to create objects that are similar to existing ones, but with different values or properties. The Prototype pattern is widely used in applications that require the creation of many similar objects.
 
 In summary, Creational Design Patterns provide different ways to create objects, making the code more flexible and maintainable. The Singleton pattern restricts the instantiation of a class to one object, the Factory pattern provides an interface for creating objects in a superclass, the Abstract Factory pattern provides an interface for creating families of related or dependent objects, the Builder pattern separates the construction of a complex object from its representation, and the Prototype pattern allows you to create new objects by cloning existing ones.
 
@@ -89,31 +89,31 @@ The following are some of the commonly used structural design patterns:
 
 ### Adapter Pattern
 
-The [Adapter Pattern]({% link _posts/2023-11-26-adapter-pattern-in-java.md %}) is used to convert the interface of a class into another interface that clients expect. It allows classes with incompatible interfaces to work together. The adapter pattern can be implemented using either class inheritance or object composition.
+The [Adapter Pattern](../../catalog/structural-patterns/adapter-pattern.md) is used to convert the interface of a class into another interface that clients expect. It allows classes with incompatible interfaces to work together. The adapter pattern can be implemented using either class inheritance or object composition.
 
 ### Composite Pattern
 
-The [Composite Pattern]({% link _posts/2023-11-26-composite-pattern-in-java.md %}) is used to represent a hierarchical structure of objects as a tree-like structure. It allows clients to treat individual objects and groups of objects uniformly. The composite pattern can be used to represent part-whole hierarchies.
+The [Composite Pattern](../../catalog/structural-patterns/composite-pattern.md) is used to represent a hierarchical structure of objects as a tree-like structure. It allows clients to treat individual objects and groups of objects uniformly. The composite pattern can be used to represent part-whole hierarchies.
 
 ### Proxy Pattern
 
-The [Proxy Pattern]({% link _posts/2023-11-11-proxy-pattern-in-java.md %}) is used to provide a surrogate or placeholder for another object to control access to it. It can be used to add security, caching, or other functionality to an object without changing its interface.
+The [Proxy Pattern](../../catalog/structural-patterns/proxy-pattern.md) is used to provide a surrogate or placeholder for another object to control access to it. It can be used to add security, caching, or other functionality to an object without changing its interface.
 
 ### Flyweight Pattern
 
-The [Flyweight Pattern]({% link _posts/2023-11-26-flyweight-pattern-in-java.md %}) is used to minimize memory usage by sharing as much data as possible with other similar objects. It is used when there are a large number of objects with similar properties.
+The [Flyweight Pattern](../../catalog/structural-patterns/flyweight-pattern.md) is used to minimize memory usage by sharing as much data as possible with other similar objects. It is used when there are a large number of objects with similar properties.
 
 ### Facade Pattern
 
-The [Facade Pattern]({% link _posts/2023-11-26-facade-pattern-in-java.md %})  is used to provide a simplified interface to a complex system. It hides the complexity of the system from clients and provides a single entry point to access the system.
+The [Facade Pattern](../../catalog/structural-patterns/facade-pattern.md)  is used to provide a simplified interface to a complex system. It hides the complexity of the system from clients and provides a single entry point to access the system.
 
 ### Bridge Pattern
 
-The [Bridge Pattern]({% link _posts/2023-11-26-bridge-pattern-in-java.md %}) is used to separate the abstraction from its implementation so that they can be changed independently. It allows the two to vary independently and can be used to decouple an abstraction from its implementation.
+The [Bridge Pattern](../../catalog/structural-patterns/bridge-pattern.md) is used to separate the abstraction from its implementation so that they can be changed independently. It allows the two to vary independently and can be used to decouple an abstraction from its implementation.
 
 ### Decorator Pattern
 
-The [Decorator Pattern]({% link _posts/2023-11-26-decorator-pattern-in-java.md %}) is used to add behavior to an object dynamically. It provides a way to add functionality to an object without changing its interface. The decorator pattern can be used to add new features to an object at runtime.
+The [Decorator Pattern](../../catalog/structural-patterns/decorator-pattern.md) is used to add behavior to an object dynamically. It provides a way to add functionality to an object without changing its interface. The decorator pattern can be used to add new features to an object at runtime.
 
 In conclusion, structural design patterns provide a way to create flexible and efficient designs by focusing on object composition. These patterns can be used to create relationships between objects and form larger structures. The adapter, composite, proxy, flyweight, facade, bridge, and decorator patterns are some of the commonly used structural design patterns in object-oriented programming.
 
@@ -124,47 +124,47 @@ Behavioral design patterns are used to manage object interactions and communicat
 
 ### Chain of Responsibility
 
-The [Chain of Responsibility Pattern]({% link _posts/2023-11-26-chain-of-responsibility-pattern-in-java.md %}) is used to create a chain of objects that can handle requests. The request is passed along the chain until it is handled by an object in the chain. This pattern is useful when you want to allow multiple objects to handle a request, but you don't know which object will handle it.
+The [Chain of Responsibility Pattern](../../catalog/behavioral-patterns/chain-of-responsibility-pattern.md) is used to create a chain of objects that can handle requests. The request is passed along the chain until it is handled by an object in the chain. This pattern is useful when you want to allow multiple objects to handle a request, but you don't know which object will handle it.
 
 ### Command
 
-The [Command Pattern]({% link _posts/2023-11-26-command-pattern-in-java.md %}) is used to encapsulate a request as an object. This object can then be passed as a parameter to methods, queued for execution, or stored for later use. This pattern is useful when you want to decouple the object that sends the request from the object that receives and executes it.
+The [Command Pattern](../../catalog/behavioral-patterns/command-pattern.md) is used to encapsulate a request as an object. This object can then be passed as a parameter to methods, queued for execution, or stored for later use. This pattern is useful when you want to decouple the object that sends the request from the object that receives and executes it.
 
 ### Interpreter
 
-The [Interpreter Pattern]({% link _posts/2023-11-26-interpreter-pattern-in-java.md %}) is used to define a language and interpret expressions in that language. This pattern is useful when you want to create a domain-specific language and interpret expressions in that language.
+The [Interpreter Pattern](../../catalog/behavioral-patterns/interpreter-pattern.md) is used to define a language and interpret expressions in that language. This pattern is useful when you want to create a domain-specific language and interpret expressions in that language.
 
 ### Iterator
 
-The  [Iterator Pattern]({% link _posts/2023-11-26-iterator-pattern-in-java.md %}) is used to provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. This pattern is useful when you want to provide a standard way to iterate over a collection of objects.
+The  [Iterator Pattern](../../catalog/behavioral-patterns/iterator-pattern.md) is used to provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation. This pattern is useful when you want to provide a standard way to iterate over a collection of objects.
 
 ### Mediator
 
-The [Mediator Pattern]({% link _posts/2023-11-26-mediator-pattern-in-java.md %}) is used to define an object that encapsulates how a set of objects interact. This pattern is useful when you want to reduce the coupling between objects by allowing them to communicate through a mediator object.
+The [Mediator Pattern](../../catalog/behavioral-patterns/mediator-pattern.md) is used to define an object that encapsulates how a set of objects interact. This pattern is useful when you want to reduce the coupling between objects by allowing them to communicate through a mediator object.
 
 ### Memento
 
-The [Memennto` Pattern]({% link _posts/2023-11-22-memento-pattern-in-java.md %}) is used to capture the internal state of an object without violating encapsulation and save it externally. This pattern is useful when you want to create a snapshot of an object's state and restore it later.
+The [Memennto` Pattern](../../catalog/behavioral-patterns/memento-pattern.md) is used to capture the internal state of an object without violating encapsulation and save it externally. This pattern is useful when you want to create a snapshot of an object's state and restore it later.
 
 ### Observer
 
-The [Observer Pattern]({% link _posts/2023-11-11-observer-pattern-in-java.md %}) is used to define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically. This pattern is useful when you want to decouple the object that changes state from the objects that need to be notified of the change.
+The [Observer Pattern](../../catalog/behavioral-patterns/observer-pattern.md) is used to define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically. This pattern is useful when you want to decouple the object that changes state from the objects that need to be notified of the change.
 
 ### State
 
-The State pattern is used to allow an object to alter its behavior when its internal state changes. This pattern is useful when you want to create an object that can change its behavior dynamically based on its internal state.
+The[ State pattern](../../catalog/behavioral-patterns/state-pattern.md) is used to allow an object to alter its behavior when its internal state changes. This pattern is useful when you want to create an object that can change its behavior dynamically based on its internal state.
 
 ### Strategy
 
-The [Strategy Pattern]({% link _posts/2023-11-11-strategy-pattern-in-java.md %}) is used to define a family of algorithms, encapsulate each one, and make them interchangeable. This pattern is useful when you want to provide a way to select an algorithm at runtime.
+The [Strategy Pattern](../../catalog/behavioral-patterns/strategy-pattern.md) is used to define a family of algorithms, encapsulate each one, and make them interchangeable. This pattern is useful when you want to provide a way to select an algorithm at runtime.
 
 ### Template Method
 
-The [Template Method Pattern]({% link _posts/2023-11-11-template-method-pattern-in-java.md %}) is used to define the skeleton of an algorithm in a method, deferring some steps to subclasses. This pattern is useful when you want to allow subclasses to redefine certain steps of an algorithm without changing the algorithm's overall structure.
+The [Template Method Pattern](../../catalog/behavioral-patterns/template-method-pattern.md) is used to define the skeleton of an algorithm in a method, deferring some steps to subclasses. This pattern is useful when you want to allow subclasses to redefine certain steps of an algorithm without changing the algorithm's overall structure.
 
 ### Visitor
 
-The [Visitor Pattern]({% link _posts/2023-11-22-visitor-pattern-in-java.md %}) is used to separate an algorithm from an object structure on which it operates. This pattern is useful when you want to define operations on an object structure without changing the classes of the objects on which it operates.
+The [Visitor Pattern](../../catalog/behavioral-patterns/visitor-pattern.md) is used to separate an algorithm from an object structure on which it operates. This pattern is useful when you want to define operations on an object structure without changing the classes of the objects on which it operates.
 
 In summary, behavioral design patterns are used to manage object interactions and communication between them. They focus on how objects operate together to achieve a specific task. The patterns covered in this section are just a few of the most commonly used behavioral design patterns.
 
