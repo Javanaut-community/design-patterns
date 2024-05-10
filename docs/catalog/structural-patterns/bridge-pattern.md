@@ -143,7 +143,7 @@ In conclusion, understanding class hierarchies is essential when working with th
 Bridge Pattern Vs Adapter Pattern
 ---------------------------------
 
-Both Bridge and [Adapter Pattern]({% link _posts/2023-11-26-adapter-pattern-in-java.md %}) are used to decouple an abstraction from its implementation, but they do it in different ways.
+Both Bridge and [Adapter Pattern](adapter-pattern.md) are used to decouple an abstraction from its implementation, but they do it in different ways.
 
 The Adapter pattern is used when you have existing code that needs to be adapted to a new interface. It makes things work after they're designed. In other words, it adapts the interface of a class to be compatible with another interface. This pattern is useful when you have existing code that is out of your control or not changeable to meet the interface you need it to.
 
