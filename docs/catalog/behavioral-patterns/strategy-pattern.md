@@ -1,4 +1,8 @@
+## Introduction
+
 The Strategy Design Pattern is a popular design pattern used in object-oriented programming. It is a behavioral pattern that allows the behavior of an object to be selected at runtime. The Strategy pattern is based on the idea of encapsulating a family of algorithms into separate classes that implement a common interface. This makes it easy to switch between different algorithms at runtime, without having to change the code that uses them.
+
+![Strategy pattern](../../art/catalog/strategy/strategy.webp){ loading=lazy }
 
 Java is a popular programming language that is widely used in the development of enterprise applications. The Strategy Design Pattern is a key pattern in Java that is used to implement complex algorithms in a clean and efficient way. Java 8 introduced lambdas, which made it even easier to implement the Strategy pattern in Java. By using lambdas, developers can reduce the verbosity of their code, making it more readable and maintainable. In this article, we will explore the Strategy Design Pattern in Java, and how it can be used to implement complex algorithms in a clean and efficient way. We will also look at how the pattern has evolved over time, and how it can be used with Java 8 lambdas.
 

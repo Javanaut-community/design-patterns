@@ -1,11 +1,15 @@
 # Introduction
 The Builder pattern is a creational design pattern that is widely used in Java. It allows developers to create complex objects step by step, without having to create multiple constructors with different parameters. By using the Builder pattern, developers can create objects with a large number of optional parameters in a more efficient and consistent way.
 
+![Building site](../../art/catalog/builder/builder-overview.png){ loading=lazy }
+
 The Builder pattern is particularly useful when dealing with objects that have a large number of optional parameters. Instead of creating multiple constructors with different parameter combinations, developers can create a separate Builder class that allows them to set each parameter step by step. This approach makes it easier to create objects with a large number of optional parameters, and also makes the code more readable and maintainable.
 
 In Java, the Builder pattern is implemented using a separate Builder class that has methods for setting each parameter. The Builder class is then used to create the final object, which can be done in a single method call. This approach makes it easy to create complex objects with a large number of optional parameters, while also ensuring that the object is created in a consistent and efficient way.
 
-Example
+
+
+Learn by example
 -------------------------------------
 
 Here's an example of the Builder Pattern in Java:
@@ -136,10 +140,50 @@ The Builder pattern is a flexible way to create objects because it allows the cl
 
 In summary, the Builder pattern is a creational design pattern that separates the construction of a complex object from its representation. It is a flexible, reusable, and maintainable way to create objects that have a large number of optional parameters. The Builder pattern is one of the Gang of Four design patterns, which are widely used in software engineering.
 
-Core Components of Builder Pattern
-----------------------------------
+## :material-radio-tower: Builder Pattern Basics
+------------------------------------------------
+
+!!! quote "Singleton Pattern Definition"
+
+    The Singleton pattern restricts the instantiation of a class to a single instance and ensures that the instance is globally accessible. In other words, it guarantees that only one instance of a class is created and provides a global point of access to that instance.
 
 The Builder pattern is a creational design pattern that separates the construction of a complex object from its representation, allowing the same construction process to create different representations. The pattern consists of four main components: Product, Builder, Director, and Client.
+
+=== "Class Diagram"
+
+    ```mermaid
+       classDiagram
+        direction LR
+        
+        Builder --o Director
+        ConcreteBuilder --|> Builder
+        Product <.. ConcreteBuilder  : builds
+        
+        class Director {
+        +Construct()
+        
+        }
+        class Builder{
+        +BuildPart()
+        }
+        class ConcreteBuilder{
+        +BuildPart()
+        }
+        class Product{
+        }
+    ```
+=== "Java"
+
+    ```java
+    --8<-- "com/javadesignpatterns/creational/singleton/solution/Singleton.java"
+    ```
+
+    1. **static instance**: Singleton declares a private static instance of the Singleton class. This will hold the sole instance of the class.
+    2. **Singleton()** marks the constructor as private to prevent instantiation from outside the class.
+    3. **static getInstance()**: Singleton is a public static method that controls access to the singleton instance. This method creates a new instance of the class if one does not already exist, or returns the existing instance if it does.
+
+
+
 
 ### Product
 

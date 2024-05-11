@@ -1,11 +1,13 @@
+## Introduction
 The Abstract Factory Pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is used when a system needs to be independent of how its objects are created and composed. It encapsulates a group of individual factories that have a common theme.
+
+![Abstract factory pattern overview](../../art/catalog/abstracfactory/abstract-factory.png){ loading=lazy }
 
 In Java, the Abstract Factory Pattern is implemented using interfaces and abstract classes. The Abstract Factory Pattern is similar to the Factory Method Pattern in that both patterns are creational and both use interfaces and abstract classes. However, the Abstract Factory Pattern is used to create families of objects, while the Factory Method Pattern is used to create individual objects.
 
 The Abstract Factory Pattern is useful in situations where an application needs to be able to switch between different families of objects without changing the code that uses them. For example, if an application uses a database, it might need to switch between different database drivers depending on the type of database being used. The Abstract Factory Pattern can be used to encapsulate the creation of these different drivers, making it easy to switch between them without changing the code that uses them.
 
-Example
---------------------------------------
+## :octicons-feed-issue-open-16: The problem statement
 Here's an example of the Abstract Factory Pattern in Java:
 
 ```java
@@ -136,8 +138,50 @@ The Applicability of the Abstract Factory Pattern is when a system should be ind
 
 In summary, the Abstract Factory Pattern is a powerful tool for managing the complexity of object creation. It allows the client code to create families of related objects without knowing the specific classes of the objects being created. This helps to reduce the coupling between the client code and the object creation code, making the system more flexible and easier to maintain.
 
-Abstract Factory in Java
-------------------------
+## :material-radio-tower: Abstract Factory Pattern Basics
+---------------------------------------------------------
+
+!!! quote "Singleton Pattern Definition"
+
+    The Singleton pattern restricts the instantiation of a class to a single instance and ensures that the instance is globally accessible. In other words, it guarantees that only one instance of a class is created and provides a global point of access to that instance.
+
+=== "Class Diagram"
+
+    ```mermaid
+       classDiagram
+            direction LR
+            Client --> AbstractFactory
+            Client --> AbstractProduct
+            AbstractFactory <|-- ConcreteFactory
+            AbstractProduct <|-- ProductA
+            AbstractProduct <|-- ProductB
+            ProductA <.. ConcreteFactory : creates
+            ProductB <.. ConcreteFactory : creates
+            
+            class Client {
+            }
+            class AbstractFactory{
+            +CreateProductA()
+            +CreateProductB()
+            }
+            class ConcreteFactory{
+            +Create productA()
+            +Create productB()
+            }
+            class AbstractProduct{
+            }
+    ```
+=== "Java"
+
+    ```java
+    --8<-- "com/javadesignpatterns/creational/singleton/solution/Singleton.java"
+    ```
+
+    1. **static instance**: Singleton declares a private static instance of the Singleton class. This will hold the sole instance of the class.
+    2. **Singleton()** marks the constructor as private to prevent instantiation from outside the class.
+    3. **static getInstance()**: Singleton is a public static method that controls access to the singleton instance. This method creates a new instance of the class if one does not already exist, or returns the existing instance if it does.
+
+
 
 In Java, the Abstract Factory pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. The pattern is an extension of the Factory Method pattern and is used to create a group of related objects.
 

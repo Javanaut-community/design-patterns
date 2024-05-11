@@ -1,4 +1,8 @@
+## Introduction
+
 The Observer Design Pattern is a popular behavioral design pattern used in Java. It allows objects to communicate with each other and stay updated on changes in each other's state. This pattern is part of the Gang of Four design patterns, a collection of essential design patterns in software engineering.
+
+![Observer pattern](../../art/catalog/observer/observer.webp){ loading=lazy }
 
 The Observer Design Pattern works by defining a one-to-many relationship between objects. When the state of one object changes, all of its dependents, or observers, are notified and updated automatically. This pattern is useful in situations where multiple objects need to be updated based on changes in a single object.
 

@@ -1,4 +1,8 @@
+## Introduction
+
 The Command Design Pattern is a behavioral design pattern that is used to manage algorithms, relationships, and responsibilities between objects. In Java, this pattern is implemented by encapsulating requests in an object, along with all the required information to perform an action of another object. The Command object knows about the receiver object and invokes a method of the receiver object to perform the requested action.
+
+![Command pattern](../../art/catalog/command/command.webp){ loading=lazy }
 
 The Command Design Pattern is a powerful tool for decoupling the object that invokes the operation from the one that knows how to perform it. This separation allows for greater flexibility in the design of the system, as well as easier maintenance and testing. The pattern is particularly useful in situations where commands need to be queued, logged, or undone.
 

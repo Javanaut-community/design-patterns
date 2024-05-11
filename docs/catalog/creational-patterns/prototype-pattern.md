@@ -1,5 +1,7 @@
 The Prototype pattern is a creational design pattern that allows developers to create new objects by copying an existing instance, known as the prototype. This pattern is particularly useful when creating objects is a time-consuming and costly operation. By copying an existing object, developers can create new objects quickly and efficiently.
 
+![Prototype pattern overview](../../art/catalog/prototype/prototype.webp){ loading=lazy }
+
 In Java, the Prototype pattern is implemented using the clone() method. This method creates a new object with the same properties as the original object. By modifying the properties of the new object, developers can create a unique instance without having to create a new object from scratch. The Prototype pattern can be used to create complex objects that would be difficult or impossible to create otherwise.
 
 Overall, the Prototype pattern offers several advantages, including reducing the need for subclassing, hiding the complexities of creating objects, and allowing clients to get new objects without knowing the type of object they will receive. By using the Prototype pattern, developers can create new objects quickly and efficiently, saving time and resources in the development process.

@@ -1,4 +1,8 @@
+## Introduction
+
 The Mediator Design Pattern is one of the widely used behavioral patterns in Java. It provides a centralized communication medium between different objects in a system. The Mediator pattern encapsulates the way disparate sets of objects interact and communicate with each other, allowing loose coupling between them.
+
+![Mediator pattern](../../art/catalog/mediator/mediator.webp){ loading=lazy }
 
 In a typical Java application, objects interact with each other directly, which can lead to high coupling. The Mediator pattern helps to reduce this coupling by introducing a mediator object that acts as a communication hub between objects. This mediator object encapsulates the communication logic, and all objects interact with it instead of directly interacting with each other. This results in a more maintainable and scalable codebase.
 

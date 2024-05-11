@@ -1,3 +1,7 @@
+## Introduction
+
+![Bridge pattern](../../art/catalog/bridge/bridge.webp){ loading=lazy }
+
 The Bridge design pattern is one of the most commonly used design patterns in Java programming. It is a structural design pattern that decouples an abstraction from its implementation so that both can vary independently. The Bridge pattern is used when there is a need to separate an abstraction from its implementation, allowing them to evolve independently. This pattern is particularly useful when dealing with large and complex software systems that require a high degree of flexibility and scalability.
 
 In Java, the Bridge pattern is implemented using a bridge interface that separates out responsibilities into different abstract classes. The bridge interface uses OOP principles to decouple the abstraction from its implementation. By doing this, the Bridge pattern allows for changes to be made to either the abstraction or the implementation without affecting the other. This makes it easier to maintain and update the software system over time.

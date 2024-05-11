@@ -1,4 +1,8 @@
+## Introduction
+
 The Iterator Design Pattern in Java is a popular design pattern used to traverse through a collection of objects. The pattern provides a standard way to access the elements of an aggregate object without exposing its underlying representation. It simplifies the interface to the collection and supports variations in the traversal of a collection.
+
+![Iterator pattern](../../art/catalog/iterator/iterator.webp){ loading=lazy }
 
 The Iterator Design Pattern is widely used in the Java Collection Framework. The java.util.Iterator interface uses the Iterator Design Pattern. The Iterator interface provides methods for traversing through a collection. The pattern allows clients to access objects stored in a collection sequentially without exposing its internal representation. It decouples the client from the implementation of the collection of objects, making it more flexible and easier to modify.
 

@@ -1,3 +1,7 @@
+## Introduction
+
+![Decorator pattern](../../art/catalog/decorator/decorator.webp){ loading=lazy }
+
 The Decorator Design Pattern is a structural design pattern in Java that allows developers to add additional features or behaviors to an object dynamically. It is a useful pattern for situations where subclassing is not a viable option, or when there are too many subclasses to manage. The Decorator Design Pattern involves creating a decorator class that wraps around the original class and provides additional functionality without altering the original class's structure.
 
 The Decorator Design Pattern is one of the most widely used design patterns in Java. It is used to extend the functionality of an object dynamically, without affecting the behavior of other objects of the same class. The Decorator Design Pattern is a flexible alternative to subclassing, as it allows developers to add new functionality to an object at runtime. This pattern is particularly useful in situations where the base class is complex or has many subclasses, making it difficult to manage.

@@ -1,4 +1,8 @@
+## Introduction
+
 Composite design pattern is a widely used software engineering concept that helps in creating a structure in a way that objects in the structure can be treated the same way. The pattern represents a tree-like structure made up of types that inherit a base type, and it can represent a single part or a whole hierarchy of objects. The pattern is known for its ability to allow treating individual objects and compositions of objects in the same way.
+
+![Composite pattern](../../art/catalog/composite/composite.webp){ loading=lazy }
 
 In Java, Composite Design Pattern is a popular approach to creating complex structures. It allows developers to define class hierarchies that contain primitive and complex objects, making it easier to add new kinds of components. The pattern is used when there is a need to create a structure in a way that the objects in the structure have to be treated the same way. It is a partitioning design pattern that describes a group of objects that is treated the same way as a single instance of the same type of object.
 

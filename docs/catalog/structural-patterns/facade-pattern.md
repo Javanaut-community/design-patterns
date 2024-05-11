@@ -1,4 +1,8 @@
+## Introduction
+
 The Facade design pattern is a structural design pattern that provides a simplified interface to a complex system of classes, interfaces, and objects. It is a widely used design pattern in Java that encapsulates a set of interfaces in a subsystem and provides a unified interface to the client. The Facade design pattern is a way to decouple the client from the subsystem, making it easier to use and maintain.
+
+![Façade pattern](../../art/catalog/facade/facade.webp){ loading=lazy }
 
 In Java, the Facade design pattern is used to provide a simple interface to a complex system of classes. It is a way to hide the complexity of the system from the client, making it easier to use and understand. The Facade design pattern is often used in large-scale applications where there are many subsystems that need to be accessed by the client. By using the Facade pattern, the client can access the subsystems through a single interface, making it easier to manage and maintain the application.
 

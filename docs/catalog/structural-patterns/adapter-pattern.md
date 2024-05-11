@@ -1,4 +1,8 @@
+## Introduction
+
 The Adapter Design Pattern is a structural pattern that enables incompatible interfaces to work together. It is a popular design pattern used in Java programming. The Adapter Design Pattern in Java acts as a bridge between two unrelated interfaces, allowing them to work together seamlessly.
+
+![Adaptor pattern](../../art/catalog/adapter/adapter.webp){ loading=lazy }
 
 The Adapter Pattern is used when there are two interfaces that are incompatible with each other, and it is not possible to modify either of them. The Adapter Design Pattern in Java solves this problem by creating an intermediary object that acts as a translator between the two interfaces. This intermediary object is called an adapter, and it converts the interface of one class into another interface that the client expects.
 

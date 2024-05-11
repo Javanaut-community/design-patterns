@@ -1,4 +1,8 @@
+## Introduction
+
 The Chain of Responsibility Design Pattern is a behavioral design pattern that is used to achieve loose coupling in software design. It is a source of command objects and a series of processing objects where each processing object in the chain is responsible for a certain type of command. Once the processing is done, it forwards the command to the next processor in the chain. The chain can be composed dynamically at runtime with any handler that follows a standard handler interface.
+
+![Chain of responsibility pattern](../../art/catalog/chainofresponsibility/chain.webp){ loading=lazy }
 
 In Java, the Chain of Responsibility Design Pattern is often used to handle requests in a flexible and dynamic way. The pattern allows multiple objects to handle the request without coupling the sender class to the concrete classes of the receivers. This means that the receiver objects of the requests are free from the order and can be used in any combination. One of the most popular examples of the Chain of Responsibility Design Pattern in Java is the java.util.logging.Logger#log() method, which allows a logger to be passed to a chain of handlers to process a log message.
 
