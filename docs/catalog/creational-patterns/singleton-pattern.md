@@ -1,11 +1,50 @@
 ## Introduction
 The Singleton pattern is a popular design pattern in Java that
-ensures a class has only one instance and provides a global point
-of access to that instance. This pattern is widely used in situations
+ensures a class has only {==one instance==} and provides a {==global point
+of access==} to that instance. This pattern is widely used in situations
 where there is a need for a single object to coordinate actions across
 the system.
 
-## :octicons-feed-issue-open-16: The problem statement
+![Singleton Glowing Orb](../../art/catalog/singleton/glowing-orb.png){ loading=lazy }
+
+<div class="grid cards" markdown>
+
+-   :fontawesome-solid-graduation-cap:{ .lg .middle } __Learn by example__
+
+    ---
+
+    From [`a specific problem`](#the-problem-statement) with [`pip`](#) and get up
+    and running in minutes
+
+    [:octicons-arrow-right-24: Getting started](#)
+
+-   :simple-instructure:{ .lg .middle } __Structure__
+
+    ---
+
+    A private constructor, a private static instance variable, and a public static method that returns the single instance, creating it if necessary.
+
+    [:octicons-arrow-right-24: Reference](#structure)
+
+-   :material-format-font:{ .lg .middle } __Made to measure__
+
+    ---
+
+    Change the colors, fonts, language, icons, logo and more with a few lines
+
+    [:octicons-arrow-right-24: Customization](#)
+
+-   :material-scale-balance:{ .lg .middle } __Open Source, MIT__
+
+    ---
+
+    Material for MkDocs is licensed under MIT and available on [GitHub]
+
+    [:octicons-arrow-right-24: License](#)
+
+</div>
+
+## The problem statement
 Lets consider an application that paints a window on screen in a certain color. To
 make it easy to change that color, we'll create a Preferences class that holds the color. 
 The Window class then "uses" the color to to paint the window. The example looks like this: 
@@ -24,6 +63,11 @@ Painting window: blue
 ```
 The color black is lost since the Window only has a reference to the original Preference instance.
 
+### Issues
+
+- There really should only be **one instance** of the Preference class at runtime
+- The Java runtime should guarantee that there is only one instance. It should not be possible to create another "by accident".
+- It should be **easy to access** that single instance.
 
 ## :fontawesome-solid-graduation-cap: The Solution
  In Java, the Singleton pattern is implemented by defining a
@@ -37,11 +81,6 @@ class with a private constructor and a static method that returns the instance o
 The Singleton pattern is often used in situations where there is a need to limit the number of instances of a class to one. This can be useful in a variety of scenarios, such as when working with database connections, logging, and caching. By ensuring that there is only one instance of a class, the Singleton pattern can help to reduce memory usage and improve performance.
 
 Implementing the Singleton pattern in Java can be a bit tricky, as there are several different approaches that can be used. Some of the most common approaches include using a private constructor, a static method, and a static variable to store the instance of the class. While the Singleton pattern can be a powerful tool for managing resources and improving performance, it is important to use it judiciously and to consider the potential drawbacks, such as increased complexity and reduced flexibility.
-
-
-
-The Singleton pattern is often used in situations where there is a need to limit the number of instances of a class to one. This can be useful in a variety of scenarios, such as when working with database connections, logging, and caching. By ensuring that there is only one instance of a class, the Singleton pattern can help to reduce memory usage and improve performance.
-
 
 ## Singleton Pattern applied to our example
 
@@ -64,7 +103,7 @@ In our example the **Preferences** class is implemented as a Singleton
 
     The Singleton pattern restricts the instantiation of a class to a single instance and ensures that the instance is globally accessible. In other words, it guarantees that only one instance of a class is created and provides a global point of access to that instance.
 
-### :simple-instructure: Structure
+##  Structure
 
 === "Class Diagram"
 
