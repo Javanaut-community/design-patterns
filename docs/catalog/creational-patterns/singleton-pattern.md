@@ -1,7 +1,7 @@
 ## Introduction
 The Singleton pattern is a popular design pattern in Java that
-ensures a class has only {==one instance==} and provides a {==global point
-of access==} to that instance. This pattern is widely used in situations
+ensures a class has only one instance and provides a global point
+of access to that instance. This pattern is widely used in situations
 where there is a need for a single object to coordinate actions across
 the system.
 
@@ -9,14 +9,13 @@ the system.
 
 <div class="grid cards" markdown>
 
--   :fontawesome-solid-graduation-cap:{ .lg .middle } __Learn by example__
+-   :fontawesome-solid-graduation-cap:{ .lg .middle } __Learn__
 
     ---
 
-    From [`a specific problem`](#the-problem-statement) with [`pip`](#) and get up
-    and running in minutes
+    From a specific [`example`](#learn-by-example). Or by looking at the :octicons-code-16: [`source code`](https://github.com/Javanaut-community/design-patterns/tree/main/com/javadesignpatterns/creational/singleton) on Github. Or by discussing it in the :people_hugging: [`community`](#https://javanaut.community)
 
-    [:octicons-arrow-right-24: Getting started](#)
+    [:octicons-arrow-right-24: Getting started](#learn-by-example)
 
 -   :simple-instructure:{ .lg .middle } __Structure__
 
@@ -26,25 +25,23 @@ the system.
 
     [:octicons-arrow-right-24: Reference](#structure)
 
--   :material-format-font:{ .lg .middle } __Made to measure__
+-   :material-format-font:{ .lg .middle } __Use when__
 
     ---
 
-    Change the colors, fonts, language, icons, logo and more with a few lines
+    Only one (or limited set) of instances of a class should be allowed at Runtime.
 
-    [:octicons-arrow-right-24: Customization](#)
-
--   :material-scale-balance:{ .lg .middle } __Open Source, MIT__
+-   :material-code-tags:{ .lg .middle } __Implementation__
 
     ---
 
-    Material for MkDocs is licensed under MIT and available on [GitHub]
+    Implement using  [`lazy initialization`](#lazy-initialization), or [`Thread safe`](#thread-safe-singleton) or as an [`enum`](#enum-singleton).
 
-    [:octicons-arrow-right-24: License](#)
+    [:octicons-arrow-right-24: Reference](#singleton-pattern-implementation)
 
 </div>
 
-## The problem statement
+## Learn by example
 Lets consider an application that paints a window on screen in a certain color. To
 make it easy to change that color, we'll create a Preferences class that holds the color. 
 The Window class then "uses" the color to to paint the window. The example looks like this: 
@@ -69,7 +66,7 @@ The color black is lost since the Window only has a reference to the original Pr
 - The Java runtime should guarantee that there is only one instance. It should not be possible to create another "by accident".
 - It should be **easy to access** that single instance.
 
-## :fontawesome-solid-graduation-cap: The Solution
+### :fontawesome-solid-graduation-cap: The Solution
  In Java, the Singleton pattern is implemented by defining a
 class with a private constructor and a static method that returns the instance of the class.
 
@@ -82,7 +79,7 @@ The Singleton pattern is often used in situations where there is a need to limit
 
 Implementing the Singleton pattern in Java can be a bit tricky, as there are several different approaches that can be used. Some of the most common approaches include using a private constructor, a static method, and a static variable to store the instance of the class. While the Singleton pattern can be a powerful tool for managing resources and improving performance, it is important to use it judiciously and to consider the potential drawbacks, such as increased complexity and reduced flexibility.
 
-## Singleton Pattern applied to our example
+### Singleton Pattern applied to our example
 
 In our example the **Preferences** class is implemented as a Singleton
 
@@ -99,7 +96,7 @@ In our example the **Preferences** class is implemented as a Singleton
 
 ## :material-radio-tower: Singleton Pattern Basics
 
-!!! quote "Singleton Pattern Definition"
+!!! quote "Intent"
 
     The Singleton pattern restricts the instantiation of a class to a single instance and ensures that the instance is globally accessible. In other words, it guarantees that only one instance of a class is created and provides a global point of access to that instance.
 
@@ -125,7 +122,7 @@ In our example the **Preferences** class is implemented as a Singleton
     2. **Singleton()** marks the constructor as private to prevent instantiation from outside the class.
     3. **static getInstance()**: Singleton is a public static method that controls access to the singleton instance. This method creates a new instance of the class if one does not already exist, or returns the existing instance if it does.
 
-### :fontawesome-solid-users-rays: Usage
+### Usage
 
 The Singleton pattern is commonly used in situations where only one instance of a class is required to coordinate actions across a system. It is often used in situations where it is important to limit the number of instances of a class that can be created, such as with database connections, thread pools, and configuration settings.
 
@@ -143,13 +140,13 @@ The Singleton pattern offers a number of benefits, including:
 
 Despite its many benefits, the Singleton pattern also has a few drawbacks, including:
 
-- Difficulty with testing: Because the Singleton pattern relies on a single instance of a class, it can be difficult to test code that uses the Singleton.
+- **Difficulty with testing**: Because the Singleton pattern relies on a single instance of a class, it can be difficult to test code that uses the Singleton.
 
-- Potential for abuse: Because the Singleton pattern provides global access to a single instance of a class, it can be tempting to overuse the pattern, which can lead to issues with maintainability and scalability.
+- **Potential for abuse**: Because the Singleton pattern provides global access to a single instance of a class, it can be tempting to overuse the pattern, which can lead to issues with maintainability and scalability.
 
-- Dependency injection issues: Because the Singleton pattern relies on a single instance of a class, it can be difficult to use dependency injection frameworks that rely on creating multiple instances of a class.
+- **Dependency injection issues**: Because the Singleton pattern relies on a single instance of a class, it can be difficult to use dependency injection frameworks that rely on creating multiple instances of a class.
 
-## :material-code-tags: Singleton Pattern Implementation
+## Singleton Pattern Implementation
 
 Singleton pattern is a design pattern that restricts the instantiation of a class to a single instance and provides a global point of access to that instance. In Java, there are several ways to implement the Singleton pattern, including Eager Initialization, Lazy Initialization, Thread Safe Singleton, Bill Pugh Singleton, and Enum Singleton.
 
