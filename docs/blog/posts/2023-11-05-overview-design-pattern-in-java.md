@@ -10,7 +10,13 @@ categories:
 ---
 
 The book "Design Patterns: Elements of Reusable Object-Oriented Software" is considered a classic in the field of software engineering and has been a valuable resource for developers for many years. The Gang of Four patterns described in the book provide solutions to common software design problems and are designed to be reusable across different projects and applications.
+
 <!-- more -->
+
+This catalog is managed by Java experts:
+
+[Visit the Javanauts community](https://javanauts.dev){ .md-button .md-button--primary }
+
 The Creational Patterns group includes patterns that deal with object instantiation mechanisms and help to minimize dependencies between objects. The Structural Patterns group includes patterns that deal with object composition and provide ways to build complex structures from simple objects. The Behavioral Patterns group includes patterns that deal with communication between objects and help to define the behavior of objects. Together, these patterns provide a comprehensive overview of software design patterns that can be applied to a wide range of software development projects.
 
 Understanding Design Patterns

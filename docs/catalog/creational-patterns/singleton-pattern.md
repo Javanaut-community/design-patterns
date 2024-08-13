@@ -41,6 +41,10 @@ the system.
 
 </div>
 
+This catalog is managed by Java experts:
+
+[Visit the Javanauts community](https://javanauts.dev){ .md-button .md-button--primary }
+
 ## Learn by example
 Lets consider an application that paints a window on screen in a certain color. To
 make it easy to change that color, we'll create a Preferences class that holds the color. 

@@ -11,6 +11,11 @@ categories:
 In Java, inheritance and composition are two major concepts that are widely used in object-oriented programming. Both of these concepts are used to create relationships between classes and objects, and they play an important role in designing software applications. Inheritance is a mechanism that allows a new class to be based on an existing class, whereas composition is a technique that enables a class to be composed of objects of other classes.
 
 <!-- more -->
+
+This catalog is managed by Java experts:
+
+[Visit the Javanauts community](https://javanauts.dev){ .md-button .md-button--primary }
+
 The main difference between inheritance and composition is that inheritance is an "is-a" relationship, while composition is a "has-a" relationship. In other words, inheritance is used when a new class is a specialized version of an existing class, whereas composition is used when a class is composed of one or more instances of other classes. Inheritance is a powerful mechanism that allows developers to reuse code and create a hierarchy of classes, whereas composition is a flexible technique that allows developers to create complex objects by combining simpler objects.
 
 Understanding the difference between inheritance and composition is crucial for designing software applications that are flexible, maintainable, and extensible. By choosing the right design pattern based on these concepts, developers can create software applications that are easier to understand, modify, and test. In the following sections, we will explore the differences between inheritance and composition in more detail and how they affect design patterns.
