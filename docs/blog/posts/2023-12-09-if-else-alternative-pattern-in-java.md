@@ -11,6 +11,10 @@ categories:
 
 Design patterns are reusable solutions to common programming problems. They provide a structured approach to solving problems and promote code reuse, flexibility, and maintainability. Java Design Patterns offer a set of best practices for designing and implementing software applications. They provide a framework for developers to create code that is easy to understand, maintain, and extend.
 
+This catalog is managed by Java experts:
+
+[Visit the Javanauts community](https://javanauts.dev){ .md-button .md-button--primary }
+
 <!-- more -->
 
 One of the most common Java Design Patterns used to replace if-else statements is the Strategy Pattern. The Strategy Pattern allows developers to define a family of algorithms, encapsulate each one, and make them interchangeable. This pattern promotes code reuse, flexibility, and maintainability. By using the Strategy Pattern, developers can easily add new algorithms without modifying existing code. This approach reduces code complexity and improves the overall quality of the software.
