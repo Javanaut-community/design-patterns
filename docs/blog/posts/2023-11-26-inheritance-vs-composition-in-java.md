@@ -3,7 +3,7 @@ draft: false
 authors: 
   - StijnDeMulder
 date: 2024-01-31 
-title: Avoid using If Else statement using Design Patterns
+title: Inheritance Versus Composition using Design Patterns
 categories:
   - Hello
   - World
