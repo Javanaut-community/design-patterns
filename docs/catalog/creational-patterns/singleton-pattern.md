@@ -13,7 +13,7 @@ the system.
 
     ---
 
-    From a specific [`example`](#learn-by-example). Or by looking at the :octicons-code-16: [`source code`](https://github.com/Javanaut-community/design-patterns/tree/main/com/javadesignpatterns/creational/singleton) on Github. Or by discussing it in the :people_hugging: [`community`](#https://javanaut.community)
+    From a specific [`example`](#learn-by-example). Or by looking at the :octicons-code-16: [`source code`](https://github.com/Javanaut-community/design-patterns/tree/main/com/javadesignpatterns/creational/singleton) on Github. Or by discussing it in the :people_hugging: [`community`](https://javanauts.dev)
 
     [:octicons-arrow-right-24: Getting started](#learn-by-example)
 
