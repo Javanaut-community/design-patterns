@@ -11,6 +11,8 @@ categories:
 ## Issue
 Consider a scenario where a system needs to calculate the price of a product based on its type. One way to implement this would be to use a series of if-else statements to determine the product type and calculate the price accordingly. However, this approach can quickly become unwieldy as the number of product types increases.
 
+<!-- more -->
+
 ``` java
 --8<-- "com/javadesignpatterns/blog/avoidifElse/PathFinder.java"
 ```
@@ -40,8 +42,6 @@ Path found using A*: [Start -> ... -> End (A* Path)]
 If you want to improve you Java skills:
 
 [Visit the Javanauts community](https://javanauts.dev){ .md-button .md-button--primary }
-
-<!-- more -->
 
 ### :fontawesome-solid-graduation-cap: Solution With Design Patterns
 !!! quote "What are Design Patterns?"
