@@ -2,10 +2,10 @@ package com.javadesignpatterns.creational.builder.solution;
 
 public class SqlQueryBuilder implements QueryBuilder{
 
-	private SqlQuery query = new SqlQuery();
+	private SqlQuery query = new SqlQuery(); //(1)!
 
 	@Override
-	public void from(String from) {
+	public void from(String from) { //(2)!
 		query.setFrom(from);
 	}
 
@@ -15,7 +15,7 @@ public class SqlQueryBuilder implements QueryBuilder{
 	}
 
 	@Override
-	public Query getQuery() {
+	public Query getQuery() { //(3)!
 		return query;
 	}
 

@@ -2,10 +2,10 @@ package com.javadesignpatterns.creational.builder.solution;
 
 public interface QueryBuilder {
 
-	void from(String from);
+	void from(String from); //(1)!
 
 	void where(String where);
 
-	Query getQuery();
+	Query getQuery(); //(2)!
 
 }

@@ -8,7 +8,8 @@ public class MongoDbQuery implements Query {
 
 	@Override
 	public void execute() {
-		System.out.println("Executing mongoDbQuery from: "+from+" where "+where);
+		System.out.println("Executing mongoDbQuery from: "
+				+from+" where "+where);
 	}
 
 	public void setFrom(String from) {

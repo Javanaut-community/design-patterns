@@ -14,9 +14,6 @@ public class Client {
 
 		sqlQuery.execute();
 		mongoDbQuery.execute();
-
-
-
 	}
 
 }
