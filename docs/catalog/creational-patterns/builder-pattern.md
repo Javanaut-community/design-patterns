@@ -17,7 +17,7 @@ The Builder pattern is a creational design pattern that is widely used in Java. 
 
     ---
 
-    A private constructor, a private static instance variable, and a public static method that returns the single instance, creating it if necessary.
+    A separate Builder class with methods to set different properties and a build() method that constructs and returns the final object,
 
     [:octicons-arrow-right-24: Reference](#structure)
 
@@ -25,7 +25,7 @@ The Builder pattern is a creational design pattern that is widely used in Java. 
 
     ---
 
-    You need to create different but similar objects. Or you want advance controle over the build process
+    You need to create different but similar objects. Or you want to build an object with lots of optional parameters
 
 -   :material-code-tags:{ .lg .middle } __Implementation__
 
