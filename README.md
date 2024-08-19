@@ -9,10 +9,16 @@
         <b>ease</b> 
     </i>
     <br>
-    <a href="https://javadesignpatterns.com"><strong>Explore the docs »</strong></a>
+    <a href="https://javadesignpatterns.com/catalog/"><strong>Explore the pattern catalog</strong></a>
 </p>
 <br>
 
 ## 📚The Java Design Patterns Cookbook
 
-The Java Design Patterns Cookbook is a project of the Java Specialists community, also known as the Javanauts 🌟 Our aim is to create a comprehensive guide that offers clear explanations of various design patterns through practical Java examples 📚 Additionally, we provide a handy cheat sheet to help you understand when to apply specific patterns in your own projects 💡 Let's master the art of design patterns together! 🚀
+The Java Design Patterns Cookbook is a project of the Javanauts.dev community 🌟. Our aim is to create a comprehensive guide that offers clear explanations of various design patterns through practical Java examples 📚 Additionally, we provide a handy cheat sheet to help you understand when to apply specific patterns in your own projects 💡 Let's master the art of design patterns together! 🚀
+
+## Most Popular
+
+- [Avoid if else statements using the strategy pattern](https://javadesignpatterns.com/blog/2023-12-09-if-else-alternative-pattern-in-java/)
+- [Advantages of design patterns in Java](https://javadesignpatterns.com/blog/2024-01-09-advantages-design-patterns-in-java/)
+- [Concurrency patterns in Java](https://javadesignpatterns.com/blog/2024-01-09-concurrent-patterns-in-java/)
