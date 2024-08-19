@@ -3,7 +3,7 @@ draft: false
 authors: 
   - StijnDeMulder
 date: 2024-01-31 
-title: Design Patterns for concurrent programming
+title: Java Design Patterns for concurrent programming
 categories:
   - Hello
   - World
