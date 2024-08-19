@@ -102,7 +102,7 @@ In our example we create a new **QueryBuilder**:
 For each Query type we have an implementation of the Query interface:
 
 ``` java
---8<-- "com/javadesignpatterns/creational/builder/solution/SQLQueryBuilder.java"
+--8<-- "com/javadesignpatterns/creational/builder/solution/SqlQueryBuilder.java"
 ```
 
 1. Holds a reference to the the specific SqlQuery object
