@@ -46,6 +46,11 @@ nav:
           - Strategy Pattern: catalog/behavioral-patterns/strategy-pattern.md
           - Template Method Pattern: catalog/behavioral-patterns/template-method-pattern.md
           - Visitor Pattern: catalog/behavioral-patterns/visitor-pattern.md
+      - Other Patterns:
+          - Lazy Initialization Pattern: catalog/other/lazy-initialization-pattern.md
+          - Module Pattern: catalog/other/module-pattern.md
+          - Null Object Pattern: catalog/other/null-object-pattern.md
+          - Object Pool Pattern: catalog/other/object pool-pattern.md
 
 
 
