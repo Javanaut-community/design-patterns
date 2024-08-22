@@ -50,7 +50,20 @@ nav:
           - Lazy Initialization Pattern: catalog/other/lazy-initialization-pattern.md
           - Module Pattern: catalog/other/module-pattern.md
           - Null Object Pattern: catalog/other/null-object-pattern.md
-          - Object Pool Pattern: catalog/other/object pool-pattern.md
+          - Object Pool Pattern: catalog/other/object-pool-pattern.md
+          - Data Access Pattern: catalog/other/data-access-pattern.md
+          - Data Transfer Object Pattern: catalog/other/data-transfer-object-pattern.md
+          - Model View Controller Pattern: catalog/other/model-view-controller-pattern.md
+          - Acyclic Pattern: catalog/other/acyclic-pattern.md
+          - Ambassador Pattern: catalog/other/ambassador-pattern.md
+          - Api Gateway Pattern: catalog/other/api-gateway-pattern.md
+          - Async Method Pattern: catalog/other/async-method-pattern.md
+          - Balking Pattern: catalog/other/balking-pattern.md
+          - Business Delegate Pattern: catalog/other/business-delegate-pattern.md
+          - Caching Pattern: catalog/other/caching-pattern.md
+          - Callback Pattern: catalog/other/callback-pattern.md
+          - Circuit Pattern: catalog/other/circuit-braker-pattern.md
+          - Client Session Pattern: catalog/other/client-session-pattern.md
 
 
 
