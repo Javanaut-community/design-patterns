@@ -9,7 +9,8 @@ categories:
   - World
 ---
 ## Issue
-Consider a scenario where a system needs to calculate the price of a product based on its type. One way to implement this would be to use a series of if-else statements to determine the product type and calculate the price accordingly. However, this approach can quickly become unwieldy as the number of product types increases.
+Consider a scenario where a system needs to calculate a path from point a to point b using [a Path finding algorithm](https://en.wikipedia.org/wiki/Pathfinding#:~:text=Pathfinding%20or%20pathing%20is%20the,shortest%20route%20between%20two%20points.). Considering
+the number of path find algorithms available, this quick can become an issue in the number of if-else statements we have to write. Example:
 
 <!-- more -->
 
