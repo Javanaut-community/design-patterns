@@ -5,8 +5,8 @@ authors:
 date: 2024-01-31 
 title: Avoid using If Else statement using Design Patterns
 categories:
-  - Hello
-  - World
+  - Java
+  - Behaviour
 ---
 ## Introduction
 This articles will show you a way to avoid writing if-else branches in Java by introducing an elegant solution with the Strategy Design Pattern.
@@ -14,7 +14,7 @@ This articles will show you a way to avoid writing if-else branches in Java by i
 <!-- more -->
 
 <div class="video-wrapper">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/wlBvGOZ570o?si=hKba1wBGYs-slIdc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="800" height="440" src="https://www.youtube.com/embed/wlBvGOZ570o?si=hKba1wBGYs-slIdc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Example
