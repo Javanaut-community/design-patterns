@@ -8,11 +8,18 @@ categories:
   - Hello
   - World
 ---
-## Issue
-Consider a scenario where a system needs to calculate a path from point a to point b using [a Path finding algorithm](https://en.wikipedia.org/wiki/Pathfinding#:~:text=Pathfinding%20or%20pathing%20is%20the,shortest%20route%20between%20two%20points.). Considering
-the number of path find algorithms available, this quick can become an issue in the number of if-else statements we have to write. Example:
+## Introduction
+This articles will show you a way to avoid writing if-else branches in Java by introducing an elegant solution with the Strategy Design Pattern.
 
 <!-- more -->
+
+<div class="video-wrapper">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/wlBvGOZ570o?si=hKba1wBGYs-slIdc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+## Example
+Consider a scenario where a system needs to calculate a path from point a to point b using [a Path finding algorithm](https://en.wikipedia.org/wiki/Pathfinding#:~:text=Pathfinding%20or%20pathing%20is%20the,shortest%20route%20between%20two%20points.). Considering
+the number of path find algorithms available, this quick can become an issue in the number of if-else statements we have to write. Example:
 
 ``` java
 --8<-- "com/javadesignpatterns/blog/avoidifElse/PathFinder.java"
