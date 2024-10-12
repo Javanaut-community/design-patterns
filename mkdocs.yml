@@ -1,5 +1,6 @@
 site_name: The Java Design Patterns Manual
 site_url: https://javadesignpatterns.com
+site_description: JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.
 theme:
   name: material
   custom_dir: docs/overrides
