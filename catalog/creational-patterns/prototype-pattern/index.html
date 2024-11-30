@@ -1,0 +1,2227 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/catalog/creational-patterns/prototype-pattern/">
+      
+      
+        <link rel="prev" href="../factory-method-pattern/">
+      
+      
+        <link rel="next" href="../../structural-patterns/facade-pattern/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Prototype Pattern - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#understanding-prototype-pattern" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Prototype Pattern
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-and-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java and Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creation-and-cloning-in-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creation and Cloning in Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-prototype-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with Prototype Registry
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-patterns-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Patterns in Java
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages-and-disadvantages-of-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages and Disadvantages of Prototype Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages and Disadvantages of Prototype Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-considerations-in-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Special Considerations in Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-and-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java and Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creation-and-cloning-in-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creation and Cloning in Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-prototype-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with Prototype Registry
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-patterns-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Patterns in Java
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages-and-disadvantages-of-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages and Disadvantages of Prototype Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages and Disadvantages of Prototype Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-considerations-in-prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Special Considerations in Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Prototype Pattern</h1>
+
+<p>The Prototype pattern is a creational design pattern that allows developers to create new objects by copying an existing instance, known as the prototype. This pattern is particularly useful when creating objects is a time-consuming and costly operation. By copying an existing object, developers can create new objects quickly and efficiently.</p>
+<p><img alt="Prototype pattern overview" loading="lazy" src="../../../art/catalog/prototype/prototype.webp" /></p>
+<p>In Java, the Prototype pattern is implemented using the clone() method. This method creates a new object with the same properties as the original object. By modifying the properties of the new object, developers can create a unique instance without having to create a new object from scratch. The Prototype pattern can be used to create complex objects that would be difficult or impossible to create otherwise.</p>
+<p>Overall, the Prototype pattern offers several advantages, including reducing the need for subclassing, hiding the complexities of creating objects, and allowing clients to get new objects without knowing the type of object they will receive. By using the Prototype pattern, developers can create new objects quickly and efficiently, saving time and resources in the development process.</p>
+<h2 id="understanding-prototype-pattern">Understanding Prototype Pattern<a class="headerlink" href="#understanding-prototype-pattern" title="Permanent link">#</a></h2>
+<p>The Prototype Pattern is a creational design pattern that allows an object to create new instances of itself. The pattern is used when creating new objects is resource-intensive, and it is more efficient to copy an existing object than to create a new one from scratch.</p>
+<p>The Prototype Pattern is part of the Gang of Four (GoF) design patterns, a collection of 23 design patterns that are commonly used in software development. The GoF design patterns are widely recognized as a standard for object-oriented design.</p>
+<p>The Prototype Pattern is a type of creational design pattern, which is used to create objects in a systematic way. Other creational design patterns include the Singleton Pattern, the Factory Pattern, and the Builder Pattern.</p>
+<p>The Prototype Pattern is particularly useful in situations where objects have complex initialization processes or when creating new objects is resource-intensive. By using the Prototype Pattern, developers can create new objects by copying an existing object, which can save time and resources.</p>
+<p>To implement the Prototype Pattern in Java, developers can use the clone() method, which is part of the Object class. The clone() method creates a new object that is a copy of the original object.</p>
+<p>In summary, the Prototype Pattern is a creational design pattern that allows an object to create new instances of itself. It is part of the Gang of Four design patterns, and it is particularly useful in situations where creating new objects is resource-intensive. By using the Prototype Pattern, developers can save time and resources by copying an existing object rather than creating a new one from scratch.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">#</a></h2>
+<p>Here's an example of how you can implement the Prototype Pattern in Java:</p>
+<p><div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Step 1: Create a prototype interface</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">interface</span> <span class="nc">Prototype</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">Prototype</span><span class="w"> </span><span class="nf">clone</span><span class="p">();</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">// Step 2: Implement concrete prototypes</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kd">class</span> <span class="nc">ConcretePrototype</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Prototype</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">property</span><span class="p">;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">ConcretePrototype</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">property</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Prototype</span><span class="w"> </span><span class="nf">clone</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="c1">// Create a new instance and copy the state</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ConcretePrototype</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">property</span><span class="p">);</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getProperty</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">property</span><span class="p">;</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setProperty</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">property</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">;</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="p">}</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="c1">// Step 3: Client code that uses the prototype</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PrototypeClient</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">        </span><span class="c1">// Create a prototype instance</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">        </span><span class="n">ConcretePrototype</span><span class="w"> </span><span class="n">prototype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ConcretePrototype</span><span class="p">(</span><span class="s">&quot;Initial State&quot;</span><span class="p">);</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">        </span><span class="c1">// Clone the prototype to create a new object</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">        </span><span class="n">ConcretePrototype</span><span class="w"> </span><span class="n">clonedObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ConcretePrototype</span><span class="p">)</span><span class="w"> </span><span class="n">prototype</span><span class="p">.</span><span class="na">clone</span><span class="p">();</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">        </span><span class="c1">// Modify the state of the cloned object</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">        </span><span class="n">clonedObject</span><span class="p">.</span><span class="na">setProperty</span><span class="p">(</span><span class="s">&quot;Modified State&quot;</span><span class="p">);</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">        </span><span class="c1">// Print the properties of both objects</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Original Object Property: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prototype</span><span class="p">.</span><span class="na">getProperty</span><span class="p">());</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Cloned Object Property: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">clonedObject</span><span class="p">.</span><span class="na">getProperty</span><span class="p">());</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="p">}</span>
+</span></code></pre></div>
+Explanation:</p>
+<p><strong>Prototype Interface (Prototype):</strong>
+* Declares a clone method that concrete prototypes must implement.</p>
+<p><strong>Concrete Prototype (ConcretePrototype):</strong></p>
+<ul>
+<li>Implements the <strong>Prototype</strong> interface and provides a clone method.</li>
+<li>Has a property that represents the state of the object.</li>
+</ul>
+<p><strong>Client Code (PrototypeClient):</strong></p>
+<ul>
+<li>Creates a prototype instance with an initial state.</li>
+<li>Clones the prototype to create a new object.</li>
+<li>Modifies the state of the cloned object.</li>
+<li>Demonstrates that the original and cloned objects are separate instances with potentially different states.</li>
+</ul>
+<p>In this example, the <strong>ConcretePrototype</strong> class implements the <strong>Prototype</strong> interface and defines the clone method, allowing you to create a new instance with the same state. The client code creates a prototype, clones it, and then modifies the state of the cloned object independently of the original. This pattern is particularly useful when the cost of creating an object is high or when you want to create a new object with a similar state to an existing one.</p>
+<h2 id="java-and-prototype-pattern">Java and Prototype Pattern<a class="headerlink" href="#java-and-prototype-pattern" title="Permanent link">#</a></h2>
+<p>The Prototype pattern is a creational design pattern that allows creating new objects by cloning existing ones. In Java, the Prototype pattern is implemented using the cloneable interface and the clone() method. The clone() method is a protected method defined in the Object class, which is the root class of all Java classes. To use the Prototype pattern in Java, you need to implement the Cloneable interface and override the clone() method in your class.</p>
+<p>The Prototype pattern is useful when you need to create many objects that are similar to each other, but with some differences. Instead of creating each object from scratch, you can create a prototype object and clone it to create new objects. This approach can save time and resources, especially if creating each object is a complex or expensive operation.</p>
+<p>To implement the Prototype pattern in Java, you need to define a prototype class that implements the Cloneable interface and overrides the clone() method. The clone() method should create a new object and copy the state of the current object to the new object. You can define an abstract prototype class and concrete classes that extend the prototype class and implement the clone() method.</p>
+<p>The Prototype pattern can help you avoid coupling between the client code and the classes that create the objects. The client code can create new objects by cloning the prototype object, without knowing the specific class of the object. This can make your code more flexible and easier to maintain.</p>
+<p>In summary, the Prototype pattern is a useful design pattern in Java that allows creating new objects by cloning existing ones. It is implemented using the Cloneable interface and the clone() method. The Prototype pattern can help you create many similar objects efficiently and avoid coupling between the client code and the object creation classes.</p>
+<h2 id="creation-and-cloning-in-prototype-pattern">Creation and Cloning in Prototype Pattern<a class="headerlink" href="#creation-and-cloning-in-prototype-pattern" title="Permanent link">#</a></h2>
+<p>The Prototype pattern is a creational design pattern that allows creating new objects by copying the existing ones. This pattern is used when the creation of objects is expensive, and it is more efficient to copy an existing object than to create a new one from scratch. The Prototype pattern is implemented using the clone method, which creates a new instance of the class by copying the state of an existing instance.</p>
+<p>In Java, the Object class provides a clone() method that can be overridden to implement the Prototype pattern. The Object class's clone() method creates a shallow copy of the object, which means that the new object shares the same state as the original object. If the object's state contains mutable objects, the new object's state can be changed by modifying the mutable objects.</p>
+<p>To create a deep copy of an object, the clone() method must be overridden to create a new instance of the object and copy the state of the original object's fields into the new instance. The fields that are mutable objects must also be cloned to create a new instance of the mutable object.</p>
+<p>The Prototype pattern allows creating new objects at runtime by cloning the existing objects. The Prototype pattern can be used to create a family of objects that share the same state, and each object can be customized by modifying its state after cloning.</p>
+<p>The Prototype pattern is useful when creating objects is expensive, and the objects share the same state. The Prototype pattern allows creating new objects by cloning the existing objects, which can save time and resources. The Prototype pattern can also be used to create deep copies of objects, which can prevent unintended changes to the original object's state.</p>
+<p>In summary, the Prototype pattern allows creating new objects by cloning the existing ones. The Prototype pattern is implemented using the clone() method, which creates a new instance of the class by copying the state of an existing instance. The Prototype pattern allows creating deep copies of objects, which can prevent unintended changes to the original object's state. The Prototype pattern is useful when creating objects is expensive, and the objects share the same state.</p>
+<h2 id="working-with-prototype-registry">Working with Prototype Registry<a class="headerlink" href="#working-with-prototype-registry" title="Permanent link">#</a></h2>
+<p>The Prototype pattern allows developers to create new objects by cloning existing ones. This pattern can be implemented using a Prototype Registry, which is a central repository for storing and accessing prototype objects.</p>
+<p>A Prototype Registry is a cache that stores all the prototype objects in a HashMap. This allows for easy access to the objects using a simple string parameter. The registry service is responsible for handling the creation and management of these prototype objects.</p>
+<p>By using a Prototype Registry, developers can avoid the costly process of creating new objects from scratch. Instead, they can simply clone an existing object from the registry and modify it as needed. This can significantly reduce the amount of code required to create new objects, making the development process more efficient.</p>
+<p>One important consideration when working with a Prototype Registry is to ensure that the objects stored in the cache are thread-safe. Since multiple threads may be accessing the registry simultaneously, it is important to ensure that the objects are synchronized properly to avoid race conditions and other concurrency issues.</p>
+<p>Overall, the Prototype Registry is a powerful tool for developers looking to create new objects efficiently. By storing prototype objects in a central repository, developers can easily access and modify these objects as needed, without having to create new objects from scratch.</p>
+<h2 id="design-patterns-in-java">Design Patterns in Java<a class="headerlink" href="#design-patterns-in-java" title="Permanent link">#</a></h2>
+<p>Design patterns are solutions to common problems that arise during software development. They are time-tested and proven solutions that can be applied to different situations. Java has several design patterns that are used to solve different problems in software development.</p>
+<p>One of the most important categories of design patterns is the creational pattern. This pattern is concerned with creating objects in a way that is flexible and efficient. There are several creational patterns in Java, including the builder pattern, the abstract factory pattern, the factory pattern, and the singleton pattern.</p>
+<p>The builder pattern is used to create complex objects by separating the construction of the object from its representation. This allows for the creation of different representations of the same object.</p>
+<p>The abstract factory pattern is used to create families of related objects without specifying their concrete classes. This allows for the creation of different families of objects that can be used interchangeably.</p>
+<p>The factory pattern is used to create objects without specifying their concrete classes. This allows for the creation of different types of objects without changing the code that is used to create them.</p>
+<p>The singleton pattern is used to ensure that only one instance of a class is created. This is useful in situations where only one instance of a class is needed, such as in a configuration class.</p>
+<p>Other important design patterns in Java include the adapter pattern, the bridge pattern, the composite pattern, the facade pattern, the flyweight pattern, the proxy pattern, the chain of responsibility pattern, the command pattern, the interpreter pattern, the iterator pattern, the mediator pattern, the observer pattern, the state pattern, the strategy pattern, the template method pattern, and the visitor pattern.</p>
+<p>Each of these patterns is used to solve a specific problem in software development. By understanding these patterns and how to use them, developers can create more flexible, efficient, and maintainable software.</p>
+<h2 id="advantages-and-disadvantages-of-prototype-pattern">Advantages and Disadvantages of Prototype Pattern<a class="headerlink" href="#advantages-and-disadvantages-of-prototype-pattern" title="Permanent link">#</a></h2>
+<p>Prototype pattern has several advantages and disadvantages that must be considered before using it in a project.</p>
+<h3 id="advantages">Advantages<a class="headerlink" href="#advantages" title="Permanent link">#</a></h3>
+<p>One of the main advantages of the Prototype pattern is that it can save time and resources. This is because creating a new object can be an expensive and time-consuming task. By using the Prototype pattern, the new object can be created by cloning an existing object, which is much faster and requires fewer resources.</p>
+<p>Another advantage of the Prototype pattern is that it can be customized as per the requirements. This means that the new object can be created with some modifications to the existing object. This is particularly useful in situations where the cost of creating a new object is expensive and resource-intensive.</p>
+<p>The Prototype pattern is also useful when adding or deleting products in the middle of a game. By registering a prototype instance with the client, a new concrete product class can be easily integrated into the system. This pattern is more flexible than other creational patterns because prototypes can be installed and uninstalled during runtime.</p>
+<h3 id="disadvantages">Disadvantages<a class="headerlink" href="#disadvantages" title="Permanent link">#</a></h3>
+<p>One of the main disadvantages of the Prototype pattern is that it can be complex to implement. This is because the cloning process can be complicated and requires careful consideration of the object's state. This complexity can lead to errors and bugs if not implemented correctly.</p>
+<p>Another disadvantage of the Prototype pattern is that it can be expensive in terms of memory usage. This is because each clone creates a new instance of the object, which can quickly consume memory. This can be particularly problematic in situations where memory usage is a concern.</p>
+<p>Finally, the Prototype pattern can be challenging to serialize. This is because the cloning process requires a deep copy of the object, which can be difficult to serialize and deserialize correctly. This can lead to issues when transferring objects between different systems or saving them to disk.</p>
+<p>Overall, the Prototype pattern can be a useful tool in certain situations, but it is important to consider its advantages and disadvantages before using it in a project.</p>
+<h2 id="special-considerations-in-prototype-pattern">Special Considerations in Prototype Pattern<a class="headerlink" href="#special-considerations-in-prototype-pattern" title="Permanent link">#</a></h2>
+<p>When implementing the Prototype pattern in Java, there are a few special considerations to keep in mind.</p>
+<p>First, it's important to consider the color and product of the prototypical instance. Since the new objects will be created by copying the prototype, any changes made to the prototype will affect all the objects created from it. Therefore, it's important to ensure that the prototype is in the desired state before creating new objects.</p>
+<p>Another consideration is subclasses. If the prototype has subclasses, it's important to ensure that all of the subclasses are properly cloned when creating new objects. This can be achieved by implementing the clone() method in all subclasses.</p>
+<p>Circular references can also be a concern when using the Prototype pattern. If the prototype has circular references, it's important to ensure that the cloning process does not cause an infinite loop.</p>
+<p>The composition of the prototype can also affect the cloning process. If the prototype contains references to other objects, those objects may need to be cloned as well.</p>
+<p>It's also important to consider the name and output of the new objects created from the prototype. The names and output should be unique and distinguishable from the prototype to avoid confusion.</p>
+<p>When implementing the Prototype pattern, it's important to choose between mutable and immutable objects. If the objects are mutable, care must be taken to ensure that changes made to one object do not affect the others. If the objects are immutable, the cloning process can be simpler and more efficient.</p>
+<p>Finally, the Memento pattern can be used in conjunction with the Prototype pattern to save and restore the state of objects. This can be useful in situations where the state of the object needs to be preserved.</p>
+<p>Overall, the Prototype pattern in Java provides a powerful tool for creating new objects by copying an existing prototype. By keeping these special considerations in mind, developers can ensure that the cloning process is efficient and effective.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2578 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/blog/2024-01-09-top-patterns-in-2024/">
+      
+      
+        <link rel="prev" href="../2024-01-09-why-do-we-need-patterns-in-java/">
+      
+      
+        <link rel="next" href="../2024-01-09-factory-vs-builder-pattern-in-java/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Top Java Design Patterns to Learn in 2024 - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fundamentals-of-java-design-patterns" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Top Java Design Patterns to Learn in 2024
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../catalog/" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fundamentals-of-java-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamentals of Java Design Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fundamentals of Java Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Design Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importance-in-software-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importance in Software Development
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-pattern-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Pattern Categories
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creational-patterns-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creational Patterns in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creational Patterns in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#singleton-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Singleton Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#factory-method-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Factory Method Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#builder-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Builder Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prototype-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prototype Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structural-patterns-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structural Patterns in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structural Patterns in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapter-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adapter Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bridge Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composite-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Composite Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facade-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Facade Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flyweight-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flyweight Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavioral-patterns-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behavioral Patterns in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavioral Patterns in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observer-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observer Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-method-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template Method Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strategy Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visitor-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visitor Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chain-of-responsibility-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chain of Responsibility Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-java-design-pattern-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Java Design Pattern Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Java Design Pattern Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#concurrency-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concurrency Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-patterns-and-common-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti-Patterns and Common Pitfalls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-pattern-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Pattern Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-implementation-of-java-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Implementation of Java Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Implementation of Java Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-world-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-world Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-patterns-in-java-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Patterns in Java Libraries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refactoring-to-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refactoring to Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-resources-and-career-advancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Resources and Career Advancement
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Learning Resources and Career Advancement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#books-and-online-courses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Books and Online Courses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificates-and-specializations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificates and Specializations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-a-portfolio-with-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building a Portfolio with Design Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evolving-trends-in-java-and-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evolving Trends in Java and Design Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evolving Trends in Java and Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-patterns-in-cloud-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Patterns in Cloud Computing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-of-new-java-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impact of New Java Versions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-with-other-programming-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration with Other Programming Languages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#future-of-design-patterns-in-software-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future of Design Patterns in Software Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/24266455" alt="Stijn De Mulder">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/MrStiMu">Stijn De Mulder</a>
+                        
+                      </strong>
+                      <br>
+                      Community Lead
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2024-01-31 00:00:00+00:00" class="md-ellipsis">January 31, 2024</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../category/hello/">Hello</a>, 
+                              <a href="../category/world/">World</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              11 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+  <h1>Top Java Design Patterns to Learn in 2024</h1>
+
+<p>In the ever-evolving landscape of software development, keeping abreast of the most relevant design patterns is crucial. The landscape of Java in 2024 reflects a complex environment where software systems must be modular, adaptable, and easy to maintain. Java developers are expected to be familiar with a variety of design patterns across different categories: Creational patterns like Factory, Abstract Factory, Builder, Prototype, and Singleton are essential for object creation mechanisms. Structural patterns like Adapter, Bridge, and Composite are important for designing large-scale systems. An understanding of these patterns can significantly improve the development process.</p>
+<!-- more -->
+<p>Learning and effectively applying Java design patterns enhances the code quality and simplifies the development process. It is useful to not only know the implementation of these patterns but also to recognize the problems they are designed to solve. This contextual knowledge empowers Java developers to choose and implement the most fitting pattern for their software solutions. As software architecture continues to adapt, these patterns remain an indispensable part of the Java developer's toolkit, ensuring that developers can construct flexible and maintainable software.</p>
+<h2 id="fundamentals-of-java-design-patterns">Fundamentals of Java Design Patterns<a class="headerlink" href="#fundamentals-of-java-design-patterns" title="Permanent link">#</a></h2>
+<p>In the evolving landscape of software development, mastering Java design patterns equips developers with a critical toolkit for building robust and scalable applications. By leveraging recurring solutions to common problems, design patterns serve as a foundation for creating efficient and maintainable code.</p>
+<h3 id="understanding-design-patterns">Understanding Design Patterns<a class="headerlink" href="#understanding-design-patterns" title="Permanent link">#</a></h3>
+<p>Design patterns represent time-tested solutions to recurring design challenges in software architecture. They provide a standardized approach to solving problems, making an application's design more predictable and understandable. Design patterns are not concrete implementations but abstract concepts that can be applied to a myriad of situations in software design.</p>
+<h3 id="importance-in-software-development">Importance in Software Development<a class="headerlink" href="#importance-in-software-development" title="Permanent link">#</a></h3>
+<p>Employing design patterns is considered one of the best practices in software development. They contribute significantly to the overall quality of software architecture by promoting code reuse and system reliability. Developers can communicate more effectively when they share a common language provided by design patterns, reducing misunderstandings and errors in the codebase.</p>
+<h3 id="design-pattern-categories">Design Pattern Categories<a class="headerlink" href="#design-pattern-categories" title="Permanent link">#</a></h3>
+<p>Java design patterns are broadly classified into three categories:</p>
+<ol>
+<li>
+<p><strong>Creational Patterns</strong>: These deal with object creation mechanisms, aiming to create objects in a manner suitable to the situation. The basic form of object creation could lead to design problems or added complexity to the design. Creational design patterns solve this issue by controlling the creation process. Examples include:</p>
+<ul>
+<li>Singleton Pattern</li>
+<li>Builder Pattern</li>
+<li>Prototype Pattern</li>
+<li>Factory Method</li>
+<li>Abstract Factory</li>
+<li>
+<p><strong>Structural Patterns</strong>: They are concerned with how classes and objects can be composed, to form larger structures. Structural design patterns ease the design by identifying a simple way to realize relationships among entities. Examples include:</p>
+</li>
+<li>
+<p>Adapter Pattern</p>
+</li>
+<li>Bridge Pattern</li>
+<li>Composite Pattern</li>
+<li>Decorator Pattern</li>
+<li>Facade Pattern</li>
+<li>Flyweight Pattern</li>
+<li>Proxy Pattern</li>
+<li>
+<p><strong>Behavioral Patterns</strong>: These focus on communication between objects, how objects interact, and distribute responsibilities. They help in defining the protocols and assigning responsibilities between objects, making the communication more flexible and efficient. Examples include:</p>
+</li>
+<li>
+<p>Observer Pattern</p>
+</li>
+<li>Strategy Pattern</li>
+<li>Command Pattern</li>
+<li>Iterator Pattern</li>
+<li>State Pattern</li>
+</ul>
+</li>
+</ol>
+<p>By understanding these categories and when to apply which pattern, developers can improve the functionality and performance of their software, ensuring they follow solid architecture principles.</p>
+<h2 id="creational-patterns-in-java">Creational Patterns in Java<a class="headerlink" href="#creational-patterns-in-java" title="Permanent link">#</a></h2>
+<p>Creational patterns in Java are fundamental for Java developers to understand how objects are created. These patterns provide a way to encapsulate the instantiation logic and increase the flexibility and reuse of existing code.</p>
+<h3 id="singleton-pattern">Singleton Pattern<a class="headerlink" href="#singleton-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Singleton</strong> pattern ensures that a class has only one instance and provides a global point of access to that instance.</p>
+<ul>
+<li><strong>Usage</strong>: Ensure shared resources such as thread pools or cache have a single instance.</li>
+<li><strong>Implementation</strong>: A private constructor, a static method to access the instance, and a static variable to hold the instance.</li>
+</ul>
+<h3 id="factory-method-pattern">Factory Method Pattern<a class="headerlink" href="#factory-method-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Factory Method</strong> pattern defines an interface for creating an object, but lets subclasses alter the type of objects that will be created.</p>
+<ul>
+<li><strong>Advantage</strong>: Allows a class to defer instantiation to subclasses.</li>
+<li><strong>Example</strong>: Java <code>Calendar</code> class uses a factory method.</li>
+</ul>
+<h3 id="abstract-factory-pattern">Abstract Factory Pattern<a class="headerlink" href="#abstract-factory-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Abstract Factory</strong> pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes.</p>
+<ul>
+<li><strong>When to Use</strong>: When a system should be independent of how its products are created and represented.</li>
+<li><strong>Key Point</strong>: Relies on object composition – object creation is implemented in methods exposed in the factory interface.</li>
+</ul>
+<h3 id="builder-pattern">Builder Pattern<a class="headerlink" href="#builder-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Builder</strong> pattern allows for the step-by-step creation of complex objects using the correct sequence of actions.</p>
+<ul>
+<li><strong>Benefit</strong>: The construction process can create different representations of the object.</li>
+<li><strong>Typical Use Case</strong>: Java classes like <code>StringBuilder</code> and <code>BufferedReader</code>.</li>
+</ul>
+<h3 id="prototype-pattern">Prototype Pattern<a class="headerlink" href="#prototype-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Prototype</strong> pattern is used when the type of objects to create is determined by a prototypical instance, which is cloned to produce new objects.</p>
+<ul>
+<li><strong>Use Case</strong>: Beneficial when instantiation is costly, and you want to avoid duplication of complex objects.</li>
+<li><strong>Method</strong>: Typically involves implementing a <code>clone</code> method to facilitate the copying of object state.</li>
+</ul>
+<h2 id="structural-patterns-in-java">Structural Patterns in Java<a class="headerlink" href="#structural-patterns-in-java" title="Permanent link">#</a></h2>
+<p>Structural patterns are crucial in Java for composing classes and objects into larger and more complex structures, while ensuring flexibility and efficiency. They address the arrangement of objects to achieve new functionality.</p>
+<h3 id="adapter-pattern">Adapter Pattern<a class="headerlink" href="#adapter-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Adapter Pattern</strong> enables otherwise incompatible interfaces to work together. This pattern acts as a bridge by wrapping an existing class with a new interface, thus ensuring the client code does not have to be changed to interface with the class.</p>
+<h3 id="bridge-pattern">Bridge Pattern<a class="headerlink" href="#bridge-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Bridge Pattern</strong> decouples an abstraction from its implementation, allowing the two to vary independently. It enhances scalability by separating an interface (abstraction) from its concrete implementation.</p>
+<h3 id="composite-pattern">Composite Pattern<a class="headerlink" href="#composite-pattern" title="Permanent link">#</a></h3>
+<p>In the <strong>Composite Pattern</strong>, individual objects and compositions of objects are treated uniformly. This pattern enables clients to interact with single objects and compositions of objects seamlessly, enhancing simplicity in structure.</p>
+<h3 id="decorator-pattern">Decorator Pattern<a class="headerlink" href="#decorator-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Decorator Pattern</strong> allows for the dynamic addition of responsibilities to objects without modifying their existing classes. It's an alternative to subclassing and extends the behavior of objects by wrapping them.</p>
+<h3 id="facade-pattern">Facade Pattern<a class="headerlink" href="#facade-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Facade Pattern</strong> offers a simplified interface to a complex subsystem. It hides the complexities of the subsystem and provides a cleaner, more understandable entry point.</p>
+<h3 id="flyweight-pattern">Flyweight Pattern<a class="headerlink" href="#flyweight-pattern" title="Permanent link">#</a></h3>
+<p>Through the <strong>Flyweight Pattern</strong>, the memory usage and efficiency of an application are optimized by sharing as much data as possible with related objects; it's especially effective when dealing with a large number of similar objects.</p>
+<h3 id="proxy-pattern">Proxy Pattern<a class="headerlink" href="#proxy-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Proxy Pattern</strong> provides a placeholder or surrogate for another object to control access to it, which can add functionality like security checks or lazy initialization while keeping the client code unchanged.</p>
+<h2 id="behavioral-patterns-in-java">Behavioral Patterns in Java<a class="headerlink" href="#behavioral-patterns-in-java" title="Permanent link">#</a></h2>
+<p>Behavioral patterns are essential for the effective communication and responsibility distribution among objects in Java. This section addresses the pivotal patterns, showcasing the diversity of approaches in behavioral design to enhance flexibility and maintainability in software development.</p>
+<h3 id="observer-pattern">Observer Pattern<a class="headerlink" href="#observer-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Observer pattern</strong> is a fundamental behavioral design pattern in which objects, known as observers, 'watch' another object, referred to as the subject. When a subject undergoes a change in its state, it notifies all its observers. This pattern promotes a loose coupling between the subject and its observers, thereby allowing the system to scale and change more easily.</p>
+<h3 id="template-method-pattern">Template Method Pattern<a class="headerlink" href="#template-method-pattern" title="Permanent link">#</a></h3>
+<p>In the <strong>Template Method pattern</strong>, an abstract class exposes defined way(s) to execute its methods. Its subclasses can override the method implementation based on need but the invocation is to be done in the same way as defined by an abstract class. This establishes the skeleton of an algorithm, leaving some steps to subclasses, and is perfect for avoiding code duplication.</p>
+<h3 id="strategy-pattern">Strategy Pattern<a class="headerlink" href="#strategy-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Strategy pattern</strong> defines a family of algorithms, encapsulates each one, and makes them interchangeable. Strategy allows the algorithm to vary independently from clients that use it, which means the behavior of a class is changed at runtime. This pattern is pivotal for scenarios where multiple versions of an algorithm are required.</p>
+<h3 id="command-pattern">Command Pattern<a class="headerlink" href="#command-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Command pattern</strong> encapsulates a request as an object, thereby allowing users to parameterize clients with queues, requests, and operations. It provides the options to queue operations, track log requests, and undo operations. This pattern is integral in scenarios where abstraction and execution of actions or triggers are needed.</p>
+<h3 id="state-pattern">State Pattern<a class="headerlink" href="#state-pattern" title="Permanent link">#</a></h3>
+<p>With the <strong>State pattern</strong>, a class behavior changes based on its state. This can be thought of as a dynamic version of the Strategy pattern. State pattern is used when an object's behavior needs to change at runtime based on its internal state, and it eliminates the need for large monolithic conditional statements.</p>
+<h3 id="visitor-pattern">Visitor Pattern<a class="headerlink" href="#visitor-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>Visitor pattern</strong> is a way of separating an algorithm from an object structure on which it operates. This pattern allows adding new operations to existent object structures without modifying the structures. It’s useful when building a complex object structure like a Composite pattern.</p>
+<h3 id="chain-of-responsibility-pattern">Chain of Responsibility Pattern<a class="headerlink" href="#chain-of-responsibility-pattern" title="Permanent link">#</a></h3>
+<p>Finally, the <strong>Chain of Responsibility pattern</strong> is a behavioral pattern designed to pass a request along a chain of handlers. Upon receiving a request, each handler decides either to process it or to pass it to the next handler in the chain. This pattern decouples sender and receiver of a request, enhancing flexibility in assigning responsibilities to objects.</p>
+<h2 id="advanced-java-design-pattern-concepts">Advanced Java Design Pattern Concepts<a class="headerlink" href="#advanced-java-design-pattern-concepts" title="Permanent link">#</a></h2>
+<p>In 2024, Java design patterns continue to be critical for robust software engineering. They provide time-tested solutions to recurring design problems and lead to cleaner, more efficient Java programming. Patterns optimize the use of algorithms and dynamic programming techniques while promoting effective refactoring and adherence to best practices.</p>
+<h3 id="concurrency-patterns">Concurrency Patterns<a class="headerlink" href="#concurrency-patterns" title="Permanent link">#</a></h3>
+<p>Concurrency patterns in Java address the complexities of multi-threaded programming and help in structuring software for concurrent execution. <em>ExecutorService</em> and <em>Futures</em> are examples of Java's built-in facilities to help manage thread lifecycles and task submissions respectively. <strong>The Singleton Pattern</strong>, used cautiously, can ensure resources are accessed in a thread-safe manner. Moreover, lessons from the <strong>GoF's</strong> structural and behavioral patterns can be adopted for optimizing multi-threading tasks and achieving thread safety.</p>
+<h3 id="anti-patterns-and-common-pitfalls">Anti-Patterns and Common Pitfalls<a class="headerlink" href="#anti-patterns-and-common-pitfalls" title="Permanent link">#</a></h3>
+<p>While design patterns guide developers towards ideal coding paradigms, <strong>anti-patterns</strong> serve as a cautionary tale of what to avoid. An example is the <strong>God Object</strong>, an embodiment of poor software structure where a single class holds an excessive amount of responsibilities. Common pitfalls also include misapplying design patterns or overengineering, which often result in more complex and harder-to-understand code. It is imperative that developers exercise caution against such practices by continuously applying principles of refactoring and code reviews.</p>
+<h3 id="design-pattern-best-practices">Design Pattern Best Practices<a class="headerlink" href="#design-pattern-best-practices" title="Permanent link">#</a></h3>
+<p>The correct application of design patterns is a foundation for a sustainable codebase. It is recommended to follow best practices such as:</p>
+<ul>
+<li><strong>Applying patterns judiciously</strong>: not every problem requires a design pattern solution.</li>
+<li><strong>Understanding the problem fully</strong>: before applying a pattern, one must ensure it fits the context.</li>
+<li><strong>Keeping it simple</strong>: simpler is often better, and complexity should never be introduced unnecessarily.</li>
+<li><strong>Documenting the use</strong>: when a pattern is implemented, it should be clearly documented for future maintenance.</li>
+</ul>
+<p>In summary, adhering to these best practices fosters a disciplined approach to Java programming, ultimately facilitating the creation of systems that are both scalable and maintainable.</p>
+<h2 id="practical-implementation-of-java-patterns">Practical Implementation of Java Patterns<a class="headerlink" href="#practical-implementation-of-java-patterns" title="Permanent link">#</a></h2>
+<p>When developers look to solve common software problems in Java, they often turn to design patterns for robust and tested solutions. These patterns offer reusability and can often be found in Java libraries and frameworks. Their practical implementation can make code more maintainable and adaptable to change.</p>
+<h3 id="real-world-use-cases">Real-world Use Cases<a class="headerlink" href="#real-world-use-cases" title="Permanent link">#</a></h3>
+<p>Design patterns come to life in real-world scenarios where a specific problem requires an effective and efficient solution. For example:</p>
+<ul>
+<li>The <strong>Singleton Pattern</strong> is frequently used in database connections where a single shared instance facilitates access and resource management.</li>
+<li><strong>Factory and Abstract Factory Patterns</strong> streamline the object creation process for complex systems like UI controls, allowing the system to decide at runtime which objects to instantiate.</li>
+</ul>
+<p>Developers abide by these patterns to ensure that their software architecture is as streamlined as it is functional.</p>
+<h3 id="design-patterns-in-java-libraries">Design Patterns in Java Libraries<a class="headerlink" href="#design-patterns-in-java-libraries" title="Permanent link">#</a></h3>
+<p>Many Java <strong>libraries</strong> and <strong>frameworks</strong> come with built-in design pattern implementations. Here are a few instances:</p>
+<ul>
+<li><strong>Collection Framework</strong> in Java utilizes the <strong>Iterator Pattern</strong> to traverse through collections without exposing the underlying representation.</li>
+<li><strong>Spring Framework</strong> heavily relies on the <strong>Dependency Injection Pattern</strong> to decouple class dependencies, making systems more testable and modular.</li>
+</ul>
+<p>Understanding these implementations helps developers make the most of the tools at their disposal.</p>
+<h3 id="refactoring-to-patterns">Refactoring to Patterns<a class="headerlink" href="#refactoring-to-patterns" title="Permanent link">#</a></h3>
+<p>Refactoring existing code to incorporate design patterns can greatly increase its cleanliness and often its performance. Here’s how it works in practice:</p>
+<ul>
+<li>Identifying code smells and pinpointing exactly where a pattern can alleviate the situation.</li>
+<li>Gradually implementing the pattern, making sure it fits the specific case and improves the code.</li>
+</ul>
+<p><strong>Refactoring</strong> should not be done just to follow the trend but should have a clear goal of improving code quality or solving a software problem.</p>
+<h2 id="learning-resources-and-career-advancement">Learning Resources and Career Advancement<a class="headerlink" href="#learning-resources-and-career-advancement" title="Permanent link">#</a></h2>
+<p>As the demand for skilled Java developers rises, it's critical for professionals to enhance their expertise in Java design patterns. This enhances career prospects and provides a solid foundation for tackling complex programming challenges. Below are curated resources that assist in learning design patterns and ways to leverage them for career growth.</p>
+<h3 id="books-and-online-courses">Books and Online Courses<a class="headerlink" href="#books-and-online-courses" title="Permanent link">#</a></h3>
+<ul>
+<li><strong>Books:</strong> For those who prefer in-depth study, books like "Head First Design Patterns" and "Design Patterns: Elements of Reusable Object-Oriented Software" are essential. These texts provide a comprehensive look into Java design patterns, explaining concepts with real-world scenarios.</li>
+<li><strong>Online Courses:</strong> Websites like <em>Udemy</em>, <em>Coursera</em>, and <em>Pluralsight</em> offer a variety of Java courses, including specific tutorials on design patterns. They cater to all levels of proficiency, with beginner-friendly introductions and advanced pattern uses in Java.</li>
+</ul>
+<h3 id="certificates-and-specializations">Certificates and Specializations<a class="headerlink" href="#certificates-and-specializations" title="Permanent link">#</a></h3>
+<ul>
+<li><strong>Specializations:</strong> Platforms such as <em>Coursera</em> provide specializations that delve into Java design patterns, often culminating in a certificate of completion. These are often created by universities or industry experts.</li>
+<li><strong>Certificates:</strong> Obtaining certificates from recognized platforms can validate a developer's skills to potential employers, acting as a testament to their dedication and expertise in Java design patterns.</li>
+</ul>
+<h3 id="building-a-portfolio-with-design-patterns">Building a Portfolio with Design Patterns<a class="headerlink" href="#building-a-portfolio-with-design-patterns" title="Permanent link">#</a></h3>
+<ul>
+<li><strong>Personal Projects:</strong> Implementing Java design patterns in personal projects demonstrates practical application and can be showcased in a developer’s portfolio.</li>
+<li><strong>GitHub Repositories:</strong> Developers should make their code public on platforms like GitHub, emphasizing the use of different design patterns. This encourages peer review and increases visibility to potential employers.</li>
+</ul>
+<h2 id="evolving-trends-in-java-and-design-patterns">Evolving Trends in Java and Design Patterns<a class="headerlink" href="#evolving-trends-in-java-and-design-patterns" title="Permanent link">#</a></h2>
+<p>As Java continues to adapt to the changing landscape of software development, design patterns are also evolving. These patterns provide a blueprint for solving common design problems and can be especially useful in the context of new technologies and methodologies.</p>
+<h3 id="design-patterns-in-cloud-computing">Design Patterns in Cloud Computing<a class="headerlink" href="#design-patterns-in-cloud-computing" title="Permanent link">#</a></h3>
+<p>Cloud computing has ushered in a demand for patterns that facilitate scalability, resilience, and distributed processing. <strong>Microservice architecture</strong>, a design pattern where applications are composed of small, independent services, is prevalent on cloud platforms. There's also an increased use of <strong>Circuit Breaker</strong> and <strong>Bulkhead</strong> patterns to maintain system stability during partial system failures.</p>
+<h3 id="impact-of-new-java-versions">Impact of New Java Versions<a class="headerlink" href="#impact-of-new-java-versions" title="Permanent link">#</a></h3>
+<p>With the release of <strong>Java 8</strong>, functional programming features like lambda expressions have become integral to Java's growth. The introduction of <strong>Stream API</strong> makes the <strong>Iterator</strong> pattern more concise and promotes a functional approach to data processing. Newer versions provide improvements in garbage collection and JIT compilation, influencing how object-oriented software is developed and optimized.</p>
+<h3 id="integration-with-other-programming-languages">Integration with Other Programming Languages<a class="headerlink" href="#integration-with-other-programming-languages" title="Permanent link">#</a></h3>
+<p>Java is often used alongside other programming languages such as <strong>JavaScript</strong> and <strong>Python</strong>. This encourages the use of design patterns that facilitate smooth integration. Adapter and Facade patterns have gained prominence for abstracting complicated code libraries, making interoperability more straightforward between Java and other languages.</p>
+<h3 id="future-of-design-patterns-in-software-architecture">Future of Design Patterns in Software Architecture<a class="headerlink" href="#future-of-design-patterns-in-software-architecture" title="Permanent link">#</a></h3>
+<p>Design patterns are expected to continue shaping the future of software architecture. They evolve to accommodate advancements in technology, helping developers to navigate complex systems and maintain codebases more efficiently. Patterns that support modularity and clean code, like <strong>Dependency Injection</strong> and <strong>Builder</strong>, are becoming fundamental in crafting sustainable, object-oriented software.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

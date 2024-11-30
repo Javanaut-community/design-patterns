@@ -1,0 +1,3259 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/catalog/other/balking-pattern/">
+      
+      
+        <link rel="prev" href="../async-method-pattern/">
+      
+      
+        <link rel="next" href="../business-delegate-pattern/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Balking Pattern - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Balking Pattern
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-balking-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Balking Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding Balking Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definition-and-intent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition and Intent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparing-balking-with-guarded-suspension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparing Balking with Guarded Suspension
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts-of-the-balking-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts of the Balking Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts of the Balking Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inappropriate-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inappropriate State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-method-in-a-particular-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling Method in a Particular State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-incomplete-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Incomplete Actions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#balking-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Balking Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Balking Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation in Java
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uml-class-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      UML Class Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java-code-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Code Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Scenarios
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-world-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-world Application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software-system-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Software System Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Design Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Related Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structural-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structural Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creational-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creational Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavioral-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behavioral Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrency-in-balking-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concurrency in Balking Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concurrency in Balking Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-concurrency-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Concurrency Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-safe-balking-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thread-Safe Balking Methods
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enhancing-software-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enhancing Software Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enhancing Software Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decoupling-and-reusability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decoupling and Reusability
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avoiding-anti-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoiding Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices-and-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices and Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avoiding-double-checked-locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoiding Double Checked Locking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effective-use-of-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Effective Use of Exceptions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-level-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code-Level Elements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code-Level Elements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interfaces-and-abstract-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interfaces and Abstract Classes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subclasses-and-inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subclasses and Inheritance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Topics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Topics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#combining-with-other-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Combining with Other Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-pattern-and-balking" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Pattern and Balking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#case-studies-and-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Studies and Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Case Studies and Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-washingmachine-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      The WashingMachine Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-processing-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      File Processing System
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-and-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      API and Libraries
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API and Libraries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relevant-java-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relevant Java APIs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Third-Party Libraries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-and-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging and Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-balking-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Balking Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding Balking Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definition-and-intent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition and Intent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparing-balking-with-guarded-suspension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparing Balking with Guarded Suspension
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts-of-the-balking-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts of the Balking Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts of the Balking Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inappropriate-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inappropriate State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-method-in-a-particular-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling Method in a Particular State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-incomplete-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Incomplete Actions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#balking-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Balking Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Balking Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation in Java
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uml-class-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      UML Class Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java-code-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Code Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Scenarios
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#real-world-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-world Application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software-system-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Software System Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Design Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Related Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structural-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structural Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creational-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creational Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavioral-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behavioral Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrency-in-balking-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concurrency in Balking Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concurrency in Balking Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-concurrency-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Concurrency Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thread-safe-balking-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thread-Safe Balking Methods
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enhancing-software-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enhancing Software Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enhancing Software Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decoupling-and-reusability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decoupling and Reusability
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avoiding-anti-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoiding Anti-Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices-and-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices and Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avoiding-double-checked-locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoiding Double Checked Locking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effective-use-of-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Effective Use of Exceptions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-level-elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code-Level Elements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code-Level Elements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interfaces-and-abstract-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interfaces and Abstract Classes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subclasses-and-inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subclasses and Inheritance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Topics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Topics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#combining-with-other-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Combining with Other Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-pattern-and-balking" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Pattern and Balking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#case-studies-and-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Studies and Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Case Studies and Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-washingmachine-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      The WashingMachine Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-processing-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      File Processing System
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-and-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      API and Libraries
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API and Libraries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relevant-java-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relevant Java APIs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Third-Party Libraries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-and-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging and Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Balking Pattern</h1>
+
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p>The Balking Design Pattern is a behavioral design pattern that provides a mechanism for an object to avoid engaging in an action if it's already in a particular state. Typically used in multi-threaded applications, this pattern helps in managing situations where it's unnecessary or undesirable to perform an action if the object's state doesn't allow for it. In Java, the Balking pattern is particularly useful because of the language's built-in support for multi-threading, which requires careful handling of shared resources and states to prevent race conditions and other concurrency issues.</p>
+<p>Implementing the Balking Design Pattern involves setting up a guard, which is a conditional check that determines whether an action should proceed or be skipped. In Java, this often corresponds with a simple if condition that checks the state of an object inside a synchronized method or block. If the condition is met, the action is taken, but if not, the method returns immediately without doing anything, effectively 'balking' at the request.</p>
+<p>Understanding when and where to apply the Balking Design Pattern can optimize resource usage and ensure smoother functioning of Java applications. It is particularly useful in scenarios such as resource pooling or managing access to files where operations should not proceed when the resource is already in use or a file is locked. Java developers often employ this pattern to ensure that their applications behave correctly when faced with concurrency challenges.</p>
+<h2 id="understanding-balking-design-pattern">Understanding Balking Design Pattern<a class="headerlink" href="#understanding-balking-design-pattern" title="Permanent link">#</a></h2>
+<p>The Balking Design Pattern is a behavioral design pattern that helps manage situations where an object's operation should only be executed if the object is in a particular state.</p>
+<h3 id="definition-and-intent">Definition and Intent<a class="headerlink" href="#definition-and-intent" title="Permanent link">#</a></h3>
+<p><strong>Balking Pattern</strong> refers to a design pattern that is used to prevent an object from executing a certain action if it is not in an appropriate state. Typically, when a method is invoked, it first checks whether the object's state allows for the action to proceed. If not, the method immediately returns without performing any action, hence the term "balking." The <strong>intent of the balking pattern</strong> is to guard against unnecessary work when an object is not in the correct state to perform certain actions.</p>
+<p>In Java, this pattern might manifest itself as a simple conditional that checks an object’s state before proceeding with a method:</p>
+<div class="language-text highlight"><pre><span></span><code>public void action() {
+    if (!state.isExecutable()) {
+        // Balking at the operation as the precondition is not met
+        return;
+    }    
+    // Proceed with the action as the state is appropriate
+}
+</code></pre></div>
+<h3 id="comparing-balking-with-guarded-suspension">Comparing Balking with Guarded Suspension<a class="headerlink" href="#comparing-balking-with-guarded-suspension" title="Permanent link">#</a></h3>
+<p>When comparing design patterns, it's vital to understand their nuances. Both <strong>Balking</strong> and <strong>Guarded Suspension</strong> patterns involve conditions that must be met before an action is taken. However, they differ in how they handle the situation when the condition is not met:</p>
+<ul>
+<li>
+<p><strong>Balking Pattern:</strong> If the condition is not met, the operation is <em>aborted</em> immediately. The balking pattern is suitable when it's okay to skip the action altogether if the precondition is not satisfied.</p>
+</li>
+<li>
+<p><strong>Guarded Suspension Pattern:</strong> Contrary to balking, when the precondition for an action is not met, the Guarded Suspension pattern <em>suspends</em> the operation and waits until the condition becomes true. It is normally implemented using a loop that waits (often using <code>wait()</code> calls) for the condition to become true before proceeding.</p>
+<table>
+<thead>
+<tr>
+<th>Design Pattern</th>
+<th>Action if Precondition Not Met</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Balking</td>
+<td>Aborts the operation</td>
+</tr>
+<tr>
+<td>Guarded Suspension</td>
+<td>Waits for precondition</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>It is important to understand these differences to make informed decisions about which pattern to implement in a given scenario.</p>
+<h2 id="core-concepts-of-the-balking-pattern">Core Concepts of the Balking Pattern<a class="headerlink" href="#core-concepts-of-the-balking-pattern" title="Permanent link">#</a></h2>
+<p>The Balking Design Pattern is a software design pattern that is particularly useful when an object is in an inappropriate state for a certain operation. This pattern prevents an operation from proceeding if the object's state does not allow it.</p>
+<h3 id="inappropriate-state">Inappropriate State<a class="headerlink" href="#inappropriate-state" title="Permanent link">#</a></h3>
+<p>In the context of Java design patterns, an <em>inappropriate state</em> refers to a condition where an object's current state does not support the execution of a method or action. When called upon, the method simply returns without doing anything if the state is not suitable, effectively 'balking' at the request. For instance:</p>
+<div class="language-text highlight"><pre><span></span><code>if (state != expectedState) {
+    return;
+}
+</code></pre></div>
+<h3 id="calling-method-in-a-particular-state">Calling Method in a Particular State<a class="headerlink" href="#calling-method-in-a-particular-state" title="Permanent link">#</a></h3>
+<p>A <em>calling method</em> must check the <em>particular state</em> of an object before proceeding with its intended action. This design pattern dictates that it is the responsibility of the method being invoked to verify if the action is pertinent to the object's current state. If not, the method aborts its execution to maintain the integrity of the system. This is a proactive check to ensure valid state before performing any further operation.</p>
+<h3 id="handling-incomplete-actions">Handling Incomplete Actions<a class="headerlink" href="#handling-incomplete-actions" title="Permanent link">#</a></h3>
+<p>Actions that cannot be completed due to an inappropriate state are considered <em>incomplete</em>. Instead of waiting or trying repeatedly, the balking pattern suggests that the calling method should gracefully handle the inability to perform the action and exit or move on to other tasks. This behavior is crucial to avoid unnecessary processing and potential errors in the program's logic. It is common for methods to log such events or set a flag that indicates an incomplete action was encountered.</p>
+<h2 id="balking-pattern-in-java">Balking Pattern in Java<a class="headerlink" href="#balking-pattern-in-java" title="Permanent link">#</a></h2>
+<p>The Balking Design Pattern is a behavioral pattern used in the Java programming language for managing situations where an object's method is called when the object is in an inappropriate state. In such cases, the method will immediately return without performing any action.</p>
+<h3 id="implementation-in-java">Implementation in Java<a class="headerlink" href="#implementation-in-java" title="Permanent link">#</a></h3>
+<p>Balking pattern implementation involves a check before any further processing. The object checks its state upon a method call and decides whether to proceed or to ignore the request. A typical use case is managing a resource that should not be accessed concurrently by multiple threads if it is already running a task.</p>
+<h3 id="uml-class-diagram">UML Class Diagram<a class="headerlink" href="#uml-class-diagram" title="Permanent link">#</a></h3>
+<p>A UML class diagram for Balking pattern includes a <code>Client</code>, a <code>Balk</code> interface, and a <code>ConcreteBalk</code> class. The <code>ConcreteBalk</code> class implements <code>Balk</code> and contains a method <code>performAction()</code> which checks if the action is already in progress.</p>
+<h3 id="java-code-example">Java Code Example<a class="headerlink" href="#java-code-example" title="Permanent link">#</a></h3>
+<p>Below is a Java code example that demonstrates the Balking Pattern:</p>
+<div class="language-text highlight"><pre><span></span><code>public class WashingMachine {
+    private boolean washing = false;
+
+    public synchronized void wash() {
+        if (washing) {
+            return; // Balking if already washing
+        }
+        washing = true;
+        // Code for washing
+    }
+
+    public synchronized void done() {
+        washing = false;
+    }
+}
+</code></pre></div>
+<p>In this example, the <code>wash()</code> method checks the <code>washing</code> state. If <code>true</code>, it returns immediately, ensuring that the washing action does not proceed if it's already in process.</p>
+<h2 id="application-scenarios">Application Scenarios<a class="headerlink" href="#application-scenarios" title="Permanent link">#</a></h2>
+<p>The Balking Design Pattern is specifically useful when an action should only be executed if certain conditions are met, thereby avoiding unnecessary work when it's known that the action is not needed or cannot be performed.</p>
+<h3 id="real-world-application">Real-world Application<a class="headerlink" href="#real-world-application" title="Permanent link">#</a></h3>
+<p>In the context of a <strong>washing machine</strong>, the balking pattern can be instrumental. A typical scenario includes checking whether the washing machine door is properly closed and locked before starting the wash cycle. If the door is open, the washing machine will <em>balk</em> at starting the cycle, thus preventing a possible flood or damage. This use case demonstrates the pattern's relevance where an action (start wash cycle) is contingent on a specific state (door closed and locked).</p>
+<ul>
+<li><strong>Condition</strong>: Door closed and locked</li>
+<li><strong>Action</strong>: Start wash cycle</li>
+<li><strong>Response</strong>: Proceed or balk</li>
+</ul>
+<h3 id="software-system-examples">Software System Examples<a class="headerlink" href="#software-system-examples" title="Permanent link">#</a></h3>
+<p>When dealing with <strong>zip files</strong> in a software system, the balking pattern might be applied as follows: A function designated to unzip files should first verify the integrity of the zip archive before proceeding. If the archive is incomplete or corrupted, the system should balk at the extraction process.</p>
+<ul>
+<li><strong>Condition</strong>: Zip file integrity check</li>
+<li><strong>Action</strong>: Extract files</li>
+<li><strong>Response</strong>: Extract or balk</li>
+</ul>
+<p>In cases where an <strong>application</strong> includes a feature to automatically save changes, balking can be used to determine if changes have occurred since the last save operation. If there have been no changes, the auto-save function will balk, thus saving system resources.</p>
+<ul>
+<li><strong>Condition</strong>: Detect changes since last save</li>
+<li><strong>Action</strong>: Auto-save</li>
+<li><strong>Response</strong>: Save or balk</li>
+</ul>
+<p>Each example illustrates the pattern's <strong>applicability</strong> by showcasing its effectiveness in avoiding unnecessary operations when a system’s state does not warrant an action.</p>
+<h2 id="related-design-patterns">Related Design Patterns<a class="headerlink" href="#related-design-patterns" title="Permanent link">#</a></h2>
+<p>While the Balking pattern is a behavioral design pattern, it exists within the broader context of software design which includes several other patterns. These patterns often complement the Balking pattern by addressing different aspects of design challenges, like object creation, composition, or communication.</p>
+<h3 id="structural-patterns">Structural Patterns<a class="headerlink" href="#structural-patterns" title="Permanent link">#</a></h3>
+<p><strong>Structural designs</strong> facilitate the arrangement of classes and objects to form larger structures. Two key structural patterns relevant to Java are:</p>
+<ul>
+<li>
+<p><strong>Adapter Pattern</strong>: This pattern allows incompatible interfaces to collaborate. It acts like a bridge between two incompatible interfaces and enables them to work together. Structurally, it involves a single class which joins functionalities of independent or incompatible interfaces.</p>
+<p>Pattern</p>
+<p>Purpose</p>
+<p>Adapter</p>
+<p>To enable two incompatible interfaces to work together</p>
+</li>
+<li>
+<p><strong>Decorator Pattern</strong>: It dynamically adds behavior and responsibilities to an object without altering its structure. This pattern is particularly useful when extending an object’s capabilities is needed without affecting other instances of the same class.</p>
+<div class="language-text highlight"><pre><span></span><code>// Example of Decorator Pattern
+public interface Coffee {
+    double getCost();
+    String getDescription();
+}
+</code></pre></div>
+</li>
+</ul>
+<h3 id="creational-patterns">Creational Patterns<a class="headerlink" href="#creational-patterns" title="Permanent link">#</a></h3>
+<p><strong>Creational patterns</strong> simplify object creation processes and can provide additional flexibility in instantiating objects. Within Java, these patterns can be vital for controlling object creation complexity:</p>
+<ul>
+<li><strong>Singleton Pattern</strong>: It ensures a class has only one instance and provides a global point of access to it. This is particularly useful when exactly one object is needed to coordinate actions across the system.<div class="language-text highlight"><pre><span></span><code>// Example of Singleton Pattern
+public class Database {
+    private static Database instance;
+
+    private Database() { }
+
+    public static Database getInstance() {
+        if(instance == null) {
+            instance = new Database();
+        }
+        return instance;
+    }
+}
+</code></pre></div>
+</li>
+</ul>
+<h3 id="behavioral-patterns">Behavioral Patterns<a class="headerlink" href="#behavioral-patterns" title="Permanent link">#</a></h3>
+<p><strong>Behavioral patterns</strong> are concerned with algorithms and the assignment of responsibilities between objects. They differ from structural patterns as they manage object collaboration, while structural patterns deal with object composition.</p>
+<ul>
+<li>
+<p><strong>Observer Pattern</strong>: It defines a dependency between objects so that when one object changes its state, all its dependents are notified. In Java, this pattern is widely used for implementing distributed event handling systems, often in the context of GUI event handling.</p>
+<p>Pattern</p>
+<p>Role</p>
+<p>Observer</p>
+<p>To define a one-to-many dependency between objects</p>
+</li>
+<li>
+<p><strong>Strategy Pattern</strong>: It allows a client to choose an algorithm from a family of algorithms at runtime. The core idea is to define a family of algorithms, encapsulate each one, and make them interchangeable.</p>
+<div class="language-text highlight"><pre><span></span><code>// Example of Strategy Pattern
+public interface SortingStrategy {
+    void sort(int[] dataset);
+}
+</code></pre></div>
+</li>
+</ul>
+<h2 id="concurrency-in-balking-pattern">Concurrency in Balking Pattern<a class="headerlink" href="#concurrency-in-balking-pattern" title="Permanent link">#</a></h2>
+<p>When implementing the Balking pattern in Java, concurrency control is crucial to ensure that the pattern functions correctly in a multi-threaded environment. Proper synchronization of resources prevents concurrent threads from acting on an object when it’s in an inappropriate state.</p>
+<h3 id="java-concurrency-tools">Java Concurrency Tools<a class="headerlink" href="#java-concurrency-tools" title="Permanent link">#</a></h3>
+<p>Java provides a robust set of concurrency tools to facilitate the management of threads and synchronization. The <code>java.util.concurrent</code> package includes several utilities such as <code>ExecutorService</code> to manage thread pools and tasks. <code>ExecutorService</code> allows developers to manage asynchronous task execution without manual thread handling. In the context of the Balking pattern, this service can be employed to defer action executions until the object's state allows for it.</p>
+<p><strong>Key concurrency classes:</strong></p>
+<ul>
+<li><strong><code>synchronized</code></strong>: A keyword that grants mutual exclusion access to a block of code or method.</li>
+<li><strong><code>ExecutorService</code></strong>: An interface that represents an asynchronous execution mechanism.</li>
+</ul>
+<h3 id="thread-safe-balking-methods">Thread-Safe Balking Methods<a class="headerlink" href="#thread-safe-balking-methods" title="Permanent link">#</a></h3>
+<p>To ensure a method is thread-safe in the Balking pattern, Java's <code>synchronized</code> keyword can be applied to methods that check the state of an object before proceeding with an action. A thread-safe method secures that only one thread can enter the method at a time, thereby preventing state inconsistencies caused by concurrent modifications.</p>
+<p><strong>Example of a thread-safe balking method:</strong></p>
+<div class="language-text highlight"><pre><span></span><code>public class SomeClass {
+    private volatile boolean someCondition = false;
+
+    public synchronized void checkAndAct() {
+        if (!someCondition) {
+            return; // Balking if condition is not met
+        }
+        // Proceed with the action because the condition is met
+        doAction();
+    }
+
+    private void doAction() {
+        // Action logic here
+    }
+}
+</code></pre></div>
+<p>Using <code>volatile</code> for state variables ensures that changes made by one thread are visible to others in real-time, adding another layer of thread-safety in the balking implementation.</p>
+<h2 id="enhancing-software-design">Enhancing Software Design<a class="headerlink" href="#enhancing-software-design" title="Permanent link">#</a></h2>
+<p>Applying the Balking Design Pattern can significantly improve the structure and quality of software design by promoting decoupling and reusability, and by steering developers away from common anti-patterns.</p>
+<h3 id="decoupling-and-reusability">Decoupling and Reusability<a class="headerlink" href="#decoupling-and-reusability" title="Permanent link">#</a></h3>
+<p>The Balking Design Pattern, when properly implemented, enhances software design by promoting the separation of concerns. By allowing an object to only execute an action when it is in a particular state, clutter and unnecessary dependencies between objects can be reduced. This separation leads to a more modular architecture, where components are easily identifiable and isolated from each other, paving the way for enhanced reusability.</p>
+<ul>
+<li>
+<p><strong>Benefits of Decoupling:</strong></p>
+<ul>
+<li><strong>Improved modularity:</strong> Encourages the development of self-contained systems.</li>
+<li><strong>Easier maintenance:</strong> Changes in one part have minimal impact on others.</li>
+<li>
+<p><strong>Reusability advantages:</strong></p>
+</li>
+<li>
+<p><strong>Cost-effective:</strong> Reusable components reduce the need to write new code.</p>
+</li>
+<li><strong>Consistency:</strong> Shared modules ensure uniform behavior across different parts of the software.</li>
+</ul>
+</li>
+</ul>
+<h3 id="avoiding-anti-patterns">Avoiding Anti-Patterns<a class="headerlink" href="#avoiding-anti-patterns" title="Permanent link">#</a></h3>
+<p>By leveraging the Balking Pattern, one can avoid anti-patterns, which are common solutions that are counterproductive. These anti-patterns often lead to rigid and fragile software design, making the system difficult to extend or maintain. The thoughtful implementation of design patterns like Balking offers clear pathways to solve specific problems without falling into these traps.</p>
+<ul>
+<li><strong>Characteristics of Anti-patterns Avoided:</strong><ul>
+<li><strong>Rigidity:</strong> The difficulty of making changes due to tight coupling.</li>
+<li><strong>Fragility:</strong> When changes cause breakage in seemingly unrelated areas.</li>
+</ul>
+</li>
+</ul>
+<p>In summary, the Balking Design Pattern has a positive ripple effect across the landscape of software design, ensuring that the end solution is not only functional but also elegant and robust. Its disciplined use is a testament to thoughtful software engineering, leading to solutions that stand the test of time and adaptability.</p>
+<h2 id="best-practices-and-considerations">Best Practices and Considerations<a class="headerlink" href="#best-practices-and-considerations" title="Permanent link">#</a></h2>
+<p>In implementing the Balking Design Pattern in Java, one must consider the synchronization of shared resources and the judicious use of exceptions to manage the system state meticulously. These practices ensure a robust and thread-safe design.</p>
+<h3 id="avoiding-double-checked-locking">Avoiding Double Checked Locking<a class="headerlink" href="#avoiding-double-checked-locking" title="Permanent link">#</a></h3>
+<p>The double checked locking pattern is a common programming concept used to reduce the overhead of acquiring a lock by first testing the locking criterion without actually acquiring the lock. However, it must be used with caution in Java due to possible reordering of instructions by the compiler or the JVM. This can lead to instances where a resource appears initialized but is not.</p>
+<ul>
+<li><strong>Best Practice:</strong><ul>
+<li>Use <strong>volatile</strong> variables if you must implement double checked locking to prevent instruction reordering.</li>
+</ul>
+</li>
+</ul>
+<p>The table below shows a thread-safe implementation incorporating volatile:</p>
+<p>Without Volatile</p>
+<p>With Volatile</p>
+<p>```java</p>
+<p>```java</p>
+<p>Object resource;</p>
+<p>volatile Object resource;</p>
+<p>if (resource == null) {</p>
+<p>if (resource == null) {</p>
+<p>synchronized (this) {</p>
+<p>synchronized (this) {</p>
+<p>if (resource == null) {</p>
+<p>if (resource == null) {</p>
+<p>resource = new Object();</p>
+<p>resource = new Object();</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>```</p>
+<p>```</p>
+<p>In the left column, without volatile, a thread can see a partially constructed object, while on the right column, volatile guarantees that <code>resource</code> is fully visible to all threads after its construction.</p>
+<h3 id="effective-use-of-exceptions">Effective Use of Exceptions<a class="headerlink" href="#effective-use-of-exceptions" title="Permanent link">#</a></h3>
+<p>When using the Balking Pattern, exceptions play a central role in managing state. When an operation is called that is not allowed or does not make sense in the current state, the method should bail out by throwing an exception.</p>
+<ul>
+<li><strong>Guidelines for Using Exceptions:</strong><ul>
+<li>Throw an <strong>IllegalStateException</strong> if an action is invoked at an illegal or inappropriate time.</li>
+<li>Ensure that the exception includes a descriptive message that clarifies the context of the error.</li>
+</ul>
+</li>
+</ul>
+<p>Correct Usage</p>
+<p>Incorrect Usage</p>
+<p>```java</p>
+<p>```java</p>
+<p>if(!validState) {</p>
+<p>if(!validState) {</p>
+<p>throw new IllegalStateException("Cannot perform this action in the current state.");</p>
+<p>// Fails silently</p>
+<p>}</p>
+<p>}</p>
+<p>```</p>
+<p>```</p>
+<p>Using <code>IllegalStateException</code> correctly informs developers of the precise nature of the error, aiding in quick diagnosis and resolution.</p>
+<p>This approach of precise synchronization and exceptions handling not only simplifies concurrent programming efforts but also solidifies the reliability of the application, embodying the principles of the Balking Pattern.</p>
+<h2 id="code-level-elements">Code-Level Elements<a class="headerlink" href="#code-level-elements" title="Permanent link">#</a></h2>
+<p>In the Balking Design Pattern, specific code-level structures ensure proper functioning of the pattern. Interfaces, abstract classes, and subclasses provide a blueprint for the objects, while factory classes manage instantiation.</p>
+<h3 id="interfaces-and-abstract-classes">Interfaces and Abstract Classes<a class="headerlink" href="#interfaces-and-abstract-classes" title="Permanent link">#</a></h3>
+<p>Interfaces in the Balking pattern act as contracts for the classes, defining the methods essential for the components of the pattern. These methods might include action triggers and state-checking mechanisms, which are critical for the balking behavior.</p>
+<ul>
+<li><strong>Interface</strong>: A typical interface in this pattern might include the following method signatures:<ul>
+<li><code>boolean canPerformAction()</code>: Checks whether the action can proceed.</li>
+<li><code>void performAction()</code>: Executes the action if the condition is met.</li>
+</ul>
+</li>
+</ul>
+<p>The utilization of abstract classes provides a skeletal implementation that subclasses can extend. These classes often encapsulate common logic that can vary among different subclasses.</p>
+<ul>
+<li><strong>Abstract class</strong>: Might outline the balking logic, leaving the specifics to be implemented by the subclasses.</li>
+</ul>
+<h3 id="subclasses-and-inheritance">Subclasses and Inheritance<a class="headerlink" href="#subclasses-and-inheritance" title="Permanent link">#</a></h3>
+<p>Subclasses in the Balking pattern inherit from either interfaces or abstract classes, and provide concrete implementations. They uphold the balking logic while personalizing their behavior based on the subclass-specific context.</p>
+<ul>
+<li>
+<p><strong>Subclasses</strong> might include:</p>
+<p>Subclass</p>
+<p>Description</p>
+<p><code>ConcreteResource</code></p>
+<p>Implements the balking conditions and actions for a resource.</p>
+<p><code>TimedResource</code></p>
+<p>Extends <code>ConcreteResource</code> to add time-based balking conditions.</p>
+</li>
+</ul>
+<p>Inheritance allows these subclasses to either completely adhere to or modify the behavior defined by their parent class. The factory class, commonly employed in abstract factory patterns, may be used to instantiate these subclasses, thus decoupling object creation from concrete class implementations.</p>
+<ul>
+<li><strong>Factory Class</strong>:<ul>
+<li>Often named <code>ResourceFactory</code>.</li>
+<li>Used to instantiate subclass objects without specifying the exact class of object.</li>
+</ul>
+</li>
+</ul>
+<h2 id="advanced-topics">Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permanent link">#</a></h2>
+<p>In exploring the Balking Design Pattern, it is imperative for developers to understand how it can be combined with other patterns and the intricacies of its relationship with the State Pattern.</p>
+<h3 id="combining-with-other-patterns">Combining with Other Patterns<a class="headerlink" href="#combining-with-other-patterns" title="Permanent link">#</a></h3>
+<p>The Balking Pattern often works in concert with other design patterns to solve complex problems. One such pattern is the <strong>Facade Pattern</strong>, which simplifies interaction with a system by providing a unified interface. A <strong>Facade</strong> can hide the complexity of the subsystems that employ the Balking Pattern, offering a simplified method call to clients without exposing the underlying conditional behavior.</p>
+<p>On the other hand, the <strong>Composite Pattern</strong> is another structural pattern that allows clients to treat individual objects and compositions of objects uniformly. The Balking Pattern can be used within a component of a composite to prevent an operation if the object's state is inappropriate for the action.</p>
+<p>Pattern</p>
+<p>Role in Combination with Balking</p>
+<p>Facade</p>
+<p>Simplifies interface to balking subsystems</p>
+<p>Composite</p>
+<p>Manages conditional operations in composite components</p>
+<h3 id="state-pattern-and-balking">State Pattern and Balking<a class="headerlink" href="#state-pattern-and-balking" title="Permanent link">#</a></h3>
+<p>The <strong>State Pattern</strong> is crucial when implementing the Balking Design Pattern. They often operate in tandem, where the State Pattern allows an object to alter its behavior when its internal state changes and the Balking Pattern avoids an action if the object's current state is not suitable. For instance, a network connection object might use the State Pattern to represent connected or disconnected states, and balk at sending data if it is in the disconnected state. Implementing Balking within a state's behavior ensures actions are only attempted in appropriate states.</p>
+<p>To illustrate:</p>
+<ul>
+<li><strong>State Pattern</strong>: Manages transition between states and behaviors associated with them.</li>
+<li><strong>Balking Pattern</strong>: Acts as a gatekeeper to prevent certain actions in a state.</li>
+</ul>
+<p>By integrating these patterns, developers can create more robust and maintainable applications, since the responsibilities of state management and conditional action-prevention are cleanly separated and yet effectively coordinated.</p>
+<h2 id="case-studies-and-examples">Case Studies and Examples<a class="headerlink" href="#case-studies-and-examples" title="Permanent link">#</a></h2>
+<p>In this section, specific implementations of the Balking Design Pattern are examined within two different contexts — a washing machine's operational system and a file processing application. These examples serve to illustrate the pattern's practicality in scenarios where an action should only occur if certain conditions are met.</p>
+<h3 id="the-washingmachine-class">The WashingMachine Class<a class="headerlink" href="#the-washingmachine-class" title="Permanent link">#</a></h3>
+<p>The WashingMachine class is often used to demonstrate the Balking Design Pattern. At the core of its design lies a state attribute that dictates the machine's ability to perform a wash cycle. The relevant states might include <code>Ready</code>, <code>Running</code>, and <code>Unavailable</code>. On attempting to start the machine, the program checks the current state:</p>
+<ul>
+<li>If state = <code>Ready</code>, it transitions to <code>Running</code> and begins the cycle.</li>
+<li>If state ≠ <code>Ready</code>, the request is ignored (balking occurs).</li>
+</ul>
+<p>Here is a sample pseudo-code for reference:</p>
+<div class="language-text highlight"><pre><span></span><code>public class WashingMachine {
+    private State state;
+
+    public WashingMachine() {
+        this.state = State.READY;
+    }
+
+    public synchronized void startWash() {
+        if (state == State.READY) {
+            state = State.RUNNING;
+            // Code to start the wash cycle
+        }
+    }
+}
+</code></pre></div>
+<p>In this example, the above pattern prevents the <code>startWash</code> method from running if the <code>WashingMachine</code> is not in a proper state, showcasing its applicability in system design where operations should be invoked only under specific conditions.</p>
+<h3 id="file-processing-system">File Processing System<a class="headerlink" href="#file-processing-system" title="Permanent link">#</a></h3>
+<p>Another practical example of the Balking Design Pattern is within a file processing system. Here, a service may monitor a directory for new files. Upon detection, the system attempts to process them if they are not already locked or in-use:</p>
+<ul>
+<li>If file is not locked, proceed to process.</li>
+<li>If file is locked or in-use, the system balks and leaves the file for a future attempt.</li>
+</ul>
+<p>The conditional check ensures that the file is ready for processing, and if not, the system balks, preventing any potentially conflict-causing operations. Consider the following representation:</p>
+<p>Action</p>
+<p>Condition Met?</p>
+<p>Outcome</p>
+<p>Check File State</p>
+<p>Yes</p>
+<p>Begin processing</p>
+<p>Check File State</p>
+<p>No</p>
+<p>File is skipped (balked)</p>
+<p>Pseudo-code snippet for a file processing system could be:</p>
+<div class="language-text highlight"><pre><span></span><code>public class FileProcessor {
+    public void processFile(File file) {
+        if (!isLocked(file)) {
+            // Code to lock and process the file
+        }
+    }
+
+    private boolean isLocked(File file) {
+        // Code to check if the file is currently locked or in use
+    }
+}
+</code></pre></div>
+<p>The utilization of the Balking Design Pattern in such a system is critical to ensure that files are processed sequentially and without contention, making it a cornerstone in robust concurrent programming within Java.</p>
+<h2 id="api-and-libraries">API and Libraries<a class="headerlink" href="#api-and-libraries" title="Permanent link">#</a></h2>
+<p>In Java, effective usage of APIs and libraries is pivotal for implementing the Balking Design Pattern. The pattern involves checking for a particular state before proceeding with an action and is commonly used when it is unnecessary or undesirable for an operation to proceed at the current time.</p>
+<h3 id="relevant-java-apis">Relevant Java APIs<a class="headerlink" href="#relevant-java-apis" title="Permanent link">#</a></h3>
+<p><strong>Concurrency Utilities:</strong> Java provides a robust set of concurrency utilities in the <code>java.util.concurrent</code> package that facilitate the implementation of the Balking Design Pattern. These utilities include:</p>
+<ul>
+<li><code>Lock</code>: A locking mechanism that provides more extensive operations than the intrinsic locks and synchronization.</li>
+<li><code>Condition</code>: A more flexible mechanism for thread communication compared to an object's wait/notify mechanism.</li>
+</ul>
+<p><strong>Example of usage:</strong></p>
+<div class="language-text highlight"><pre><span></span><code>public class Balker {
+    private final Lock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
+    private boolean available = false;
+
+    public void performAction() {
+        lock.lock();
+        try {
+            while (!available) {
+                condition.await();
+            }
+            // Action to be performed
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void makeAvailable() {
+        lock.lock();
+        try {
+            available = true;
+            condition.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+</code></pre></div>
+<p><strong>Volatile Keyword:</strong> The <code>volatile</code> keyword in Java ensures that changes to a variable are immediately visible to all threads, which is useful for a simple balking situation.</p>
+<ul>
+<li><code>volatile</code>: A field modifier that ensures that threads see a consistent value for the variable.</li>
+</ul>
+<h3 id="third-party-libraries">Third-Party Libraries<a class="headerlink" href="#third-party-libraries" title="Permanent link">#</a></h3>
+<p>While Java's standard library provides sufficient support for the Balking Pattern, there are third-party libraries that offer additional concurrency tools:</p>
+<p><strong>Google Guava:</strong> Google's Guava library includes utility classes that complement the Java concurrency API:</p>
+<ul>
+<li><code>ListenableFuture</code>: Extends <code>Future</code> to allow registration of callbacks that are executed once the computation is complete.</li>
+</ul>
+<p><strong>Apache Commons Lang:</strong> Apache Commons Lang provides helper utilities for Java that can assist in implementing the Balking Design Pattern:</p>
+<ul>
+<li><code>ObjectUtils</code>: Contains utility methods for object creation and manipulation, which can be used for state-checking logic.</li>
+</ul>
+<p>Usage of relevant APIs and proficient third-party libraries ensures that the balking design pattern in Java can be implemented cleanly and efficiently. By leveraging these tools, developers can maintain a clear program structure, avoid common concurrency pitfalls, and produce maintainable and robust code.</p>
+<h2 id="debugging-and-troubleshooting">Debugging and Troubleshooting<a class="headerlink" href="#debugging-and-troubleshooting" title="Permanent link">#</a></h2>
+<p>When addressing issues in the Balking Design Pattern, one should first ensure that the pattern is implemented correctly. The pattern's core principle is to avoid an action if the object is not in a proper state. Developers should look for race conditions or incorrect state checks, which are common culprits in the balking pattern.</p>
+<p><strong>Key Steps for Troubleshooting:</strong></p>
+<ul>
+<li><strong>Analyze Console Output:</strong> Carefully examine the console logs to check for any irregularities or error messages that occur around the time the balking behavior is expected to engage.</li>
+<li><strong>Check Object States:</strong> Verify the conditions under which the method should balk. Ensure that the object's state is correctly updated and read.</li>
+</ul>
+<p><strong>Common Issues to Look For:</strong></p>
+<ol>
+<li>
+<p><strong>Race Conditions:</strong> Since the Balking Design Pattern is often used in multi-threaded environments, developers should ensure thread safety measures are in place to prevent multiple threads from causing an inconsistent object state.</p>
+</li>
+<li>
+<p><strong>Incorrect State Management:</strong> Objects may not be transitioning to the intended state, resulting in unexpected balking. Automated unit tests can help catch such issues early on.</p>
+</li>
+</ol>
+<p><strong>Debugging Approaches:</strong></p>
+<ul>
+<li><strong>Insert Breakpoints:</strong> Place breakpoints in the code where the balking condition is checked. Step through the code to observe the state transitions.</li>
+<li><strong>Log State Changes:</strong> Augment logging at key points of state changes. This allows for post-mortem analysis to understand the sequence of events leading to the issue.</li>
+</ul>
+<p>In summary, developers should methodically inspect state changes, thread interactions, and error logs to pinpoint the origin of issues related to the Balking Design Pattern. Time spent on establishing a thorough understanding of the pattern's dynamics and potential pitfalls can significantly expedite the debugging process.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

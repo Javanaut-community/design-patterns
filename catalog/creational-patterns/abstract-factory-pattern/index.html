@@ -1,0 +1,2645 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/catalog/creational-patterns/abstract-factory-pattern/">
+      
+      
+        <link rel="prev" href="../builder-pattern/">
+      
+      
+        <link rel="next" href="../factory-method-pattern/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Abstract Factory Pattern - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Abstract Factory Pattern
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      The problem statement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Abstract Factory Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern Basics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-components-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components of Abstract Factory Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Components of Abstract Factory Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Factory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abstract-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Product
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Product
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-class-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern Class Diagram
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-of-abstract-factory-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation of Abstract Factory Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation of Abstract Factory Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factory-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Factory Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-factory-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Factory Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abstract-product-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Product Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-product-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Product Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client Class
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-with-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern with JDK
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-in-real-world-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern in Real World Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Abstract Factory Pattern in Real World Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#car-factory-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Car Factory Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#location-based-factory-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Location-Based Factory Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages-and-disadvantages-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages and Disadvantages of Abstract Factory Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages and Disadvantages of Abstract Factory Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages of Abstract Factory Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages of Abstract Factory Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      The problem statement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Abstract Factory Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern Basics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-components-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components of Abstract Factory Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Components of Abstract Factory Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Factory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abstract-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Product
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Product
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-class-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern Class Diagram
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-of-abstract-factory-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation of Abstract Factory Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation of Abstract Factory Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factory-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Factory Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-factory-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Factory Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abstract-product-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Product Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concrete-product-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concrete Product Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client Class
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-with-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern with JDK
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abstract-factory-pattern-in-real-world-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract Factory Pattern in Real World Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Abstract Factory Pattern in Real World Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#car-factory-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Car Factory Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#location-based-factory-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Location-Based Factory Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages-and-disadvantages-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages and Disadvantages of Abstract Factory Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages and Disadvantages of Abstract Factory Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advantages-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages of Abstract Factory Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disadvantages-of-abstract-factory-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disadvantages of Abstract Factory Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Abstract Factory Pattern</h1>
+
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p>The Abstract Factory Pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is used when a system needs to be independent of how its objects are created and composed. It encapsulates a group of individual factories that have a common theme.</p>
+<p><img alt="Abstract factory pattern overview" loading="lazy" src="../../../art/catalog/abstracfactory/abstract-factory.png" /></p>
+<p>In Java, the Abstract Factory Pattern is implemented using interfaces and abstract classes. The Abstract Factory Pattern is similar to the Factory Method Pattern in that both patterns are creational and both use interfaces and abstract classes. However, the Abstract Factory Pattern is used to create families of objects, while the Factory Method Pattern is used to create individual objects.</p>
+<p>The Abstract Factory Pattern is useful in situations where an application needs to be able to switch between different families of objects without changing the code that uses them. For example, if an application uses a database, it might need to switch between different database drivers depending on the type of database being used. The Abstract Factory Pattern can be used to encapsulate the creation of these different drivers, making it easy to switch between them without changing the code that uses them.</p>
+<h2 id="the-problem-statement"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 8a4.25 4.25 0 1 1 8.5 0 4.25 4.25 0 0 1-8.5 0M9.5 8a1.5 1.5 0 1 0-3.001.001A1.5 1.5 0 0 0 9.5 8"/><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-5.75a5.75 5.75 0 1 0 0 11.5 5.75 5.75 0 1 0 0-11.5"/></svg></span> The problem statement<a class="headerlink" href="#the-problem-statement" title="Permanent link">#</a></h2>
+<p>Here's an example of the Abstract Factory Pattern in Java:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Step 1: Define abstract product interfaces</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">interface</span> <span class="nc">Button</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">();</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kd">interface</span> <span class="nc">TextField</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">();</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">}</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">// Step 2: Create concrete product classes</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kd">class</span> <span class="nc">WindowsButton</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Button</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Windows Button&quot;</span><span class="p">);</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">}</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="kd">class</span> <span class="nc">WindowsTextField</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">TextField</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Windows Text Field&quot;</span><span class="p">);</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="p">}</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="kd">class</span> <span class="nc">MacButton</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Button</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Mac Button&quot;</span><span class="p">);</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="p">}</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="kd">class</span> <span class="nc">MacTextField</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">TextField</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Mac Text Field&quot;</span><span class="p">);</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="p">}</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="c1">// Step 3: Define abstract factory interface</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="kd">interface</span> <span class="nc">GUIFactory</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">    </span><span class="n">Button</span><span class="w"> </span><span class="nf">createButton</span><span class="p">();</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">    </span><span class="n">TextField</span><span class="w"> </span><span class="nf">createTextField</span><span class="p">();</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="p">}</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="c1">// Step 4: Create concrete factory classes</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="kd">class</span> <span class="nc">WindowsFactory</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">GUIFactory</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Button</span><span class="w"> </span><span class="nf">createButton</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WindowsButton</span><span class="p">();</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">TextField</span><span class="w"> </span><span class="nf">createTextField</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WindowsTextField</span><span class="p">();</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="p">}</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="kd">class</span> <span class="nc">MacFactory</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">GUIFactory</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Button</span><span class="w"> </span><span class="nf">createButton</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MacButton</span><span class="p">();</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">TextField</span><span class="w"> </span><span class="nf">createTextField</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MacTextField</span><span class="p">();</span>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a><span class="p">}</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a><span class="c1">// Step 5: Client code that uses the abstract factory</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AbstractFactoryClient</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72" href="#__codelineno-0-72"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73" href="#__codelineno-0-73"></a><span class="w">        </span><span class="c1">// Choose a concrete factory based on the desired platform (Windows or Mac)</span>
+</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74" href="#__codelineno-0-74"></a><span class="w">        </span><span class="n">GUIFactory</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WindowsFactory</span><span class="p">();</span><span class="w"> </span><span class="c1">// Change to MacFactory to switch platforms</span>
+</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75" href="#__codelineno-0-75"></a>
+</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76" href="#__codelineno-0-76"></a><span class="w">        </span><span class="c1">// Use the factory to create products</span>
+</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77" href="#__codelineno-0-77"></a><span class="w">        </span><span class="n">Button</span><span class="w"> </span><span class="n">button</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factory</span><span class="p">.</span><span class="na">createButton</span><span class="p">();</span>
+</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78" href="#__codelineno-0-78"></a><span class="w">        </span><span class="n">TextField</span><span class="w"> </span><span class="n">textField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factory</span><span class="p">.</span><span class="na">createTextField</span><span class="p">();</span>
+</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a>
+</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a><span class="w">        </span><span class="c1">// Display the created products</span>
+</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a><span class="w">        </span><span class="n">button</span><span class="p">.</span><span class="na">display</span><span class="p">();</span>
+</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82" href="#__codelineno-0-82"></a><span class="w">        </span><span class="n">textField</span><span class="p">.</span><span class="na">display</span><span class="p">();</span>
+</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Explanation:</p>
+<p><strong>Abstract Product Interfaces (Button and TextField):</strong></p>
+<ul>
+<li>Declare interfaces for the products of a family.</li>
+</ul>
+<p><strong>Concrete Product Classes (WindowsButton, WindowsTextField, MacButton, MacTextField):</strong></p>
+<ul>
+<li>Implement the interfaces to create concrete products for each family.</li>
+</ul>
+<p><strong>Abstract Factory Interface (GUIFactory):</strong></p>
+<ul>
+<li>Declares methods for creating the products of a family.</li>
+</ul>
+<p><strong>Concrete Factory Classes (WindowsFactory and MacFactory):</strong></p>
+<ul>
+<li>Implement the abstract factory interface to create concrete products for a specific family.</li>
+</ul>
+<p><strong>Client Code (AbstractFactoryClient):</strong></p>
+<ul>
+<li>Chooses a concrete factory based on the desired platform (Windows or Mac).</li>
+<li>Uses the factory to create products (button and text field).</li>
+<li>Displays the created products.</li>
+</ul>
+<p>In this example, the AbstractFactoryClient chooses between a WindowsFactory and a MacFactory to create a family of products (button and text field) that are compatible with each other. The client code remains independent of the specific classes of the created products, promoting flexibility and ensuring that the products are from the same family.</p>
+<h2 id="understanding-abstract-factory-pattern">Understanding Abstract Factory Pattern<a class="headerlink" href="#understanding-abstract-factory-pattern" title="Permanent link">#</a></h2>
+<p>The Abstract Factory Pattern is a design pattern that falls under the category of creational design patterns. It is used to encapsulate the object creation process and create families of related objects without specifying their concrete classes. According to the book "Design Patterns: Elements of Reusable Object-Oriented Software", the Abstract Factory Pattern "provides an interface for creating families of related or dependent objects without specifying their concrete classes".</p>
+<p>The Abstract Factory Pattern is used to manage the complexity of object creation by providing an abstract interface for creating families of related objects. It allows the client code to create objects without knowing the specific classes of the objects being created. This helps to reduce the coupling between the client code and the object creation code.</p>
+<p>The Abstract Factory Pattern is used when there are multiple families of related objects that need to be created. It is particularly useful when the client code needs to create objects from multiple families and wants to ensure that the objects are created in a consistent way.</p>
+<p>The Applicability of the Abstract Factory Pattern is when a system should be independent of how its products are created, composed and represented. It is also used when a system needs to be configured with one of multiple families of products.</p>
+<p>In summary, the Abstract Factory Pattern is a powerful tool for managing the complexity of object creation. It allows the client code to create families of related objects without knowing the specific classes of the objects being created. This helps to reduce the coupling between the client code and the object creation code, making the system more flexible and easier to maintain.</p>
+<h2 id="abstract-factory-pattern-basics"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 10a2 2 0 0 1 2 2 2 2 0 0 1-.47 1.29L16.7 22h-2.13L12 14.93 9.43 22H7.3l3.17-8.71A2 2 0 0 1 10 12a2 2 0 0 1 2-2m0-2a4 4 0 0 0-4 4c0 .5.1 1 .28 1.46l-.88 2.4A6.03 6.03 0 0 1 6 12a6 6 0 0 1 6-6 6 6 0 0 1 6 6c0 1.47-.53 2.81-1.4 3.86l-.88-2.4C15.9 13 16 12.5 16 12a4 4 0 0 0-4-4m0-4a8 8 0 0 0-8 8c0 2.36 1 4.5 2.64 5.94l-.72 2A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10c0 3.23-1.54 6.11-3.92 7.94l-.72-2C19 16.5 20 14.36 20 12a8 8 0 0 0-8-8"/></svg></span> Abstract Factory Pattern Basics<a class="headerlink" href="#abstract-factory-pattern-basics" title="Permanent link">#</a></h2>
+<hr />
+<div class="admonition quote">
+<p class="admonition-title">Singleton Pattern Definition</p>
+<p>The Singleton pattern restricts the instantiation of a class to a single instance and ensures that the instance is globally accessible. In other words, it guarantees that only one instance of a class is created and provides a global point of access to that instance.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Class Diagram</label><label for="__tabbed_1_2">Java</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<pre class="mermaid"><code>   classDiagram
+        direction LR
+        Client --&gt; AbstractFactory
+        Client --&gt; AbstractProduct
+        AbstractFactory &lt;|-- ConcreteFactory
+        AbstractProduct &lt;|-- ProductA
+        AbstractProduct &lt;|-- ProductB
+        ProductA &lt;.. ConcreteFactory : creates
+        ProductB &lt;.. ConcreteFactory : creates
+
+        class Client {
+        }
+        class AbstractFactory{
+        +CreateProductA()
+        +CreateProductB()
+        }
+        class ConcreteFactory{
+        +Create productA()
+        +Create productB()
+        }
+        class AbstractProduct{
+        }</code></pre>
+</div>
+<div class="tabbed-block">
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">com.javadesignpatterns.creational.singleton.solution</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Singleton</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">Singleton</span><span class="w"> </span><span class="n">instance</span><span class="p">;</span><span class="w"> </span><span class="c1">//(1)!</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">Singleton</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="c1">//(2)!</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">Singleton</span><span class="w"> </span><span class="nf">getInstance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//(3)!</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">instance</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">            </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Singleton</span><span class="p">();</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">instance</span><span class="p">;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li><strong>static instance</strong>: Singleton declares a private static instance of the Singleton class. This will hold the sole instance of the class.</li>
+<li><strong>Singleton()</strong> marks the constructor as private to prevent instantiation from outside the class.</li>
+<li><strong>static getInstance()</strong>: Singleton is a public static method that controls access to the singleton instance. This method creates a new instance of the class if one does not already exist, or returns the existing instance if it does.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>In Java, the Abstract Factory pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. The pattern is an extension of the Factory Method pattern and is used to create a group of related objects.</p>
+<p>The Abstract Factory pattern involves the use of abstract classes and interfaces to define the common theme among individual factories, which are responsible for creating objects. The pattern consists of a super-factory that creates other factories, which in turn create factory objects that create the final objects.</p>
+<p>The Abstract Factory pattern is useful in situations where a system should be independent of how its products are created, composed, and represented. The pattern allows for the creation of families of related objects without the need to specify their concrete classes. This makes the system more flexible and easier to maintain, as changes to the product family can be made by simply changing the factory that creates it.</p>
+<p>The Abstract Factory design pattern is similar to the Factory Method pattern in that it also uses factory classes to create objects. However, the difference between the two is that the Factory Method pattern creates objects through inheritance, while the Abstract Factory pattern creates objects through composition.</p>
+<p>In Java, the Abstract Factory pattern can be implemented by defining an abstract factory interface or class that declares a set of factory methods that return abstract product objects. Concrete factory classes are then created that implement the factory interface and return concrete product objects.</p>
+<p>Overall, the Abstract Factory pattern is a powerful design pattern that can be used to create families of related objects without the need to specify their concrete classes. It is a useful pattern for creating complex systems that need to be flexible and easy to maintain.</p>
+<h2 id="key-components-of-abstract-factory-pattern">Key Components of Abstract Factory Pattern<a class="headerlink" href="#key-components-of-abstract-factory-pattern" title="Permanent link">#</a></h2>
+<p>The Abstract Factory pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. It is composed of four key components: Abstract Factory, Concrete Factory, Abstract Product, and Concrete Product.</p>
+<h3 id="abstract-factory">Abstract Factory<a class="headerlink" href="#abstract-factory" title="Permanent link">#</a></h3>
+<p>The Abstract Factory is an abstract class that provides an interface for creating a family of related products. It declares a set of methods, each of which returns a different abstract product. The Abstract Factory class is independent of the concrete classes that implement the products.</p>
+<h3 id="concrete-factory">Concrete Factory<a class="headerlink" href="#concrete-factory" title="Permanent link">#</a></h3>
+<p>A Concrete Factory is a concrete class that implements the Abstract Factory interface. It is responsible for creating a family of related products. Concrete factories are represented by sub-classes of the AbstractFactory class.</p>
+<h3 id="abstract-product">Abstract Product<a class="headerlink" href="#abstract-product" title="Permanent link">#</a></h3>
+<p>The Abstract Product is an abstract class that declares an interface for a type of product. Each product family has a corresponding Abstract Product. The Abstract Product is independent of the concrete classes that implement the product.</p>
+<h3 id="concrete-product">Concrete Product<a class="headerlink" href="#concrete-product" title="Permanent link">#</a></h3>
+<p>A Concrete Product is a concrete class that implements the Abstract Product interface. It is a specific type of product in a product family. Concrete products are represented by sub-classes of the AbstractProduct class.</p>
+<p>The Abstract Factory pattern provides a way to ensure consistency among the products that are created by a factory. The products that are created by a factory are composed of related objects that work together to accomplish a task. By using an Abstract Factory pattern, the relationships among the objects are represented in the factory interface.</p>
+<p>The Abstract Factory pattern is useful when there are families of objects that need to be created. The pattern provides a way to ensure that the objects in a family are related and work together. The pattern also provides a way to create families of objects that can be easily extended in the future.</p>
+<h2 id="abstract-factory-pattern-class-diagram">Abstract Factory Pattern Class Diagram<a class="headerlink" href="#abstract-factory-pattern-class-diagram" title="Permanent link">#</a></h2>
+<p>The class diagram for the Abstract Factory Pattern is a UML diagram that shows the relationship between the classes involved in the pattern. It is a graphical representation of the pattern's structure and is useful in understanding how the pattern works.</p>
+<p>The Abstract Factory Pattern consists of four main components:</p>
+<ol>
+<li>
+<p><strong>AbstractFactory</strong>: This is an abstract class or interface that defines the methods for creating the objects of a family. It provides an interface for creating the product objects without specifying their concrete classes.</p>
+</li>
+<li>
+<p><strong>ConcreteFactory</strong>: This is a class that implements the AbstractFactory interface. It creates concrete product objects of a family.</p>
+</li>
+<li>
+<p><strong>AbstractProduct</strong>: This is an abstract class or interface that defines the methods for the products created by the AbstractFactory.</p>
+</li>
+<li>
+<p><strong>ConcreteProduct</strong>: This is a class that implements the AbstractProduct interface. It creates concrete product objects of a family.</p>
+</li>
+</ol>
+<p>The class diagram for the Abstract Factory Pattern shows the relationship between these components. It consists of two main parts:</p>
+<ol>
+<li>
+<p><strong>Abstract Factory</strong>: This is the top-level interface or abstract class that defines the methods for creating the objects of a family. It has a method for each product in the family.</p>
+</li>
+<li>
+<p><strong>Concrete Factory</strong>: This is a class that implements the Abstract Factory interface. It creates concrete product objects of a family. It has a method for each product in the family.</p>
+</li>
+</ol>
+<p>The class diagram also shows the relationship between the AbstractProduct and ConcreteProduct classes. The AbstractProduct is an abstract class or interface that defines the methods for the products created by the AbstractFactory. The ConcreteProduct is a class that implements the AbstractProduct interface. It creates concrete product objects of a family.</p>
+<p>Finally, the class diagram shows the relationship between the AbstractFactory and ConcreteFactory classes. The AbstractFactory is an abstract class or interface that defines the methods for creating the objects of a family. The ConcreteFactory is a class that implements the AbstractFactory interface. It creates concrete product objects of a family.</p>
+<p>In summary, the class diagram for the Abstract Factory Pattern is a UML diagram that shows the relationship between the classes involved in the pattern. It consists of two main parts, the Abstract Factory and the Concrete Factory, and shows the relationship between the AbstractProduct and ConcreteProduct classes as well as the relationship between the AbstractFactory and ConcreteFactory classes.</p>
+<h2 id="implementation-of-abstract-factory-pattern-in-java">Implementation of Abstract Factory Pattern in Java<a class="headerlink" href="#implementation-of-abstract-factory-pattern-in-java" title="Permanent link">#</a></h2>
+<p>The Abstract Factory design pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is useful when a system should be independent of how its products are created, composed, and represented. The Abstract Factory pattern is used when a group of related objects must be created and configured in a specific way.</p>
+<h3 id="factory-interface">Factory Interface<a class="headerlink" href="#factory-interface" title="Permanent link">#</a></h3>
+<p>The first step in implementing the Abstract Factory pattern is to create a factory interface. This interface defines the methods that will be used to create the concrete objects. For example, consider a Car Factory interface that defines methods to create different types of cars.</p>
+<h3 id="concrete-factory-class">Concrete Factory Class<a class="headerlink" href="#concrete-factory-class" title="Permanent link">#</a></h3>
+<p>The next step is to create concrete factory classes that implement the factory interface. These classes are responsible for creating the concrete objects. For example, a Luxury Car Factory class can create a Luxury Car object, while a Default Car Factory class can create a default car object.</p>
+<h3 id="abstract-product-interface">Abstract Product Interface<a class="headerlink" href="#abstract-product-interface" title="Permanent link">#</a></h3>
+<p>The Abstract Product interface defines the methods that will be used by the concrete product classes. For example, consider a Car interface that defines methods to get the car type.</p>
+<h3 id="concrete-product-class">Concrete Product Class<a class="headerlink" href="#concrete-product-class" title="Permanent link">#</a></h3>
+<p>The Concrete Product class implements the Abstract Product interface and provides the implementation for the methods defined in the interface. For example, a Luxury Car class can implement the Car interface and provide an implementation for the getCarType method.</p>
+<h3 id="client-class">Client Class<a class="headerlink" href="#client-class" title="Permanent link">#</a></h3>
+<p>The Client class uses the factory interface to create the concrete objects. The client code is decoupled from the concrete classes and is configured to use a specific factory at runtime. For example, a client can use the Luxury Car Factory to create a Luxury Car object.</p>
+<p>Inheritance and dependency injection can also be used to implement the Abstract Factory pattern in Java. An example Java implementation of the Abstract Factory pattern can be found <a href="https://www.baeldung.com/java-abstract-factory-pattern">here</a>.</p>
+<h2 id="abstract-factory-pattern-with-jdk">Abstract Factory Pattern with JDK<a class="headerlink" href="#abstract-factory-pattern-with-jdk" title="Permanent link">#</a></h2>
+<p>The Abstract Factory pattern is a creational design pattern that allows the creation of objects without specifying their concrete classes. In Java, the Abstract Factory pattern is implemented by an interface or an abstract class that defines a set of methods for creating related objects. The concrete subclasses implement these methods to create objects of specific classes.</p>
+<p>The JDK provides examples of the Abstract Factory pattern implementation. For instance, the <code>javax.xml.parsers.DocumentBuilderFactory</code> class is an example of the Abstract Factory pattern. It provides a set of methods to create objects that implement the <code>javax.xml.parsers.DocumentBuilder</code> interface. The <code>DocumentBuilderFactory#newInstance()</code> method creates a new instance of the <code>DocumentBuilderFactory</code> class, which can then be used to create <code>DocumentBuilder</code> objects.</p>
+<p>Similarly, the <code>javax.xml.transform.TransformerFactory</code> class is another example of the Abstract Factory pattern in the JDK. It provides a set of methods to create objects that implement the <code>javax.xml.transform.Transformer</code> interface. The <code>TransformerFactory#newInstance()</code> method creates a new instance of the <code>TransformerFactory</code> class, which can then be used to create <code>Transformer</code> objects.</p>
+<p>Another example is the <code>javax.xml.xpath.XPathFactory</code> class, which provides a set of methods to create objects that implement the <code>javax.xml.xpath.XPath</code> interface. The <code>XPathFactory#newInstance()</code> method creates a new instance of the <code>XPathFactory</code> class, which can then be used to create <code>XPath</code> objects.</p>
+<p>In conclusion, the JDK provides several examples of the Abstract Factory pattern implementation, such as <code>DocumentBuilderFactory</code>, <code>TransformerFactory</code>, and <code>XPathFactory</code>. These classes provide a set of methods to create related objects without specifying their concrete classes.</p>
+<h2 id="abstract-factory-pattern-in-real-world-examples">Abstract Factory Pattern in Real World Examples<a class="headerlink" href="#abstract-factory-pattern-in-real-world-examples" title="Permanent link">#</a></h2>
+<p>The Abstract Factory pattern is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is widely used in real-world applications, especially in situations where the system needs to be independent of how its products are created, composed, or represented.</p>
+<h3 id="car-factory-example">Car Factory Example<a class="headerlink" href="#car-factory-example" title="Permanent link">#</a></h3>
+<p>One of the most common examples of the Abstract Factory pattern is the car factory. A car factory produces different models of cars, such as sedans, SUVs, and trucks. Each model has different components, such as engines, transmissions, and suspensions. These components are produced by different factories, such as engine factories, transmission factories, and suspension factories.</p>
+<p>For instance, a car factory in the USA may produce cars with engines made by a factory in Japan, transmissions made by a factory in Germany, and suspensions made by a factory in the USA. The car factory uses the Abstract Factory pattern to create families of related components, such as engines, transmissions, and suspensions, without specifying their concrete classes.</p>
+<h3 id="location-based-factory-example">Location-Based Factory Example<a class="headerlink" href="#location-based-factory-example" title="Permanent link">#</a></h3>
+<p>Another example of the Abstract Factory pattern is the location-based factory. A location-based factory produces products that depend on the location of the user. For instance, a location-based factory may produce products that are suitable for a particular climate, language, or culture.</p>
+<p>For example, a location-based factory may produce jackets that are suitable for cold weather in the USA and T-shirts that are suitable for hot weather in India. The location-based factory uses the Abstract Factory pattern to create families of related products, such as jackets and T-shirts, without specifying their concrete classes.</p>
+<p>In conclusion, the Abstract Factory pattern is a powerful design pattern that enables the creation of families of related or dependent objects without specifying their concrete classes. The pattern is widely used in real-world applications, such as car factories and location-based factories, to create families of related components and products.</p>
+<h2 id="advantages-and-disadvantages-of-abstract-factory-pattern">Advantages and Disadvantages of Abstract Factory Pattern<a class="headerlink" href="#advantages-and-disadvantages-of-abstract-factory-pattern" title="Permanent link">#</a></h2>
+<p>The Abstract Factory pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. This pattern is useful when the system needs to be independent of how its objects are created, composed, and represented.</p>
+<h3 id="advantages-of-abstract-factory-pattern">Advantages of Abstract Factory Pattern<a class="headerlink" href="#advantages-of-abstract-factory-pattern" title="Permanent link">#</a></h3>
+<p>The following are the advantages of using the Abstract Factory pattern:</p>
+<ul>
+<li><strong>Isolation of client code from concrete classes</strong>: Abstract Factory Pattern isolates the client code from concrete (implementation) classes. This means that the client code only interacts with the interface of the abstract factory and is not exposed to the details of the implementation classes.</li>
+<li><strong>Eases exchanging of object families</strong>: Abstract Factory Pattern promotes the ease of exchanging object families. This is because the abstract factory can create different sets of related objects depending on the concrete implementation of the factory.</li>
+<li><strong>Promotes consistency among objects</strong>: Abstract Factory Pattern promotes consistency among objects. This is because the abstract factory ensures that all objects created belong to the same family, ensuring consistency in the system.</li>
+</ul>
+<h3 id="disadvantages-of-abstract-factory-pattern">Disadvantages of Abstract Factory Pattern<a class="headerlink" href="#disadvantages-of-abstract-factory-pattern" title="Permanent link">#</a></h3>
+<p>The following are the disadvantages of using the Abstract Factory pattern:</p>
+<ul>
+<li><strong>Increased complexity</strong>: Abstract Factory Pattern adds an additional layer of abstraction and complexity to the program. This can make the program more difficult to understand and maintain.</li>
+<li><strong>Limited flexibility</strong>: Abstract Factory Pattern limits the flexibility of the program. This is because the abstract factory is responsible for creating a family of related objects, which means that adding new object families requires creating a new abstract factory.</li>
+<li><strong>Increased overhead</strong>: Abstract Factory Pattern can result in increased overhead, which can affect performance. This is because the pattern requires the creation of additional objects and interfaces, which can add to the memory and processing requirements of the program.</li>
+</ul>
+<p>Overall, the Abstract Factory pattern is a useful design pattern for creating families of related or dependent objects. However, it is important to carefully consider the advantages and disadvantages of the pattern before implementing it in a program.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

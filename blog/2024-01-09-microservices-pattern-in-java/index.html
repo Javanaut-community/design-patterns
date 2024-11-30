@@ -1,0 +1,2523 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/blog/2024-01-09-microservices-pattern-in-java/">
+      
+      
+        <link rel="prev" href="../2024-01-09-why-do-we-need-pattern-in-java/">
+      
+      
+        <link rel="next" href="../2024-01-09-android-java-design-patterns/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Microservice Patterns In Java - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fundamentals-of-microservices-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Microservice Patterns In Java
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../catalog/" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/creational-patterns/prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/structural-patterns/decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../catalog/other/client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fundamentals-of-microservices-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamentals of Microservices Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fundamentals of Microservices Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defining-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining Microservices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microservices-vs-monolithic-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Microservices vs Monolithic Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-principles-of-microservice-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Principles of Microservice Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-patterns-for-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Patterns for Microservices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Patterns for Microservices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decomposition-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decomposition Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Patterns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Patterns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#communication-and-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Communication and Integration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Communication and Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-gateway-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Gateway Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-registry-and-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Registry and Discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#communication-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Communication Protocols
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-management-and-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Management and Transactions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Management and Transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transaction-management-in-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transaction Management in Microservices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-per-service-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Per Service Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-query-responsibility-segregation-cqrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Command Query Responsibility Segregation (CQRS)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-and-fault-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reliability and Fault Tolerance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reliability and Fault Tolerance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit Breaker Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulkhead-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulkhead Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-checks-and-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health Checks and Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Microservices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scaling Microservices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalability-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scalability Considerations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancing-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Balancing Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-and-operation-of-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment and Operation of Microservices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment and Operation of Microservices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#continuous-delivery-and-devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      Continuous Delivery and DevOps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Observability
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#externalized-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Externalized Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-and-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security and Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security and Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication-and-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication and Authorization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microservices-security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Microservices Security Best Practices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adopting-microservices-in-existing-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adopting Microservices in Existing Systems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adopting Microservices in Existing Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strangler-pattern-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strangler Pattern Application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremental-approach-to-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremental Approach to Microservices
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/24266455" alt="Stijn De Mulder">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          <a href="https://github.com/MrStiMu">Stijn De Mulder</a>
+                        
+                      </strong>
+                      <br>
+                      Community Lead
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2024-01-09 00:00:00+00:00" class="md-ellipsis">January 9, 2024</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../category/hello/">Hello</a>, 
+                              <a href="../category/world/">World</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              10 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+  <h1>Microservice Patterns In Java</h1>
+
+<p>To effectively manage microservices in Java, certain design patterns are frequently used to address common challenges such as service discovery, inter-service communication, data management, and fault tolerance. Architectural patterns like the API Gateway serve as the entry point that routes requests to the appropriate microservices. On the other hand, patterns such as Circuit Breaker are crucial for resilience, ensuring a service can handle unexpected failures gracefully. Each pattern addresses a specific aspect of system design, contributing to the overall robustness, scalability, and maintainability of the application.</p>
+<!-- more -->
+
+<p>The judicious application of these design patterns facilitates the development of distributed systems that are flexible and loosely coupled. Java, with its various frameworks and libraries, provides the necessary tools to implement these patterns, enabling developers to construct complex applications that can effortlessly scale and evolve over time. Understanding and employing these patterns is thus instrumental for architects and developers aiming to harness the full potential of microservices in Java.</p>
+<h2 id="fundamentals-of-microservices-architecture">Fundamentals of Microservices Architecture<a class="headerlink" href="#fundamentals-of-microservices-architecture" title="Permanent link">#</a></h2>
+<p>Exploring the world of Microservices Architecture begins with understanding its definition, comparing it with traditional monolithic structures, and identifying the core principles that govern its functionality.</p>
+<h3 id="defining-microservices">Defining Microservices<a class="headerlink" href="#defining-microservices" title="Permanent link">#</a></h3>
+<p>Microservices, or microservice architecture, is an approach to building applications as a collection of small, independent services, each performing a specific functionality. These services are highly maintainable and testable, loosely coupled, and can be deployed independently. In a microservices architecture, services communicate through well-defined APIs and support multiple consumer models, including web-based UI clients and external third-party systems.</p>
+<h3 id="microservices-vs-monolithic-architecture">Microservices vs Monolithic Architecture<a class="headerlink" href="#microservices-vs-monolithic-architecture" title="Permanent link">#</a></h3>
+<p>Contrasting microservices with <strong>monolithic applications</strong> illuminates their fundamental differences. A <em>monolithic application</em> is a single, indivisible unit where all functionalities are tightly integrated and managed as one. In contrast, microservices architecture dissociates an application into <strong>small, autonomous services</strong>. This separation allows microservices to be developed, deployed, and scaled independently, thus permitting organizations to adopt a more agile development process compared to the monolithic approach.</p>
+<h3 id="core-principles-of-microservice-architecture">Core Principles of Microservice Architecture<a class="headerlink" href="#core-principles-of-microservice-architecture" title="Permanent link">#</a></h3>
+<p>The core principles of microservice architecture focus on:</p>
+<ul>
+<li><strong>Autonomy</strong>: Each microservice is a self-contained unit with a specific role, responsible for its own domain of functionality.</li>
+<li><strong>Decentralization</strong>: Microservices promote decentralized data management and governance, enabling a diverse technology stack across services.</li>
+<li><strong>Fault isolation</strong>: Issues in one service do not necessarily cause a system-wide failure, thus improving the overall resiliency.</li>
+<li><strong>Continuous delivery/deployment</strong>: Enables the independent lifecycle of each service, fostering rapid iterations and deployments.</li>
+</ul>
+<p>These principles aim to address common challenges associated with traditional architectures, such as rigidity, difficulty in scaling, and slow release cycles. Through microservices architecture, businesses can efficiently respond to changing market demands with swift service updates, leading to more dynamic and adaptable IT solutions.</p>
+<h2 id="design-patterns-for-microservices">Design Patterns for Microservices<a class="headerlink" href="#design-patterns-for-microservices" title="Permanent link">#</a></h2>
+<p>In the realm of microservices, certain design patterns stand out for their efficacy in simplifying complex architectures and improving service integration and scalability. These patterns can be categorized into Decomposition, Integration, and Database Patterns—each serving a specific purpose in the microservice architecture.</p>
+<h3 id="decomposition-patterns">Decomposition Patterns<a class="headerlink" href="#decomposition-patterns" title="Permanent link">#</a></h3>
+<p>Decomposition Patterns are strategies for breaking down applications into manageable, isolated services. One such example is the <strong>Database per Service</strong> pattern, where each microservice manages its own database. This enhances service independence and data encapsulation.</p>
+<ul>
+<li>
+<p><em>Database per Service</em>: Each microservice has an exclusive database schema, ensuring loose coupling.</p>
+</li>
+<li>
+<p><em>Bulkhead Pattern</em>: It isolates microservice instances in their own runtime environment, preventing failures from cascading across systems.</p>
+</li>
+</ul>
+<h3 id="integration-patterns">Integration Patterns<a class="headerlink" href="#integration-patterns" title="Permanent link">#</a></h3>
+<p>Integration Patterns facilitate the communication and data exchange between microservices. A notable integration pattern is the <strong>API Gateway</strong> pattern.</p>
+<ul>
+<li>
+<p><strong>API Gateway</strong>: Acts as the single entry point for clients, routing requests to appropriate microservices and aggregating responses.</p>
+<p>Role of API Gateway</p>
+<p>Description</p>
+<p>Request Routing</p>
+<p>Directs inbound requests to the correct service.</p>
+<p>Aggregation</p>
+<p>Combines data from multiple services to form a unified response.</p>
+<p>Authentication</p>
+<p>Validates user credentials before routing requests.</p>
+</li>
+</ul>
+<h3 id="database-patterns">Database Patterns<a class="headerlink" href="#database-patterns" title="Permanent link">#</a></h3>
+<p>Database design patterns in microservice architectures deal with the organization and storage of data across services. A well-known database pattern is the <strong>Database per Service</strong> model mentioned earlier.</p>
+<ul>
+<li>
+<p><strong>Database per Service</strong>:</p>
+<p>Advantages</p>
+<p>Disadvantages</p>
+<p>Independence</p>
+<p>Data duplication</p>
+<p>Scalability</p>
+<p>Complexity in data management</p>
+<p>Fault isolation</p>
+<p>Choreographed transactions</p>
+</li>
+</ul>
+<p>Each microservice's database schema and choice of technology are aligned with its specific needs, reinforcing service autonomy but requiring careful orchestration to maintain data consistency and integrity across the entire system.</p>
+<h2 id="communication-and-integration">Communication and Integration<a class="headerlink" href="#communication-and-integration" title="Permanent link">#</a></h2>
+<p>In the realm of microservices, efficient communication and the choice of effective integration patterns are vital for the seamless operation of independent services. They employ mechanisms such as API gateways for uniform access points, service registries for service discovery, and diverse communication protocols to facilitate coherent interaction between services.</p>
+<h3 id="api-gateway-pattern">API Gateway Pattern<a class="headerlink" href="#api-gateway-pattern" title="Permanent link">#</a></h3>
+<p>The <strong>API Gateway Pattern</strong> acts as the singular entry point for all client requests, directing them to the appropriate microservice. It standardizes protocol requests, often handling JSON or XML, and is responsible for tasks such as request routing, composition, and protocol translation. Its presence abstracts the underlying service complexities from the client, enhancing maintainability and scalability.</p>
+<h3 id="service-registry-and-discovery">Service Registry and Discovery<a class="headerlink" href="#service-registry-and-discovery" title="Permanent link">#</a></h3>
+<p>Microservices require a dynamic <strong>Service Registry</strong> for service instances to register their presence and to be discovered for communication. This registry is essential for microservices to find and communicate with one another, enabling a resilient system that can adapt to service instances coming online or going offline without manual intervention.</p>
+<h3 id="communication-protocols">Communication Protocols<a class="headerlink" href="#communication-protocols" title="Permanent link">#</a></h3>
+<p>Communication across microservices relies on <strong>Communication Protocols</strong> suited for the environment and requirements. These protocols can range from synchronous HTTP/REST requests for immediate consistency to asynchronous message-passing techniques like AMQP or Kafka, which offer eventual consistency and improved fault tolerance. The choice of protocol influences the system's responsiveness and scalability.</p>
+<h2 id="data-management-and-transactions">Data Management and Transactions<a class="headerlink" href="#data-management-and-transactions" title="Permanent link">#</a></h2>
+<p>Effective data management and transaction handling are critical to ensuring consistency and integrity in a microservices architecture. Drawing from established patterns, developers can manage transactions across distributed systems effectively.</p>
+<h3 id="transaction-management-in-microservices">Transaction Management in Microservices<a class="headerlink" href="#transaction-management-in-microservices" title="Permanent link">#</a></h3>
+<p>In a microservices architecture, <strong>transaction management</strong> must be adapted to cope with distributed data sources. Traditional transactional support does not apply as it does in monolithic architectures because each microservice typically manages its own data source. The <em>Saga Pattern</em> is frequently implemented to maintain data consistency without requiring distributed transactions. A Saga is a sequence of local transactions where each transaction updates data within a single service and triggers the next step, either through <strong>choreography</strong> or <strong>orchestration</strong>.</p>
+<ul>
+<li><strong>Choreography:</strong> Each service publishes domain events that other services listen to and react upon.</li>
+<li><strong>Orchestration:</strong> A central orchestrator manages the sequence of transactions, directing services to perform specific operations.</li>
+</ul>
+<h3 id="database-per-service-strategy">Database Per Service Strategy<a class="headerlink" href="#database-per-service-strategy" title="Permanent link">#</a></h3>
+<p>The <strong>Database per Service</strong> pattern is a data management strategy where each microservice has its private database or set of databases. This design ensures:</p>
+<ul>
+<li><strong>Loose coupling</strong>: Services are not directly dependent on each other's data stores.</li>
+<li><strong>Data encapsulation</strong>: A service's data is only accessed through its APIs.</li>
+</ul>
+<p>To facilitate this pattern:</p>
+<ol>
+<li>Define APIs clearly for data access.</li>
+<li>Synchronize data across services using asynchronous events when necessary.</li>
+</ol>
+<h3 id="command-query-responsibility-segregation-cqrs">Command Query Responsibility Segregation (CQRS)<a class="headerlink" href="#command-query-responsibility-segregation-cqrs" title="Permanent link">#</a></h3>
+<p><em>CQRS</em> is a pattern wherein the application clearly separates the <strong>read</strong> operations (queries) from the <strong>write</strong> operations (commands). This division allows for optimized scaling and performance because the reads and writes can be handled by different models or databases. In a microservices architecture:</p>
+<ul>
+<li>Read services and write services can be scaled independently.</li>
+<li>Data consistency is maintained through event-driven consistency mechanisms or update synchronization techniques.</li>
+</ul>
+<p>By employing CQRS, microservices benefit from improved scalability and maintainable code by segregating operations based on their responsibility—read or write.</p>
+<h2 id="reliability-and-fault-tolerance">Reliability and Fault Tolerance<a class="headerlink" href="#reliability-and-fault-tolerance" title="Permanent link">#</a></h2>
+<p>In the landscape of microservices architecture, reliability and fault tolerance are pivotal components that ensure uninterrupted service availability. Strategies such as the Circuit Breaker Pattern, Bulkhead Pattern, and Health Checks and Monitoring are implemented to enhance resilience and maintain system functionality even in the face of partial system failures.</p>
+<h3 id="circuit-breaker-pattern">Circuit Breaker Pattern<a class="headerlink" href="#circuit-breaker-pattern" title="Permanent link">#</a></h3>
+<p>The Circuit Breaker Pattern is crucial for preventing a cascade of failures in a distributed system. When a microservice consistently fails, the circuit breaker <strong>trips</strong> to stop further attempts and allows the failing service time to recover. This pattern often involves the following states:</p>
+<ul>
+<li><strong>Closed</strong>: Requests flow through the microservice normally.</li>
+<li><strong>Open</strong>: All requests fail fast, preventing calls to the faulty service.</li>
+<li><strong>Half-Open</strong>: Allows a limited number of requests to test service stability before fully resuming normal operations.</li>
+</ul>
+<p>Implementing this pattern improves system <strong>resilience</strong> by isolating failures and reducing the chance of them affecting the entire system.</p>
+<h3 id="bulkhead-pattern">Bulkhead Pattern<a class="headerlink" href="#bulkhead-pattern" title="Permanent link">#</a></h3>
+<p>The Bulkhead Pattern divides a system into compartments to prevent failures from spreading across the entire application. It draws inspiration from the naval sector where a ship's hull is divided into watertight compartments:</p>
+<ul>
+<li><strong>Isolation Levels</strong>: Services are isolated by resources such as threads, memory, and network resources.</li>
+<li><strong>Limited Impact</strong>: If one part fails, the damage is contained, preserving the functionality of other components.</li>
+</ul>
+<p>A design incorporating the bulkhead pattern helps maintain a higher level of <strong>availability</strong> and stability during unexpected spikes in demand or failures in certain parts of the system.</p>
+<h3 id="health-checks-and-monitoring">Health Checks and Monitoring<a class="headerlink" href="#health-checks-and-monitoring" title="Permanent link">#</a></h3>
+<p>Health checks and monitoring are vital for early detection of issues within microservices:</p>
+<ul>
+<li><strong>Health Checks</strong>: Periodically verify the status of services, essentially asking, "Are you okay?"</li>
+<li><strong>Metrics and Logging</strong>: Collect data to analyze service performance and spot trends that may indicate deeper problems.</li>
+</ul>
+<p>These practices aid in maintaining the <strong>health</strong> of the microservice ecosystem. Continuous monitoring allows for rapid response to detected anomalies, thereby sustaining service <strong>availability</strong> and reliability.</p>
+<h2 id="scaling-microservices">Scaling Microservices<a class="headerlink" href="#scaling-microservices" title="Permanent link">#</a></h2>
+<p>Effective scaling of microservices is critical for accommodating varying loads and ensuring consistent performance. Scalability not only enhances resource utilization but also sustains application responsiveness under diverse load conditions.</p>
+<h3 id="scalability-considerations">Scalability Considerations<a class="headerlink" href="#scalability-considerations" title="Permanent link">#</a></h3>
+<p>When scaling microservices, one must address two primary forms of scalability:</p>
+<ul>
+<li><strong>Horizontal Scaling</strong>: Adding more instances of a service to handle increased load.</li>
+<li><strong>Vertical Scaling</strong>: Increasing the resources of an existing instance, such as CPU or memory.</li>
+</ul>
+<p>Microservices typically favor <strong>horizontal scaling</strong> due to its inherent resilience and flexibility. Key considerations include:</p>
+<ul>
+<li><strong>Statelessness</strong>: Ensuring services do not maintain state, to allow seamless addition or removal of instances.</li>
+<li><strong>Decoupling</strong>: Services must operate independently without reliance on common shared states, reducing bottlenecks.</li>
+</ul>
+<h3 id="load-balancing-strategies">Load Balancing Strategies<a class="headerlink" href="#load-balancing-strategies" title="Permanent link">#</a></h3>
+<p>A <em>load balancer</em> is a pivotal component in distributing traffic evenly across service instances. It ensures no single instance is overwhelmed, providing <strong>real-time load balancing</strong> to maintain performance. Strategies include:</p>
+<ul>
+<li><strong>Round Robin</strong>: Requests are distributed sequentially across the pool of service instances.</li>
+<li><strong>Least Connection</strong>: Preference to servers with the fewest active connections, ideal for long-lived sessions.</li>
+<li><strong>Resource-Based</strong>: Distribution based on the current load and capacity of a server instance.</li>
+</ul>
+<p>These strategies can be implemented via hardware or through software-defined load balancers, the latter offering enhanced flexibility and programmability to adapt to real-time conditions.</p>
+<h2 id="deployment-and-operation-of-microservices">Deployment and Operation of Microservices<a class="headerlink" href="#deployment-and-operation-of-microservices" title="Permanent link">#</a></h2>
+<p>In the landscape of microservices architecture, effective deployment and operation practices are pivotal. They ensure that updates are smoothly transitioned into production, configurations are managed outside the codebase, and system health is continuously monitored.</p>
+<h3 id="continuous-delivery-and-devops">Continuous Delivery and DevOps<a class="headerlink" href="#continuous-delivery-and-devops" title="Permanent link">#</a></h3>
+<p>Continuous Delivery (CD) and DevOps are synergistic approaches that facilitate frequent and reliable software updates. A robust CD pipeline automates the build, test, and deployment processes, allowing microservices to be updated with minimal manual intervention. By integrating DevOps practices, teams promote a culture of continuous improvement, where developers and operation staff collaborate closely throughout the service lifecycle.</p>
+<ul>
+<li><strong>Automation:</strong> Essential for streamlining deployment processes.</li>
+<li><strong>Collaboration:</strong> Engenders an environment where cross-functional teams work in concert to enhance productivity.</li>
+<li><strong>Frequent Releases:</strong> Aim to reduce deployment risk and deliver features to users more rapidly.</li>
+</ul>
+<h3 id="service-observability">Service Observability<a class="headerlink" href="#service-observability" title="Permanent link">#</a></h3>
+<p>Observability is crucial for understanding the behavior of microservices in production. It involves logging, monitoring, and tracing to gain insights into system performance and troubleshoot issues effectively.</p>
+<ul>
+<li><strong>Monitoring:</strong> Tracks the health and performance metrics of microservices.</li>
+<li><strong>Logging:</strong> Provides detailed information about operation sequences and errors.</li>
+<li><strong>Tracing:</strong> Allows developers to follow a request's path through the microservices landscape.</li>
+</ul>
+<h3 id="externalized-configuration">Externalized Configuration<a class="headerlink" href="#externalized-configuration" title="Permanent link">#</a></h3>
+<p>Externalizing configuration from the application's codebase supports flexibility and ease of updates without the need for redeployment. Configuration data, including environmental variables and service dependencies, should be stored in a centralized location to be easily managed and accessed by microservices.</p>
+<ul>
+<li><strong>Centralization:</strong> Offers streamlined management of configurations.</li>
+<li><strong>Dynamic Updates:</strong> Allows changes to be made on-the-fly without service restarts.</li>
+<li><strong>Environment Specificity:</strong> Encourages separation of settings across different deployment environments.</li>
+</ul>
+<h2 id="security-and-best-practices">Security and Best Practices<a class="headerlink" href="#security-and-best-practices" title="Permanent link">#</a></h2>
+<p>When integrating security into microservices, one must consider authentication, authorization, and a suite of best practices to ensure flexible, robust, and secure service architecture.</p>
+<h3 id="authentication-and-authorization">Authentication and Authorization<a class="headerlink" href="#authentication-and-authorization" title="Permanent link">#</a></h3>
+<p>Authentication is the process of verifying the identity of a user or service, and it's critical in microservices to ensure that each service can trust the others. The utilization of <strong>JSON Web Tokens (JWT)</strong> is a common approach, offering a compact and self-contained way for securely transmitting information.</p>
+<ul>
+<li><strong>Benefits</strong>: JWTs enable microservices to be stateless and scale more easily.</li>
+<li><strong>Drawbacks</strong>: Managing the secret key demands extra attention to avoid vulnerabilities.</li>
+</ul>
+<p>Authorization involves defining access policies for resources. It's equally important and ensures that a verified user has the right permissions to perform actions or access data.</p>
+<ul>
+<li><strong>Best Practices</strong>:<ul>
+<li>Implement <strong>Role-Based Access Control (RBAC)</strong> to define roles and permissions clearly.</li>
+<li>Use attribute-based access control (ABAC) for more granular control based on user attributes.</li>
+</ul>
+</li>
+</ul>
+<h3 id="microservices-security-best-practices">Microservices Security Best Practices<a class="headerlink" href="#microservices-security-best-practices" title="Permanent link">#</a></h3>
+<p>Security in a microservices architecture encompasses practices beyond authentication and authorization to protect against vulnerabilities and exploits.</p>
+<ul>
+<li><strong>Flexibility</strong> can be achieved by adapting security practices to the specific needs of different microservices, rather than implementing a one-size-fits-all solution.</li>
+<li><strong>Best Practices</strong> include:<ul>
+<li>Regularly reviewing and updating security policies.</li>
+<li>Securing service-to-service communication with <strong>TLS</strong> encryption.</li>
+<li>Isolating sensitive data by employing a <strong>Database per Service</strong> pattern when applicable.</li>
+</ul>
+</li>
+</ul>
+<p>Advocates suggest these practices contribute to creating a defense in depth, although it may complicate the system design and increase overhead. Thus, architects must balance the benefits against the potential drawbacks when applying security measures.</p>
+<h2 id="adopting-microservices-in-existing-systems">Adopting Microservices in Existing Systems<a class="headerlink" href="#adopting-microservices-in-existing-systems" title="Permanent link">#</a></h2>
+<p>When an organization decides to transition from a monolithic architecture to microservices, the process must be managed with precision and a clear strategy. This typically involves a gradual shift rather than a complete overhaul, leveraging design patterns that effectively decompose the existing system.</p>
+<h3 id="strangler-pattern-application">Strangler Pattern Application<a class="headerlink" href="#strangler-pattern-application" title="Permanent link">#</a></h3>
+<p>The <strong>Strangler Pattern</strong> is a methodical approach to introducing microservices to an existing application. This pattern involves gradually replacing specific pieces of functionality with new microservices. As microservices are created, they take over requests and processing from the old system. Key benefits of this pattern include minimizing risk during the transition and allowing for a piecemeal approach to <strong>decomposition</strong>. One can visualize the Strangler Pattern as a vine gradually wrapping and replacing an existing structure until the new structure stands on its own.</p>
+<h3 id="incremental-approach-to-microservices">Incremental Approach to Microservices<a class="headerlink" href="#incremental-approach-to-microservices" title="Permanent link">#</a></h3>
+<p>An incremental approach allows teams to tackle <strong>modern application development</strong> in manageable phases, which is crucial for organizations with complex systems already in place. Much like the Strangler Pattern, this approach divides the transition into stages:</p>
+<ol>
+<li><strong>Identify</strong> the services which can be modularized.</li>
+<li><strong>Design</strong> and deploy these services individually.</li>
+<li><strong>Integrate</strong> the new services with the existing system.</li>
+</ol>
+<p>Decomposing a monolithic application into microservices through this step-by-step method reduces the complexity involved in migration. It also affords teams the opportunity to reassess and refine their design during the transition, ensuring they're not just replicating the legacy system with newer technology but are instead optimizing the system's architecture.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

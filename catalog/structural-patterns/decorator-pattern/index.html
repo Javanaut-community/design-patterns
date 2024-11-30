@@ -1,0 +1,2755 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/catalog/structural-patterns/decorator-pattern/">
+      
+      
+        <link rel="prev" href="../bridge-pattern/">
+      
+      
+        <link rel="next" href="../../behavioral-patterns/chain-of-responsibility-pattern/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Decorator Pattern - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Decorator Pattern
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-decorator-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Decorator Design Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts-in-decorator-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts in Decorator Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts in Decorator Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interface-and-abstract-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface and Abstract Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-and-concrete-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator and Concrete Decorator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-and-concrete-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component and Concrete Component
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#objects-and-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      Objects and Instances
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#individual-object-and-state-of-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Individual Object and State of Objects
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decorator-design-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Design Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decorator Design Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-and-decorator-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java and Decorator Design Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-with-java-io-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern with Java IO Classes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-of-decorator-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example of Decorator Pattern in Java
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-functionality-with-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extending Functionality with Decorator Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending Functionality with Decorator Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-functionality-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Functionality Extension
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-and-inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Inheritance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-and-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Composition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-and-constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Constructors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decorator-pattern-and-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Design Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decorator Pattern and Design Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-responsibility-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Responsibility Principle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openclosed-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open/Closed Principle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-as-structural-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern as Structural Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages-and-disadvantages-of-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages and Disadvantages of Decorator Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages and Disadvantages of Decorator Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#benefits-of-using-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of Using Decorator Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawbacks-of-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drawbacks of Decorator Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decorator-pattern-and-other-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Other Design Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decorator Pattern and Other Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-adapter-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Adapter Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-composite-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Composite Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-chain-of-responsibility-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Chain of Responsibility Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-bridge-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Bridge Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-decorator-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Decorator Design Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts-in-decorator-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts in Decorator Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts in Decorator Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interface-and-abstract-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface and Abstract Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-and-concrete-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator and Concrete Decorator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#component-and-concrete-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component and Concrete Component
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#objects-and-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      Objects and Instances
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#individual-object-and-state-of-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Individual Object and State of Objects
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decorator-design-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Design Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decorator Design Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-and-decorator-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java and Decorator Design Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-with-java-io-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern with Java IO Classes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-of-decorator-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example of Decorator Pattern in Java
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-functionality-with-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extending Functionality with Decorator Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending Functionality with Decorator Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-functionality-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Functionality Extension
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-and-inheritance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Inheritance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-and-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Composition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-and-constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Constructors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decorator-pattern-and-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Design Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decorator Pattern and Design Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-responsibility-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Responsibility Principle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openclosed-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open/Closed Principle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-pattern-as-structural-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern as Structural Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advantages-and-disadvantages-of-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advantages and Disadvantages of Decorator Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advantages and Disadvantages of Decorator Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#benefits-of-using-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits of Using Decorator Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawbacks-of-decorator-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drawbacks of Decorator Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decorator-pattern-and-other-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator Pattern and Other Design Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decorator Pattern and Other Design Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-adapter-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Adapter Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-composite-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Composite Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-chain-of-responsibility-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Chain of Responsibility Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator-vs-bridge-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decorator vs Bridge Pattern
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Decorator Pattern</h1>
+
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p><img alt="Decorator pattern" loading="lazy" src="../../../art/catalog/decorator/decorator.webp" /></p>
+<p>The Decorator Design Pattern is a structural design pattern in Java that allows developers to add additional features or behaviors to an object dynamically. It is a useful pattern for situations where subclassing is not a viable option, or when there are too many subclasses to manage. The Decorator Design Pattern involves creating a decorator class that wraps around the original class and provides additional functionality without altering the original class's structure.</p>
+<p>The Decorator Design Pattern is one of the most widely used design patterns in Java. It is used to extend the functionality of an object dynamically, without affecting the behavior of other objects of the same class. The Decorator Design Pattern is a flexible alternative to subclassing, as it allows developers to add new functionality to an object at runtime. This pattern is particularly useful in situations where the base class is complex or has many subclasses, making it difficult to manage.</p>
+<p>In Java, the Decorator Design Pattern is implemented using abstract classes or interfaces. The decorator class implements the same interface as the original class and maintains a reference to an instance of the original class. The decorator class can then add new functionality to the original class by implementing additional methods. This allows developers to add new functionality to an object without modifying the original class's code.</p>
+<h2 id="understanding-decorator-design-pattern">Understanding Decorator Design Pattern<a class="headerlink" href="#understanding-decorator-design-pattern" title="Permanent link">#</a></h2>
+<p>The Decorator Design Pattern is a structural pattern that allows for the addition of new functionality to an existing class without altering its structure. This design pattern is part of the Gang of Four (GoF) design patterns, which are a set of software design patterns created by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides.</p>
+<p>The Decorator Design Pattern is one of the Structural Patterns, which are design patterns that deal with the composition of classes and objects. The Decorator Design Pattern uses abstract classes or interfaces with the composition to implement the wrapper. It provides a flexible alternative to subclassing for extending functionality.</p>
+<p>The Decorator Design Pattern is useful when you need to add new features or behavior to a particular instance of a class, while not modifying the other instances of the same class. This allows you to add new functionality to an object dynamically at runtime.</p>
+<p>In the Decorator Design Pattern, the decorator class wraps the original class and provides additional functionality. The decorator class has the same interface as the original class, so the client can use the decorator class in the same way as the original class. The decorator class can also contain a reference to the original class, which it uses to call the original class's methods.</p>
+<p>Overall, the Decorator Design Pattern is a useful design pattern for adding new functionality to an existing class without altering its structure. It is part of the Gang of Four design patterns and is one of the Structural Patterns. The decorator class wraps the original class and provides additional functionality, while still maintaining the same interface as the original class.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">#</a></h2>
+<p>Here's a simple example of the Decorator pattern in Java. Let's consider a basic coffee shop scenario with a Coffee interface and concrete implementations. We'll use decorators to add different types of condiments to the coffee:</p>
+<p><div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Component interface</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">interface</span> <span class="nc">Coffee</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">cost</span><span class="p">();</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="nf">description</span><span class="p">();</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// Concrete component</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">class</span> <span class="nc">SimpleCoffee</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Coffee</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">cost</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Base cost of simple coffee</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">description</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Simple Coffee&quot;</span><span class="p">;</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">}</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="c1">// Decorator abstract class</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CoffeeDecorator</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Coffee</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="n">Coffee</span><span class="w"> </span><span class="n">decoratedCoffee</span><span class="p">;</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">CoffeeDecorator</span><span class="p">(</span><span class="n">Coffee</span><span class="w"> </span><span class="n">decoratedCoffee</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">decoratedCoffee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decoratedCoffee</span><span class="p">;</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">cost</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">decoratedCoffee</span><span class="p">.</span><span class="na">cost</span><span class="p">();</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">description</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">decoratedCoffee</span><span class="p">.</span><span class="na">description</span><span class="p">();</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="p">}</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="c1">// Concrete decorator - Milk</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="kd">class</span> <span class="nc">MilkDecorator</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">CoffeeDecorator</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">MilkDecorator</span><span class="p">(</span><span class="n">Coffee</span><span class="w"> </span><span class="n">decoratedCoffee</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">        </span><span class="kd">super</span><span class="p">(</span><span class="n">decoratedCoffee</span><span class="p">);</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">cost</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">cost</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="w"> </span><span class="c1">// Additional cost for milk</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">description</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">description</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; with Milk&quot;</span><span class="p">;</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="p">}</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="c1">// Concrete decorator - Sugar</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="kd">class</span> <span class="nc">SugarDecorator</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">CoffeeDecorator</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">SugarDecorator</span><span class="p">(</span><span class="n">Coffee</span><span class="w"> </span><span class="n">decoratedCoffee</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">        </span><span class="kd">super</span><span class="p">(</span><span class="n">decoratedCoffee</span><span class="p">);</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">cost</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">cost</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.2</span><span class="p">;</span><span class="w"> </span><span class="c1">// Additional cost for sugar</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68" href="#__codelineno-0-68"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">description</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69" href="#__codelineno-0-69"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">description</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; with Sugar&quot;</span><span class="p">;</span>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70" href="#__codelineno-0-70"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71" href="#__codelineno-0-71"></a><span class="p">}</span>
+</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72" href="#__codelineno-0-72"></a>
+</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73" href="#__codelineno-0-73"></a><span class="c1">// Client</span>
+</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74" href="#__codelineno-0-74"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">DecoratorPatternExample</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75" href="#__codelineno-0-75"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76" href="#__codelineno-0-76"></a><span class="w">        </span><span class="c1">// Creating a simple coffee</span>
+</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77" href="#__codelineno-0-77"></a><span class="w">        </span><span class="n">Coffee</span><span class="w"> </span><span class="n">simpleCoffee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SimpleCoffee</span><span class="p">();</span>
+</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78" href="#__codelineno-0-78"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Cost: $&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">simpleCoffee</span><span class="p">.</span><span class="na">cost</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, Description: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">simpleCoffee</span><span class="p">.</span><span class="na">description</span><span class="p">());</span>
+</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79" href="#__codelineno-0-79"></a>
+</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80" href="#__codelineno-0-80"></a><span class="w">        </span><span class="c1">// Adding milk to the coffee</span>
+</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81" href="#__codelineno-0-81"></a><span class="w">        </span><span class="n">Coffee</span><span class="w"> </span><span class="n">milkCoffee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MilkDecorator</span><span class="p">(</span><span class="n">simpleCoffee</span><span class="p">);</span>
+</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82" href="#__codelineno-0-82"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Cost: $&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">milkCoffee</span><span class="p">.</span><span class="na">cost</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, Description: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">milkCoffee</span><span class="p">.</span><span class="na">description</span><span class="p">());</span>
+</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83" href="#__codelineno-0-83"></a>
+</span><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84" href="#__codelineno-0-84"></a><span class="w">        </span><span class="c1">// Adding sugar to the coffee</span>
+</span><span id="__span-0-85"><a id="__codelineno-0-85" name="__codelineno-0-85" href="#__codelineno-0-85"></a><span class="w">        </span><span class="n">Coffee</span><span class="w"> </span><span class="n">sugarCoffee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SugarDecorator</span><span class="p">(</span><span class="n">simpleCoffee</span><span class="p">);</span>
+</span><span id="__span-0-86"><a id="__codelineno-0-86" name="__codelineno-0-86" href="#__codelineno-0-86"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Cost: $&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sugarCoffee</span><span class="p">.</span><span class="na">cost</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, Description: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sugarCoffee</span><span class="p">.</span><span class="na">description</span><span class="p">());</span>
+</span><span id="__span-0-87"><a id="__codelineno-0-87" name="__codelineno-0-87" href="#__codelineno-0-87"></a>
+</span><span id="__span-0-88"><a id="__codelineno-0-88" name="__codelineno-0-88" href="#__codelineno-0-88"></a><span class="w">        </span><span class="c1">// Adding both milk and sugar to the coffee</span>
+</span><span id="__span-0-89"><a id="__codelineno-0-89" name="__codelineno-0-89" href="#__codelineno-0-89"></a><span class="w">        </span><span class="n">Coffee</span><span class="w"> </span><span class="n">milkAndSugarCoffee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MilkDecorator</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">SugarDecorator</span><span class="p">(</span><span class="n">simpleCoffee</span><span class="p">));</span>
+</span><span id="__span-0-90"><a id="__codelineno-0-90" name="__codelineno-0-90" href="#__codelineno-0-90"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Cost: $&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">milkAndSugarCoffee</span><span class="p">.</span><span class="na">cost</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, Description: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">milkAndSugarCoffee</span><span class="p">.</span><span class="na">description</span><span class="p">());</span>
+</span><span id="__span-0-91"><a id="__codelineno-0-91" name="__codelineno-0-91" href="#__codelineno-0-91"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-92"><a id="__codelineno-0-92" name="__codelineno-0-92" href="#__codelineno-0-92"></a><span class="p">}</span>
+</span></code></pre></div>
+In this example, Coffee is the component interface, SimpleCoffee is the concrete component, and CoffeeDecorator is the abstract decorator. Concrete decorators (MilkDecorator and SugarDecorator) extend CoffeeDecorator to add specific behavior (cost and description) to the coffee.</p>
+<p>The client can create different combinations of decorated coffees by stacking decorators, and each decorator adds its specific behavior to the coffee without affecting the others.</p>
+<h2 id="core-concepts-in-decorator-design-pattern">Core Concepts in Decorator Design Pattern<a class="headerlink" href="#core-concepts-in-decorator-design-pattern" title="Permanent link">#</a></h2>
+<p>Decorator design pattern is a structural design pattern that allows adding new behaviors or responsibilities to an object dynamically without altering its structure. This pattern is useful when you need to add functionality to a particular object at runtime without affecting the behavior of other objects of the same class.</p>
+<h3 id="interface-and-abstract-class">Interface and Abstract Class<a class="headerlink" href="#interface-and-abstract-class" title="Permanent link">#</a></h3>
+<p>The Decorator pattern uses an interface or an abstract class to define the common methods that the Concrete Component and Decorator classes must implement. The Component interface defines the base behavior that the Concrete Component class implements. The Decorator class implements the same interface and holds a reference to an instance of the Component class. The Decorator class adds new behaviors to the Component class by delegating calls to the Component instance.</p>
+<h3 id="decorator-and-concrete-decorator">Decorator and Concrete Decorator<a class="headerlink" href="#decorator-and-concrete-decorator" title="Permanent link">#</a></h3>
+<p>The Decorator class is an abstract class that implements the Component interface and holds a reference to an instance of the Component class. The Decorator class adds new behaviors to the Component class by delegating calls to the Component instance. The Concrete Decorator class extends the Decorator class and adds new behaviors to the Component class.</p>
+<h3 id="component-and-concrete-component">Component and Concrete Component<a class="headerlink" href="#component-and-concrete-component" title="Permanent link">#</a></h3>
+<p>The Component interface defines the base behavior that the Concrete Component class implements. The Concrete Component class is the class that the Decorator pattern aims to extend by adding new behaviors at runtime.</p>
+<h3 id="objects-and-instances">Objects and Instances<a class="headerlink" href="#objects-and-instances" title="Permanent link">#</a></h3>
+<p>In the Decorator pattern, objects are instances of the Component class or the Concrete Decorator class. The Concrete Decorator class extends the Decorator class and adds new behaviors to the Component class. The Decorator class holds a reference to an instance of the Component class.</p>
+<h3 id="individual-object-and-state-of-objects">Individual Object and State of Objects<a class="headerlink" href="#individual-object-and-state-of-objects" title="Permanent link">#</a></h3>
+<p>Each object in the Decorator pattern has its state, and the Decorator pattern allows changing the state of an object at runtime. The Decorator pattern adds new behaviors to an object by wrapping it with a Decorator object. The Decorator object adds new behaviors to the object by delegating calls to the original object and adding new behaviors.</p>
+<h2 id="decorator-design-pattern-in-java">Decorator Design Pattern in Java<a class="headerlink" href="#decorator-design-pattern-in-java" title="Permanent link">#</a></h2>
+<p>The Decorator Design Pattern is a structural design pattern that allows developers to add new functionality to an existing object without altering its structure. In Java, the Decorator Design Pattern is implemented using abstract classes and interfaces. This pattern is useful when you want to add new behavior to an object at runtime.</p>
+<h3 id="java-and-decorator-design-pattern">Java and Decorator Design Pattern<a class="headerlink" href="#java-and-decorator-design-pattern" title="Permanent link">#</a></h3>
+<p>Java is an object-oriented programming language that supports the Decorator Design Pattern. The Decorator Design Pattern is implemented in Java using the java.io package. This package provides classes that allow developers to read and write data from and to files.</p>
+<h3 id="decorator-pattern-with-java-io-classes">Decorator Pattern with Java IO Classes<a class="headerlink" href="#decorator-pattern-with-java-io-classes" title="Permanent link">#</a></h3>
+<p>The Decorator Design Pattern can be used with Java IO classes to add new functionality to file input and output operations. The java.io package provides several classes that can be used as decorators. For example, the InputStream class is an abstract class that represents an input stream of bytes. The FileInputStream class is a concrete implementation of the InputStream class that reads data from a file.</p>
+<p>Developers can use the Decorator Design Pattern with the InputStream class to add new behavior to file input operations. They can create a new class that extends the InputStream class and adds new functionality to it. For example, they can create a class that reads data from a file and encrypts it before returning it to the caller.</p>
+<h3 id="example-of-decorator-pattern-in-java">Example of Decorator Pattern in Java<a class="headerlink" href="#example-of-decorator-pattern-in-java" title="Permanent link">#</a></h3>
+<p>Here is an example of the Decorator Design Pattern in Java. This example shows how to use the Decorator Design Pattern to add new functionality to file input operations.</p>
+<div class="language-text highlight"><pre><span></span><code>public abstract class DataSource {
+    public abstract void writeData(String data);
+    public abstract String readData();
+}
+
+public class FileDataSource extends DataSource {
+    private String fileName;
+    public FileDataSource(String fileName) {
+        this.fileName = fileName;
+    }
+    public void writeData(String data) {
+        // write data to file
+    }
+    public String readData() {
+        // read data from file
+    }
+}
+
+public abstract class DataSourceDecorator extends DataSource {
+    protected DataSource dataSource;
+    public DataSourceDecorator(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+    public void writeData(String data) {
+        dataSource.writeData(data);
+    }
+    public String readData() {
+        return dataSource.readData();
+    }
+}
+
+public class EncryptionDecorator extends DataSourceDecorator {
+    public EncryptionDecorator(DataSource dataSource) {
+        super(dataSource);
+    }
+    public void writeData(String data) {
+        String encryptedData = encrypt(data);
+        super.writeData(encryptedData);
+    }
+    public String readData() {
+        String data = super.readData();
+        return decrypt(data);
+    }
+    private String encrypt(String data) {
+        // encrypt data
+    }
+    private String decrypt(String data) {
+        // decrypt data
+    }
+}
+
+public class Demo {
+    public static void main(String[] args) {
+        DataSource dataSource = new FileDataSource(&quot;data.txt&quot;);
+        dataSource = new EncryptionDecorator(dataSource);
+        dataSource.writeData(&quot;Hello, world!&quot;);
+        String data = dataSource.readData();
+        System.out.println(data);
+    }
+}
+</code></pre></div>
+<p>In this example, the DataSource class is an abstract class that represents a data source. The FileDataSource class is a concrete implementation of the DataSource class that reads and writes data from and to a file.</p>
+<p>The DataSourceDecorator class is an abstract class that extends the DataSource class. It adds new behavior to the DataSource class. The EncryptionDecorator class is a concrete implementation of the DataSourceDecorator class that encrypts and decrypts data.</p>
+<p>The Demo class is a client that uses the DataSource class and its decorators to read and write data from and to a file.</p>
+<h2 id="extending-functionality-with-decorator-pattern">Extending Functionality with Decorator Pattern<a class="headerlink" href="#extending-functionality-with-decorator-pattern" title="Permanent link">#</a></h2>
+<p>The Decorator Design Pattern in Java provides a way to extend the functionality of an object at runtime without affecting the behavior of other objects within the same class. This pattern allows developers to add new functionality to an object by wrapping it with one or more decorator objects. The decorator objects provide additional functionality to the original object by adding new behavior or modifying existing behavior.</p>
+<h3 id="dynamic-functionality-extension">Dynamic Functionality Extension<a class="headerlink" href="#dynamic-functionality-extension" title="Permanent link">#</a></h3>
+<p>One of the primary benefits of the Decorator Design Pattern is its ability to extend functionality dynamically at runtime. This means that new functionality can be added to an object without having to modify the existing code. This allows developers to maintain the existing codebase while still adding new features and functionality to the application.</p>
+<h3 id="decorator-pattern-and-inheritance">Decorator Pattern and Inheritance<a class="headerlink" href="#decorator-pattern-and-inheritance" title="Permanent link">#</a></h3>
+<p>The Decorator Design Pattern uses inheritance to extend the behavior of a class. This takes place at compile-time, and all instances of that class get the extended behavior. The decorator pattern allows for a more flexible approach to inheritance, as it does not require the creation of new subclasses for each new functionality that needs to be added.</p>
+<h3 id="decorator-pattern-and-composition">Decorator Pattern and Composition<a class="headerlink" href="#decorator-pattern-and-composition" title="Permanent link">#</a></h3>
+<p>The Decorator Design Pattern uses composition to implement the decorator objects. This allows for a more flexible approach to adding new functionality to an object. Instead of creating new subclasses for each new functionality, a decorator object can be created and added to the original object. This allows for greater flexibility in maintaining and removing functionality from the object.</p>
+<h3 id="decorator-pattern-and-constructors">Decorator Pattern and Constructors<a class="headerlink" href="#decorator-pattern-and-constructors" title="Permanent link">#</a></h3>
+<p>The Decorator Design Pattern allows for the creation of new functionality by adding new decorators to an object. These decorators can be added to an object at runtime, which means that new functionality can be added without having to modify the existing code. This allows for a more flexible approach to adding new functionality to an object.</p>
+<p>In conclusion, the Decorator Design Pattern in Java provides a way to extend the functionality of an object dynamically at runtime. It uses inheritance and composition to add new functionality to an object without modifying the existing code. This allows for a more flexible approach to extending functionality, and it provides developers with the ability to maintain and remove functionality from an object as needed.</p>
+<h2 id="decorator-pattern-and-design-principles">Decorator Pattern and Design Principles<a class="headerlink" href="#decorator-pattern-and-design-principles" title="Permanent link">#</a></h2>
+<p>The Decorator pattern is a structural design pattern that allows the dynamic addition of behavior and functionality to an object without affecting the behavior of other existing objects within the same class. In Java, the Decorator pattern is implemented using abstract classes or interfaces with composition.</p>
+<h3 id="single-responsibility-principle">Single Responsibility Principle<a class="headerlink" href="#single-responsibility-principle" title="Permanent link">#</a></h3>
+<p>The Single Responsibility Principle (SRP) is a design principle that states that a class should have only one reason to change. In the context of the Decorator pattern, this means that each decorator should only have a single responsibility and should not be responsible for more than one type of behavior or functionality. By adhering to the SRP, decorators can be easily added or removed from an object without affecting the behavior of other decorators or the object itself.</p>
+<h3 id="openclosed-principle">Open/Closed Principle<a class="headerlink" href="#openclosed-principle" title="Permanent link">#</a></h3>
+<p>The Open/Closed Principle (OCP) is a design principle that states that a class should be open for extension but closed for modification. In the context of the Decorator pattern, this means that new behavior and functionality can be added to an object without modifying the existing code. By adhering to the OCP, the Decorator pattern allows for the easy addition of new decorators to an object without affecting the existing code.</p>
+<h3 id="decorator-pattern-as-structural-pattern">Decorator Pattern as Structural Pattern<a class="headerlink" href="#decorator-pattern-as-structural-pattern" title="Permanent link">#</a></h3>
+<p>The Decorator pattern is a structural pattern because it deals with the composition of objects to form larger structures. In the context of the Decorator pattern, this means that decorators are composed of other decorators or the object itself to form a larger structure with enhanced behavior and functionality. By using composition, the Decorator pattern allows for the flexible addition and removal of behavior and functionality to an object.</p>
+<p>In conclusion, the Decorator pattern is a powerful tool for adding behavior and functionality to an object without affecting the behavior of other existing objects within the same class. By adhering to design principles such as the SRP and OCP, the Decorator pattern allows for the easy addition and removal of decorators to an object, making it a flexible and powerful tool for software development.</p>
+<h2 id="advantages-and-disadvantages-of-decorator-pattern">Advantages and Disadvantages of Decorator Pattern<a class="headerlink" href="#advantages-and-disadvantages-of-decorator-pattern" title="Permanent link">#</a></h2>
+<h3 id="benefits-of-using-decorator-pattern">Benefits of Using Decorator Pattern<a class="headerlink" href="#benefits-of-using-decorator-pattern" title="Permanent link">#</a></h3>
+<p>The Decorator pattern is a design pattern that allows developers to add new functionality to an existing object dynamically. One of the main benefits of using the Decorator pattern is its flexibility. With the Decorator pattern, developers can modify the behavior of an object at runtime without changing its source code. This makes it easier to add new features to an application, and it also makes the code more modular and easier to maintain.</p>
+<p>Another advantage of the Decorator pattern is that it allows developers to create new objects by combining existing objects in different ways. This can be useful when working with complex objects that have many different properties and behaviors. By using the Decorator pattern, developers can create new objects that have only the properties and behaviors they need, without having to create new classes from scratch.</p>
+<h3 id="drawbacks-of-decorator-pattern">Drawbacks of Decorator Pattern<a class="headerlink" href="#drawbacks-of-decorator-pattern" title="Permanent link">#</a></h3>
+<p>One of the main disadvantages of the Decorator pattern is that it can be more complex than other design patterns. This is because it involves creating a lot of small classes that each add a specific behavior to an object. This can make the code harder to read and understand, especially for developers who are not familiar with the Decorator pattern.</p>
+<p>Another disadvantage of the Decorator pattern is that it can be less efficient than other design patterns, especially at compile time. This is because the Decorator pattern involves creating many small objects, which can slow down the compilation process. However, this is usually not a significant issue for most applications, and the benefits of using the Decorator pattern often outweigh the drawbacks.</p>
+<p>In summary, the Decorator pattern is a flexible and extensible design pattern that allows developers to add new functionality to an existing object dynamically. While it can be more complex and less efficient than other design patterns, it is often the best choice for applications that require a high degree of flexibility and modularity.</p>
+<h2 id="decorator-pattern-and-other-design-patterns">Decorator Pattern and Other Design Patterns<a class="headerlink" href="#decorator-pattern-and-other-design-patterns" title="Permanent link">#</a></h2>
+<p>The Decorator pattern is one of the structural design patterns that allows adding functionality to an object dynamically without affecting the behavior of other existing objects within the same class. The Decorator pattern is often compared to other design patterns like Adapter, Composite, Chain of Responsibility, and Bridge patterns. In this section, we will compare the Decorator pattern with these patterns.</p>
+<h3 id="decorator-vs-adapter-pattern">Decorator vs Adapter Pattern<a class="headerlink" href="#decorator-vs-adapter-pattern" title="Permanent link">#</a></h3>
+<p>The Adapter pattern is used to convert the interface of a class into another interface that the client expects. On the other hand, the Decorator pattern adds functionality to an object at runtime without changing the original interface. In other words, the Adapter pattern is used to make two incompatible interfaces compatible, while the Decorator pattern is used to add functionality to an existing interface.</p>
+<h3 id="decorator-vs-composite-pattern">Decorator vs Composite Pattern<a class="headerlink" href="#decorator-vs-composite-pattern" title="Permanent link">#</a></h3>
+<p>The Composite pattern is used to compose objects into tree structures to represent part-whole hierarchies. The Decorator pattern, on the other hand, is used to add functionality to an object dynamically without affecting the behavior of other existing objects within the same class. In other words, the Composite pattern is used to represent a hierarchy of objects, while the Decorator pattern is used to add functionality to a single object.</p>
+<h3 id="decorator-vs-chain-of-responsibility-pattern">Decorator vs Chain of Responsibility Pattern<a class="headerlink" href="#decorator-vs-chain-of-responsibility-pattern" title="Permanent link">#</a></h3>
+<p>The Chain of Responsibility pattern is used to create a chain of objects to handle a request. Each object in the chain has the ability to handle the request or pass it on to the next object in the chain. The Decorator pattern, on the other hand, is used to add functionality to an object dynamically without affecting the behavior of other existing objects within the same class. In other words, the Chain of Responsibility pattern is used to handle a request by a chain of objects, while the Decorator pattern is used to add functionality to a single object.</p>
+<h3 id="decorator-vs-bridge-pattern">Decorator vs Bridge Pattern<a class="headerlink" href="#decorator-vs-bridge-pattern" title="Permanent link">#</a></h3>
+<p>The Bridge pattern is used to decouple an abstraction from its implementation so that the two can vary independently. The Decorator pattern, on the other hand, is used to add functionality to an object dynamically without affecting the behavior of other existing objects within the same class. In other words, the Bridge pattern is used to separate the abstraction from its implementation, while the Decorator pattern is used to add functionality to a single object.</p>
+<p>In conclusion, the Decorator pattern is a powerful pattern that allows adding functionality to an object dynamically without affecting the behavior of other existing objects within the same class. While the Decorator pattern is often compared to other design patterns like Adapter, Composite, Chain of Responsibility, and Bridge patterns, it is important to understand the differences between them to choose the right pattern for a given situation.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

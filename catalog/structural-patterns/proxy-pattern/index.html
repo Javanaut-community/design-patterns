@@ -1,0 +1,2570 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/catalog/structural-patterns/proxy-pattern/">
+      
+      
+        <link rel="prev" href="../composite-pattern/">
+      
+      
+        <link rel="next" href="../flyweight-pattern/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Proxy Pattern - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Proxy Pattern
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Proxy Design Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-components-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Components of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Subject
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Types of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protection-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protection Proxy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-vs-decorator-and-adapter-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy vs Decorator and Adapter Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proxy vs Decorator and Adapter Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proxy-vs-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy vs Decorator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-vs-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy vs Adapter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementing-proxy-design-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing Proxy Design Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementing Proxy Design Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-proxy-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Proxy Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java-rmi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java RMI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-code-and-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Code and Demo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tutorial" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-applications-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Applications of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Applications of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controlled-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controlled Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lazy Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits-and-drawbacks-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits and Drawbacks of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benefits and Drawbacks of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drawbacks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../other/client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Proxy Design Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-components-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Components of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-subject" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Subject
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Types of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protection-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protection Proxy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-vs-decorator-and-adapter-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy vs Decorator and Adapter Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proxy vs Decorator and Adapter Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proxy-vs-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy vs Decorator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-vs-adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy vs Adapter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementing-proxy-design-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing Proxy Design Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementing Proxy Design Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#java-proxy-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java Proxy Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java-rmi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java RMI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-code-and-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Code and Demo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tutorial" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-applications-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Applications of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Applications of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controlled-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controlled Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lazy Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#benefits-and-drawbacks-of-proxy-design-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits and Drawbacks of Proxy Design Pattern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Benefits and Drawbacks of Proxy Design Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drawbacks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Proxy Pattern</h1>
+
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p>The Proxy Design Pattern is a structural design pattern that provides a surrogate or placeholder for another object to control access to it. It is used to create a wrapper around the main object's complexity from the client. The proxy pattern is used when we need to represent an object located remotely. Talking to the real object might involve marshalling and unmarshalling of data and talking to the remote object.</p>
+<p><img alt="Proxy Pattern" loading="lazy" src="../../../art/catalog/proxy/proxy.webp" /></p>
+<p>In Java, the Proxy Design Pattern is used extensively in various frameworks and libraries to provide a layer of abstraction between the client and the actual implementation. It is used to implement various features such as security, caching, and lazy loading. The proxy pattern is also used to reduce the cost associated with creating fully initialized original objects.</p>
+<p>The Proxy Design Pattern in Java is a powerful tool that can be used to simplify the design of a program on its structural level. It provides a way to control access to an object and to add additional functionality to it without changing the original implementation. In the following sections, we will explore the different types of proxies and how they are used in Java.</p>
+<h2 id="understanding-proxy-design-pattern">Understanding Proxy Design Pattern<a class="headerlink" href="#understanding-proxy-design-pattern" title="Permanent link">#</a></h2>
+<p>The Proxy Design Pattern is a Structural Design Pattern that provides a surrogate or placeholder for another object to control its access. It acts as an intermediary between the client and the real object, hiding the complexity of the real object and providing additional functionality when accessing it.</p>
+<p>This pattern is used when we want to create a wrapper around the main object's complexity from the client. It is useful when the real object is heavy to create, or when we want to restrict access to the real object for security reasons. The Proxy Design Pattern is also used when we want to provide additional functionality when accessing the real object.</p>
+<p>According to the Gang of Four, the Proxy Design Pattern provides a way to create a representative or surrogate object that can be used in place of the real object. The Proxy object has the same interface as the real object, so the client can use it without knowing that it is not the real object.</p>
+<p>The Proxy Design Pattern is a Structural Design Pattern that belongs to the set of Structural Patterns. Structural Patterns are used to simplify the design of a program on its structural level. The Proxy Design Pattern means using a proxy for some other entity.</p>
+<p>The Proxy Design Pattern has different types of proxies, such as Remote Proxy, Virtual Proxy, Protection Proxy, and Smart Proxy. The Remote Proxy is responsible for representing the object located remotely. The Virtual Proxy is used when we want a simplified version of a complex or heavy object. The Protection Proxy is used to control access to the real object. The Smart Proxy provides additional functionality when accessing the real object.</p>
+<p>In conclusion, the Proxy Design Pattern is a useful design pattern that provides a way to create a surrogate or placeholder for another object to control its access. It is used when we want to create a wrapper around the main object's complexity from the client, or when we want to provide additional functionality when accessing the real object. The Proxy Design Pattern has different types of proxies, such as Remote Proxy, Virtual Proxy, Protection Proxy, and Smart Proxy, each with its own specific use case.</p>
+<h2 id="key-components-of-proxy-design-pattern">Key Components of Proxy Design Pattern<a class="headerlink" href="#key-components-of-proxy-design-pattern" title="Permanent link">#</a></h2>
+<p>The Proxy Design Pattern is a structural design pattern that provides a surrogate or placeholder for another object to control access to it. It allows for the creation of a representative object that controls access to the original object, thereby providing a level of indirection to support distributed, controlled, or intelligent access. The key components of the Proxy Design Pattern include the Client, Proxy, and Real Subject.</p>
+<h3 id="client">Client<a class="headerlink" href="#client" title="Permanent link">#</a></h3>
+<p>The Client is the entity that interacts with the Proxy Object. It sends requests to the Proxy Object, which in turn forwards the requests to the Real Subject. The Client and the Proxy Object communicate through a common interface, which enables the Client to treat the Proxy Object and the Real Subject interchangeably.</p>
+<h3 id="proxy">Proxy<a class="headerlink" href="#proxy" title="Permanent link">#</a></h3>
+<p>The Proxy is the entity that acts as an intermediary between the Client and the Real Subject. It provides a surrogate or placeholder for the Real Subject, thereby controlling access to it. The Proxy Object has the same interface as the Real Subject, which enables it to forward requests to the Real Subject. The Proxy Object can also perform additional tasks, such as caching results, validating inputs, or providing security.</p>
+<h3 id="real-subject">Real Subject<a class="headerlink" href="#real-subject" title="Permanent link">#</a></h3>
+<p>The Real Subject is the entity that contains the actual implementation of the functionality that the Client wants to access. It is the object that the Proxy Object represents. The Real Subject and the Proxy Object have the same interface, which enables the Proxy Object to forward requests to the Real Subject.</p>
+<p>In the Proxy Design Pattern, the Client interacts with the Proxy Object, which in turn forwards requests to the Real Subject. The Proxy Object provides a level of indirection that enables it to control access to the Real Subject. The Proxy Object and the Real Subject have the same interface, which enables the Proxy Object to forward requests to the Real Subject.</p>
+<p>In summary, the Proxy Design Pattern consists of a Client that interacts with a Proxy Object that provides a surrogate or placeholder for a Real Subject. The Proxy Object and the Real Subject have the same interface, which enables the Proxy Object to forward requests to the Real Subject. The Proxy Object can also perform additional tasks, such as caching results, validating inputs, or providing security.</p>
+<h2 id="types-of-proxy-design-pattern">Types of Proxy Design Pattern<a class="headerlink" href="#types-of-proxy-design-pattern" title="Permanent link">#</a></h2>
+<p>Proxy Design Pattern can be divided into three main types: Virtual Proxy, Remote Proxy, and Protection Proxy.</p>
+<h3 id="virtual-proxy">Virtual Proxy<a class="headerlink" href="#virtual-proxy" title="Permanent link">#</a></h3>
+<p>Virtual Proxy is a type of proxy that creates an object only when it is needed. It is used when creating an object is expensive or time-consuming. The Virtual Proxy creates a placeholder for the object and delays its creation until it is actually needed. This can help improve performance and reduce memory usage in certain situations.</p>
+<h3 id="remote-proxy">Remote Proxy<a class="headerlink" href="#remote-proxy" title="Permanent link">#</a></h3>
+<p>Remote Proxy is used to manage objects that are located in different address spaces. It provides a local representation of the object and allows the client to interact with it as if it were local. The Remote Proxy is responsible for communicating with the actual object and forwarding the requests to it. This can be useful when dealing with distributed systems or remote resources.</p>
+<h3 id="protection-proxy">Protection Proxy<a class="headerlink" href="#protection-proxy" title="Permanent link">#</a></h3>
+<p>Protection Proxy is used to control and manage access to an object. It provides an additional layer of security by restricting access to certain methods or properties of an object. The Protection Proxy checks the access rights of the client before allowing it to access the object. This can be useful when dealing with sensitive data or resources that need to be protected.</p>
+<p>In summary, Proxy Design Pattern provides a way to control access to an object or resource. It can be used to improve performance, manage distributed systems, or provide an additional layer of security. The different types of Proxy Design Pattern, such as Virtual Proxy, Remote Proxy, and Protection Proxy, can be used in different situations depending on the requirements of the system.</p>
+<h2 id="proxy-vs-decorator-and-adapter-patterns">Proxy vs Decorator and Adapter Patterns<a class="headerlink" href="#proxy-vs-decorator-and-adapter-patterns" title="Permanent link">#</a></h2>
+<p>When it comes to structural patterns in Java, the Proxy pattern is often compared to the Decorator and Adapter patterns. While all three patterns belong to the same category of structural patterns, they have different use cases and implementation details.</p>
+<h3 id="proxy-vs-decorator">Proxy vs Decorator<a class="headerlink" href="#proxy-vs-decorator" title="Permanent link">#</a></h3>
+<p>The Decorator pattern is used to add new functionality to an existing object without changing its interface. On the other hand, the Proxy pattern is used to control access to an object by creating a surrogate or placeholder object that forwards requests to the real object.</p>
+<p>In terms of implementation, both patterns use composition to achieve their goals. However, the Decorator pattern typically adds new behavior to an object by wrapping it with one or more decorators, whereas the Proxy pattern creates a new object that acts as a proxy for the real object.</p>
+<h3 id="proxy-vs-adapter">Proxy vs Adapter<a class="headerlink" href="#proxy-vs-adapter" title="Permanent link">#</a></h3>
+<p>The Adapter pattern is used to convert the interface of a class into another interface that clients expect. The Proxy pattern, on the other hand, is used to provide a surrogate or placeholder for another object to control access to it.</p>
+<p>In terms of implementation, both patterns use composition to achieve their goals. However, the Adapter pattern typically wraps an existing object to provide a new interface, whereas the Proxy pattern creates a new object that acts as a proxy for the real object.</p>
+<p>To summarize, the Proxy pattern is used to control access to an object, while the Decorator pattern is used to add new behavior to an object without changing its interface, and the Adapter pattern is used to convert the interface of a class into another interface that clients expect. All three patterns use composition to achieve their goals.</p>
+<h2 id="implementing-proxy-design-pattern-in-java">Implementing Proxy Design Pattern in Java<a class="headerlink" href="#implementing-proxy-design-pattern-in-java" title="Permanent link">#</a></h2>
+<p>The Proxy Design Pattern is a structural pattern that provides a surrogate or placeholder object to control access to another object. The proxy object acts as an intermediary between the client and the real object, intercepting client requests and forwarding them to the real object only if the client has the necessary permissions. This pattern is useful in scenarios where a client needs to access a remote object, or when the creation of an object is expensive and should be deferred until necessary.</p>
+<h3 id="java-proxy-class">Java Proxy Class<a class="headerlink" href="#java-proxy-class" title="Permanent link">#</a></h3>
+<p>In Java, the <code>java.lang.reflect.Proxy</code> class is used to create dynamic proxy objects that implement a list of interfaces at runtime. The proxy object intercepts method calls made to the interface methods and forwards them to an invocation handler, which can perform additional logic before or after the method call. The <code>Proxy</code> class is part of the Java reflection API and is used extensively in frameworks like Spring and Hibernate.</p>
+<h3 id="java-rmi">Java RMI<a class="headerlink" href="#java-rmi" title="Permanent link">#</a></h3>
+<p>Java Remote Method Invocation (RMI) is a Java API that allows objects in one JVM to invoke methods on objects in another JVM, even if those objects are running on a different machine. RMI uses the Proxy Design Pattern to create proxy objects that represent remote objects. The client interacts with the proxy object as if it were the real object, and the proxy object forwards method calls to the remote object over the network.</p>
+<h3 id="implementation-example">Implementation Example<a class="headerlink" href="#implementation-example" title="Permanent link">#</a></h3>
+<p>Here is an example implementation of the Proxy Design Pattern in Java:</p>
+<div class="language-text highlight"><pre><span></span><code>public interface Image {
+    void display();
+}
+
+public class RealImage implements Image {
+    private String filename;
+
+    public RealImage(String filename) {
+        this.filename = filename;
+        loadImageFromDisk();
+    }
+
+    public void display() {
+        System.out.println(&quot;Displaying &quot; + filename);
+    }
+
+    private void loadImageFromDisk() {
+        System.out.println(&quot;Loading &quot; + filename);
+    }
+}
+
+public class ProxyImage implements Image {
+    private RealImage realImage;
+    private String filename;
+
+    public ProxyImage(String filename) {
+        this.filename = filename;
+    }
+
+    public void display() {
+        if (realImage == null) {
+            realImage = new RealImage(filename);
+        }
+        realImage.display();
+    }
+}
+</code></pre></div>
+<p>In this example, <code>RealImage</code> is the real object, and <code>ProxyImage</code> is the proxy object. The client interacts with <code>ProxyImage</code> as if it were the real object, and <code>ProxyImage</code> forwards method calls to <code>RealImage</code> only if necessary.</p>
+<h3 id="source-code-and-demo">Source Code and Demo<a class="headerlink" href="#source-code-and-demo" title="Permanent link">#</a></h3>
+<p>A complete implementation of the Proxy Design Pattern in Java, along with a demo application, is available on <a href="https://github.com/iluwatar/java-design-patterns/tree/master/proxy">GitHub</a>. The source code includes examples of using the <code>java.lang.reflect.Proxy</code> class to create dynamic proxies, as well as examples of using RMI to create remote proxies.</p>
+<h3 id="tutorial">Tutorial<a class="headerlink" href="#tutorial" title="Permanent link">#</a></h3>
+<p>A detailed tutorial on the Proxy Design Pattern in Java is available on <a href="https://www.baeldung.com/java-proxy-pattern">Baeldung</a>. The tutorial covers the basic concepts of the pattern, as well as examples of using the <code>Proxy</code> class and RMI to create proxies.</p>
+<p>Overall, the Proxy Design Pattern is a powerful tool for controlling access to objects in Java. By using proxy objects, developers can add additional logic to object access without modifying the real object, making the code more modular and easier to maintain.</p>
+<h2 id="practical-applications-of-proxy-design-pattern">Practical Applications of Proxy Design Pattern<a class="headerlink" href="#practical-applications-of-proxy-design-pattern" title="Permanent link">#</a></h2>
+<p>Proxy Design Pattern is a widely used design pattern in Java. It provides a way to control access to an object and add additional functionalities to it. In this section, we will discuss some of the practical applications of Proxy Design Pattern.</p>
+<h3 id="controlled-access">Controlled Access<a class="headerlink" href="#controlled-access" title="Permanent link">#</a></h3>
+<p>One of the most common applications of Proxy Design Pattern is to control access to an object. In some cases, it is necessary to restrict access to an object to certain users or groups. This can be achieved by using a Proxy object that checks the user’s credentials before allowing access to the real object. This is particularly useful in applications that deal with sensitive data or require strict access control.</p>
+<h3 id="lazy-initialization">Lazy Initialization<a class="headerlink" href="#lazy-initialization" title="Permanent link">#</a></h3>
+<p>Another application of Proxy Design Pattern is lazy initialization. In some cases, creating an object can be an expensive operation. If the object is not needed immediately, it is better to delay its creation until it is actually needed. This is where Proxy Design Pattern comes in. A Proxy object can be used to create the real object only when it is needed. This is known as lazy loading.</p>
+<h3 id="caching">Caching<a class="headerlink" href="#caching" title="Permanent link">#</a></h3>
+<p>Caching is another practical application of Proxy Design Pattern. In some applications, it is necessary to cache data to improve performance. A Proxy object can be used to cache the data and provide quick access to it. This is particularly useful in applications that deal with large amounts of data or require frequent access to the same data.</p>
+<p>Real-world examples of Proxy Design Pattern can be found in many places, including databases and frameworks. For example, Hibernate, a popular Object-Relational Mapping framework, uses Proxy Design Pattern to provide lazy loading of objects. Similarly, Java RMI (Remote Method Invocation) uses Proxy Design Pattern to provide a remote interface to objects.</p>
+<p>In conclusion, Proxy Design Pattern is a powerful tool that can be used to add additional functionalities to an object and control access to it. Its practical applications include controlled access, lazy initialization, and caching. It is widely used in many real-world applications, including databases and frameworks.</p>
+<h2 id="benefits-and-drawbacks-of-proxy-design-pattern">Benefits and Drawbacks of Proxy Design Pattern<a class="headerlink" href="#benefits-and-drawbacks-of-proxy-design-pattern" title="Permanent link">#</a></h2>
+<h3 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">#</a></h3>
+<p>The Proxy Design Pattern offers several benefits when used in Java applications. Some of the key benefits include:</p>
+<ul>
+<li><strong>Security</strong>: The Proxy Pattern can be used to restrict access to sensitive resources or objects. By using a proxy, developers can ensure that only authorized users or processes are able to access a particular resource or object.</li>
+<li><strong>Performance</strong>: The Proxy Pattern can be used to improve application performance by reducing the number of calls to a resource or object. By using a proxy, developers can cache frequently accessed data and return it without having to make a call to the resource or object every time.</li>
+<li><strong>Memory</strong>: The Proxy Pattern can be used to reduce memory usage by delaying the creation of an object until it is actually needed. By using a proxy, developers can avoid creating large objects until they are actually needed, which can help reduce memory usage.</li>
+<li><strong>Network Connection</strong>: The Proxy Pattern can be used to reduce network traffic by caching frequently accessed data. By using a proxy, developers can avoid making multiple calls to a remote resource or object, which can help reduce network traffic and improve application performance.</li>
+<li><strong>Large Object</strong>: The Proxy Pattern can be used to reduce the overhead associated with creating large objects. By using a proxy, developers can avoid creating a large object until it is actually needed, which can help reduce the overhead associated with creating and managing large objects.</li>
+</ul>
+<h3 id="drawbacks">Drawbacks<a class="headerlink" href="#drawbacks" title="Permanent link">#</a></h3>
+<p>While the Proxy Design Pattern offers several benefits, there are also some drawbacks to consider. Some of the key drawbacks include:</p>
+<ul>
+<li><strong>Inefficient</strong>: The Proxy Pattern can be inefficient if it is not implemented correctly. If the proxy is not designed to cache frequently accessed data or to restrict access to sensitive resources, it may not provide any performance or security benefits.</li>
+<li><strong>Resource Intensive</strong>: The Proxy Pattern can be resource-intensive if it is used to cache large amounts of data. If the proxy is used to cache large objects or data sets, it may require significant amounts of memory or processing power, which can impact application performance.</li>
+<li><strong>Cost</strong>: The Proxy Pattern can be expensive to implement if it requires significant changes to an existing application. If the proxy requires changes to the application's architecture or design, it may be costly to implement and test.</li>
+<li><strong>Network Connection</strong>: The Proxy Pattern can be less effective if the network connection is unreliable. If the proxy is used to cache data from a remote resource or object, it may not be effective if the network connection is slow or unreliable.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

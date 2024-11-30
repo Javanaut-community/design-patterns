@@ -1,0 +1,2692 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/catalog/other/object-pool-pattern/">
+      
+      
+        <link rel="prev" href="../null-object-pattern/">
+      
+      
+        <link rel="next" href="../data-access-pattern/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Object Pool Pattern - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Object Pool Pattern
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-java-and-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Java and Design Patterns
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-object-pool-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Object Pool Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling in Java
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-constructor-and-destructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Constructor and Destructor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-lifecycle-of-pooled-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Lifecycle of Pooled Objects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling and Performance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-pool-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the Pool Class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource-and-connection-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource and Connection Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-and-threading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling and Threading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-initialized-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with Initialized Objects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-cache-in-object-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Cache in Object Pooling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-and-memory-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling and Memory Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tasks-and-requests-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tasks and Requests Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-uml-diagram-for-object-pool-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding UML Diagram for Object Pool Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-in-other-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling in Other Languages
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Object Pooling in Other Languages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      C
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      C++
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ruby" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ruby
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-server-in-object-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Server in Object Pooling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-driver-in-object-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Driver in Object Pooling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintaining-the-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintaining the Object Pool
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintaining the Object Pool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limit-the-size-of-the-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limit the Size of the Pool
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitor-the-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitor the Pool
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reuse-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reuse Objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handle Exceptions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#destroy-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Destroy Objects
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validating-and-synchronizing-the-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validating and Synchronizing the Object Pool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-dead-objects-in-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Dead Objects in Object Pool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#allocating-and-deallocating-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Allocating and Deallocating Objects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-hashtable-in-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Hashtable in Object Pool
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-transfer-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-java-and-design-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Java and Design Patterns
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-object-pool-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Object Pool Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling in Java
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-constructor-and-destructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Constructor and Destructor
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-lifecycle-of-pooled-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Lifecycle of Pooled Objects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling and Performance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-pool-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the Pool Class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource-and-connection-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource and Connection Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-and-threading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling and Threading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-initialized-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with Initialized Objects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-cache-in-object-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Cache in Object Pooling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-and-memory-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling and Memory Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tasks-and-requests-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tasks and Requests Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-uml-diagram-for-object-pool-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding UML Diagram for Object Pool Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-pooling-in-other-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Pooling in Other Languages
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Object Pooling in Other Languages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      C
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      C++
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ruby" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ruby
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-server-in-object-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Server in Object Pooling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-role-of-driver-in-object-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Role of Driver in Object Pooling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintaining-the-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintaining the Object Pool
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintaining the Object Pool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limit-the-size-of-the-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limit the Size of the Pool
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitor-the-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitor the Pool
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reuse-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reuse Objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle-exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handle Exceptions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#destroy-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Destroy Objects
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validating-and-synchronizing-the-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validating and Synchronizing the Object Pool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-dead-objects-in-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Dead Objects in Object Pool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#allocating-and-deallocating-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Allocating and Deallocating Objects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-hashtable-in-object-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Hashtable in Object Pool
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Object Pool Pattern</h1>
+
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p>The Object Pool Pattern is a creational design pattern that is used in situations where the cost of creating an object is high. The pattern is used to manage a pool of objects that are kept ready to use. The objects in the pool are created in advance and are kept in the pool until they are needed. When an object is needed, it is taken from the pool and used. When the object is no longer needed, it is returned to the pool.</p>
+<p>In Java, the Object Pool Pattern is implemented using the ObjectPool class. The ObjectPool class is used to create a pool of objects that can be used by multiple threads. The class uses a ConcurrentLinkedQueue to store the objects in the pool. The objects in the pool are created using a factory method that is passed to the ObjectPool class. The ObjectPool class also uses a ScheduledExecutorService to remove objects from the pool that have been idle for a certain amount of time.</p>
+<h2 id="understanding-java-and-design-patterns">Understanding Java and Design Patterns<a class="headerlink" href="#understanding-java-and-design-patterns" title="Permanent link">#</a></h2>
+<p>Java is a popular programming language that is widely used in the development of enterprise applications, web applications, and mobile applications. Java is known for its simplicity, portability, and platform independence. Java has a rich set of libraries, frameworks, and tools that make it easy to develop complex applications quickly and efficiently.</p>
+<p>Design patterns are common solutions to recurring problems in software design. Design patterns provide a template for solving problems that can be adapted to fit the specific needs of a project. Design patterns are used to improve the quality, maintainability, and scalability of software applications.</p>
+<p>The Object Pool Pattern is a software creational design pattern that is used in situations where the cost of initializing a class instance is very high. The Object Pool Pattern is a container that contains some amount of objects. When an object is taken from the pool, it is not available in the pool until it is put back.</p>
+<p>Design patterns are an important part of software development because they provide a common language for developers to communicate and collaborate. Design patterns also help to improve the quality of software by providing a framework for solving problems that have been encountered before.</p>
+<p>In Java, there are many design patterns that are commonly used, including the Factory Method Pattern, the Abstract Factory Pattern, the Builder Pattern, the Prototype Pattern, and the Singleton Pattern. Each of these design patterns provides a unique solution to a specific problem in software design.</p>
+<p>Overall, understanding Java and design patterns is essential for software developers who want to build high-quality, maintainable, and scalable software applications. By using design patterns, developers can improve the quality of their code and reduce the time and effort required to develop complex applications.</p>
+<h2 id="what-is-object-pool-pattern">What is Object Pool Pattern<a class="headerlink" href="#what-is-object-pool-pattern" title="Permanent link">#</a></h2>
+<p>Object Pool Pattern is a software design pattern that is used to improve the performance and efficiency of an application by reusing expensive objects that are frequently used. The pattern is used in situations where the cost of initializing a class instance is high, and it is essential to keep the number of instances created to a minimum.</p>
+<p>The Object Pool Pattern works by creating a pool of objects that are initialized and kept ready to use. When a client requests an object, the pool returns an object from the pool. The client can then perform operations on the object and return it to the pool when it is no longer needed. This approach avoids the need to create and destroy objects each time they are required, which can be time-consuming and resource-intensive.</p>
+<p>Object Pool Pattern is a creational design pattern that is widely used in Java applications. It is used to manage resources such as database connections, threads, and sockets. By reusing these resources, the application can improve its performance and reduce the overhead of creating and destroying objects.</p>
+<p>The Object Pool Pattern consists of several key components, including the Pool, the Object, and the Client. The Pool is responsible for managing the objects in the pool, while the Object represents the objects that are stored in the pool. The Client is the application that requests objects from the pool and returns them when they are no longer needed.</p>
+<p>Overall, the Object Pool Pattern is a powerful tool that can help improve the performance and efficiency of Java applications. By reusing expensive objects, the pattern can help reduce the overhead of creating and destroying objects, which can lead to significant improvements in performance and scalability.</p>
+<h2 id="object-pooling-in-java">Object Pooling in Java<a class="headerlink" href="#object-pooling-in-java" title="Permanent link">#</a></h2>
+<p>Object Pooling is a software design pattern that is used to manage the object creation process. It is used when the cost of creating an object is high, and the same object is required multiple times. Object Pooling in Java is a technique where a pool of objects is created and reused instead of creating and destroying them each time they are needed.</p>
+<p>In Java, the Object Pool Pattern is implemented using the <code>ObjectPool</code> class. This class is responsible for creating and managing the pool of objects. The <code>ObjectPool</code> class is an abstract class that defines the basic operations that are required to manage the pool of objects.</p>
+<p>The <code>ObjectPool</code> class contains a collection of objects that are available for use. When an object is requested, the <code>ObjectPool</code> class checks if an object is available in the pool. If an object is available, it is returned to the requester. If no object is available, the <code>ObjectPool</code> class creates a new object and adds it to the pool.</p>
+<p>The <code>ObjectPool</code> class can also be configured to limit the number of objects that are created. This is useful when the application has limited resources, and creating too many objects can cause performance issues.</p>
+<p>When an object is returned to the pool, it is reset to its initial state. This ensures that the object is in a consistent state when it is reused.</p>
+<p>In Java, the <code>ObjectPool</code> class can be used to manage a pool of any type of object. The <code>PooledObject</code> interface can be implemented by objects that need to be managed by the <code>ObjectPool</code> class. This interface defines the methods that are required to reset the object to its initial state.</p>
+<p>Overall, Object Pooling in Java is a useful technique that can improve application performance by reducing the cost of object creation. By reusing objects instead of creating new ones, the application can reduce the amount of memory that is used and improve the overall performance.</p>
+<h2 id="the-role-of-constructor-and-destructor">The Role of Constructor and Destructor<a class="headerlink" href="#the-role-of-constructor-and-destructor" title="Permanent link">#</a></h2>
+<p>In the Object Pool Pattern, the constructor and destructor play a crucial role in initializing and destroying the objects in the pool. The constructor is a special method in Java that is called automatically during object creation. It initializes the object's state and sets its initial values. The constructor method has the same name as the class name and does not have any return type.</p>
+<p>When an object is no longer needed, the destructor is called to free up the memory space occupied by the object. However, Java does not have a destructor method like C++. Instead, Java uses a garbage collector to automatically dispose of objects that are no longer needed. The garbage collector frees up the memory space occupied by the object and removes it from the memory.</p>
+<p>In the Object Pool Pattern, the objects in the pool are not destroyed when they are no longer needed. Instead, they are reset and returned to the pool for reuse. This is done to avoid the overhead of creating and destroying objects repeatedly. When an object is returned to the pool, its state is reset to its initial values using the constructor method. This ensures that the object is in a clean state and ready for reuse.</p>
+<p>In summary, the constructor and destructor play a critical role in the Object Pool Pattern by initializing and resetting the objects in the pool. While Java does not have a destructor method, it uses a garbage collector to dispose of objects that are no longer needed. The Object Pool Pattern avoids the overhead of creating and destroying objects repeatedly by reusing the objects in the pool and resetting their state using the constructor method.</p>
+<h2 id="the-lifecycle-of-pooled-objects">The Lifecycle of Pooled Objects<a class="headerlink" href="#the-lifecycle-of-pooled-objects" title="Permanent link">#</a></h2>
+<p>In the Object Pool Pattern, pooled objects have a lifecycle that includes creation, initialization, checkout, check-in, and garbage collection.</p>
+<p>When an object pool is created, a set of objects is initialized and added to the pool. These objects are then ready to be used by clients that request them from the pool. Clients can request an object from the pool by checking it out.</p>
+<p>When an object is checked out, it is removed from the pool and returned to the client. The client can then use the object for its intended purpose. Once the client is finished using the object, it must check it back into the pool.</p>
+<p>When an object is checked back into the pool, it is added back to the pool and becomes available for other clients to use. This process of checking out and checking in objects continues until the pool is exhausted.</p>
+<p>If a client requests an object from the pool and there are no objects available, the client must wait until an object becomes available. This ensures that the pool does not become exhausted and that objects are not wasted.</p>
+<p>When an object is no longer needed, it is not immediately destroyed. Instead, it is returned to the object pool. The object pool then decides when to garbage collect these objects. This is done to ensure that the objects are not destroyed prematurely and that they can be reused by other clients.</p>
+<p>In summary, the lifecycle of pooled objects in the Object Pool Pattern includes creation, initialization, checkout, check-in, and garbage collection. By managing the lifecycle of these objects, the pattern can improve the performance of an application significantly.</p>
+<h2 id="object-pooling-and-performance">Object Pooling and Performance<a class="headerlink" href="#object-pooling-and-performance" title="Permanent link">#</a></h2>
+<p>Object pooling is a design pattern that can help boost application performance by reusing expensive objects instead of creating new ones. By keeping a pool of objects ready for use, the application can avoid the overhead of creating and destroying objects repeatedly. This can be especially useful when dealing with objects that are expensive to create, such as database connections or threads.</p>
+<p>When an object is requested from the pool, it is checked out and returned to the pool when it is no longer needed. This can help reduce memory usage and improve performance by avoiding the need to allocate and deallocate memory for objects repeatedly.</p>
+<p>One way to implement object pooling in Java is to use the <code>ObjectPool</code> class from the Apache Commons Pool library. This library provides a generic object pool that can be used to pool any type of object. The library also provides options for configuring the pool, such as setting the maximum number of objects in the pool or specifying a timeout for checking out objects.</p>
+<p>Another way to implement object pooling in Java is to use the <code>ExecutorService</code> class from the <code>java.util.concurrent</code> package. This class provides a thread pool that can be used to execute tasks concurrently. By reusing threads from the pool instead of creating new ones, the application can avoid the overhead of creating and destroying threads repeatedly.</p>
+<p>In general, object pooling can be a useful technique for improving application performance, especially when dealing with expensive objects such as database connections or threads. By reusing objects instead of creating new ones, the application can reduce memory usage and avoid the overhead of object creation and destruction.</p>
+<h2 id="understanding-the-pool-class">Understanding the Pool Class<a class="headerlink" href="#understanding-the-pool-class" title="Permanent link">#</a></h2>
+<p>The Pool Class is the central class in Object Pool Pattern that manages the creation and destruction of objects. It is responsible for maintaining a pool of objects and providing them to the client when requested. The Pool Class is designed to minimize the overhead of object creation by reusing the objects that are already created.</p>
+<p>The Pool Class is implemented as a Singleton Class, meaning that there can be only one instance of the class in the system. This ensures that all the clients in the system use the same pool of objects. The class provides methods to create and destroy objects, as well as methods to get and release objects from the pool.</p>
+<p>The Pool Class maintains two lists of objects, one for available objects and another for in-use objects. When a client requests an object from the pool, the Pool Class checks if there are any available objects in the pool. If there are, the Pool Class returns the object to the client. If there are no available objects in the pool, the Pool Class creates a new object and returns it to the client.</p>
+<p>The Pool Class has two important parameters, the maximum number of objects that can be created and the total number of objects that are allowed in the pool. The maximum number of objects is the upper limit on the number of objects that can be created. The total number of objects is the maximum number of objects that can be in the pool at any given time.</p>
+<p>In conclusion, the Pool Class is the central class in Object Pool Pattern that manages the creation and destruction of objects. It is responsible for maintaining a pool of objects and providing them to the client when requested. The class provides methods to create and destroy objects, as well as methods to get and release objects from the pool. The Pool Class has two important parameters, the maximum number of objects that can be created and the total number of objects that are allowed in the pool.</p>
+<h2 id="resource-and-connection-management">Resource and Connection Management<a class="headerlink" href="#resource-and-connection-management" title="Permanent link">#</a></h2>
+<p>In Java, object pooling is a design pattern that is used to manage resources and connections. It is a technique that allows developers to reuse objects rather than creating new ones. This pattern is particularly useful when creating objects is expensive, or when the number of objects that can be created is limited.</p>
+<p>One of the most common uses of object pooling in Java is for managing database connections. Database connections are a limited resource, and creating a new connection for each database operation can be expensive. Object pooling allows developers to create a pool of pre-initialized connection objects that can be reused by multiple threads.</p>
+<p>When a thread needs to perform a database operation, it can request a connection object from the pool. If a connection object is available, it is returned to the thread. If no connection objects are available, the thread is blocked until one becomes available. Once the thread has finished using the connection object, it returns it to the pool so that it can be reused by other threads.</p>
+<p>Object pooling can also be used to manage other resources, such as threads and sockets. By reusing these resources, developers can reduce the overhead associated with creating and destroying them.</p>
+<p>In summary, the Object Pool Pattern is an effective way to manage resources and connections in Java. By creating a pool of pre-initialized objects, developers can reduce the overhead associated with creating new objects. This pattern is particularly useful when creating objects is expensive or when the number of objects that can be created is limited.</p>
+<h2 id="object-pooling-and-threading">Object Pooling and Threading<a class="headerlink" href="#object-pooling-and-threading" title="Permanent link">#</a></h2>
+<p>Object pooling is a software design pattern that allows reuse of a limited number of instances of a class. This pattern is often used in situations where the cost of creating a new object is high, such as when the object requires a lot of memory or when a lot of processing is required to create the object. In Java, object pooling is often used to improve the performance of multi-threaded applications.</p>
+<p>When it comes to threading, object pooling can be used in conjunction with thread pools. A thread pool is a collection of threads that are created at the start of an application and then reused to process incoming requests. Thread pools are often used in server applications, where the number of requests can be unpredictable.</p>
+<p>By using object pooling with thread pools, the application can avoid the overhead of creating new objects for each request. Instead, the application can reuse objects from the pool, which can improve performance and reduce memory usage.</p>
+<p>One important consideration when using object pooling with threading is thread safety. Since multiple threads can access the same object at the same time, it is important to ensure that the object is thread-safe. This can be achieved by using synchronization or other thread-safe techniques.</p>
+<p>In summary, object pooling can be a useful technique for improving the performance of multi-threaded applications. By reusing objects from a pool, the application can avoid the overhead of creating new objects for each request. When used in conjunction with thread pools, object pooling can help to improve performance and reduce memory usage. However, it is important to ensure that the objects in the pool are thread-safe to avoid issues with multiple threads accessing the same object at the same time.</p>
+<h2 id="working-with-initialized-objects">Working with Initialized Objects<a class="headerlink" href="#working-with-initialized-objects" title="Permanent link">#</a></h2>
+<p>Object Pool pattern uses a set of initialized objects that are kept ready to use, rather than allocating and destroying them on demand. The main advantage of this approach is that it saves a lot of time and resources that are usually spent on initializing objects on demand.</p>
+<p>When working with initialized objects, Object Pool pattern provides two approaches that can be used depending on the requirements. The first approach is to fill the pool up front, which means that all the objects are created and initialized before they are needed. This approach can be useful when the application requires a large number of objects and the cost of initialization is high.</p>
+<p>The second approach is to create objects as needed. In this approach, the pool starts with no objects, and objects are created and added to the pool as they are needed. This approach can be useful when the application requires a small number of objects, and the cost of initialization is low.</p>
+<p>It is important to note that creating objects can be a time-consuming process, especially when the objects require complex initialization. By using the Object Pool pattern, the application can reduce the time and resources required to create objects by keeping a pool of initialized objects that can be reused.</p>
+<p>Overall, working with initialized objects in Object Pool pattern can be an effective way to reduce the overhead of object creation and improve the performance of the application.</p>
+<h2 id="the-role-of-cache-in-object-pooling">The Role of Cache in Object Pooling<a class="headerlink" href="#the-role-of-cache-in-object-pooling" title="Permanent link">#</a></h2>
+<p>In Object Pooling, the cache plays a crucial role in optimizing the performance of the application. A cache is a temporary storage location that stores frequently accessed data items in memory so that they can be quickly retrieved when needed.</p>
+<p>When an application creates an object, it takes some time to allocate memory and initialize the object. In contrast, when the application reuses an object from the cache, it saves both the time and resources required to create a new object. By reusing objects from the cache, the application can significantly improve performance and reduce overhead.</p>
+<p>Object Pooling caches objects that are expensive to create and maintains a pool of reusable objects. When an application requests an object, the Object Pooling mechanism checks whether any objects are available in the cache. If an object is available, the mechanism returns the object to the application. If no object is available, the mechanism creates a new object and adds it to the cache.</p>
+<p>Caching objects in memory is a common technique used in many software applications. It is particularly useful in applications that require frequent access to data or objects that are expensive to create. Caching can improve performance by reducing the time required to access data or objects and by reducing the load on the system.</p>
+<p>In summary, caching plays a vital role in Object Pooling by allowing the application to reuse objects from the cache instead of creating new objects. This mechanism improves performance and reduces overhead.</p>
+<h2 id="object-pooling-and-memory-management">Object Pooling and Memory Management<a class="headerlink" href="#object-pooling-and-memory-management" title="Permanent link">#</a></h2>
+<p>Object Pooling is a software design pattern that allows the reuse of objects. It can help improve the performance of an application by reducing the overhead of creating new objects, which can be expensive in terms of memory allocation and garbage collection. By reusing objects, Object Pooling can also help reduce the amount of memory used by an application.</p>
+<p>In Java, Object Pooling can be implemented using the <code>java.util.concurrent</code> package, which provides classes such as <code>ExecutorService</code> and <code>ThreadPoolExecutor</code> that maintain a pool of threads. These classes can be used to execute tasks in parallel, which can help improve the performance of an application.</p>
+<p>Object Pooling can also be used to manage memory in Java. When objects are created in Java, memory is allocated from the heap. If objects are not properly managed, they can cause memory leaks, which can lead to performance issues and even crashes. By reusing objects, Object Pooling can help prevent memory leaks and improve the performance of an application.</p>
+<p>In addition to improving performance and managing memory, Object Pooling can also help improve the scalability of an application. By reusing objects, Object Pooling can reduce the number of objects that need to be created, which can help reduce the load on the garbage collector and improve the overall scalability of an application.</p>
+<p>Overall, Object Pooling is a powerful software design pattern that can help improve the performance, memory management, and scalability of Java applications. By reusing objects, Object Pooling can help reduce the overhead of creating new objects, prevent memory leaks, and improve the overall performance of an application.</p>
+<h2 id="tasks-and-requests-handling">Tasks and Requests Handling<a class="headerlink" href="#tasks-and-requests-handling" title="Permanent link">#</a></h2>
+<p>The Object Pool pattern is a software creational design pattern that manages a set of instances instead of creating and destroying them on demand. This pattern is especially useful in situations where the cost of initializing a class instance is very high.</p>
+<p>In Java, Object Pool pattern can be used to handle tasks and requests. The tasks and requests can be submitted to the Object Pool, which will manage a set of initialized objects ready to use. The Object Pool will allocate an object from the pool to handle the incoming task or request. Once the task or request is completed, the object is returned to the pool for reuse.</p>
+<p>This approach can improve the performance of the application by minimizing the overhead of initializing, instantiating, and disposing of objects. It can also prevent the creation of too many objects, which can cause memory issues.</p>
+<p>When implementing Object Pool pattern for tasks and requests handling, it is important to consider the following:</p>
+<ul>
+<li>
+<p>The size of the pool: The size of the pool should be set based on the expected workload. If the pool is too small, it may not be able to handle the incoming tasks or requests. If the pool is too large, it may consume too much memory.</p>
+</li>
+<li>
+<p>The timeout: If a task or request takes too long to complete, it may cause the pool to become blocked. To prevent this, a timeout can be set for each object in the pool. If the object is not returned to the pool within the timeout period, it will be destroyed.</p>
+</li>
+<li>
+<p>The thread safety: The Object Pool should be implemented in a thread-safe manner to prevent race conditions and synchronization issues.</p>
+</li>
+</ul>
+<p>In summary, Object Pool pattern can be used to handle tasks and requests in Java applications. It can improve the performance of the application by minimizing the overhead of initializing, instantiating, and disposing of objects. When implementing Object Pool pattern, it is important to consider the size of the pool, the timeout, and the thread safety.</p>
+<h2 id="understanding-uml-diagram-for-object-pool-pattern">Understanding UML Diagram for Object Pool Pattern<a class="headerlink" href="#understanding-uml-diagram-for-object-pool-pattern" title="Permanent link">#</a></h2>
+<p>The UML diagram for the Object Pool Pattern provides a visual representation of the different classes and their relationships. It helps in understanding the implementation of the pattern and how different classes interact with each other.</p>
+<p>The UML diagram for the Object Pool Pattern consists of the following entities:</p>
+<ul>
+<li>
+<p><strong>ObjectPool</strong>: This class is responsible for creating and managing a pool of objects. It provides methods for acquiring and releasing objects from the pool.</p>
+</li>
+<li>
+<p><strong>PooledObject</strong>: This class represents the objects that are held in the pool. It contains the actual object along with some additional metadata such as its availability status.</p>
+</li>
+<li>
+<p><strong>Client</strong>: This class is the user of the objects held in the pool. It requests objects from the ObjectPool and releases them back to the pool when it is done using them.</p>
+</li>
+</ul>
+<p>The UML diagram also shows the relationships between these entities. The ObjectPool class has a composition relationship with the PooledObject class, which means that the ObjectPool class owns and manages instances of the PooledObject class. The Client class has an association relationship with the ObjectPool class, which means that it uses the services provided by the ObjectPool class.</p>
+<p>Overall, the UML diagram for the Object Pool Pattern provides a clear and concise representation of the different classes and their relationships. It helps in understanding the implementation of the pattern and how different classes interact with each other.</p>
+<h2 id="object-pooling-in-other-languages">Object Pooling in Other Languages<a class="headerlink" href="#object-pooling-in-other-languages" title="Permanent link">#</a></h2>
+<p>Object pooling is not exclusive to Java and can be implemented in other languages as well. In fact, the concept of object pooling is prevalent in most programming languages.</p>
+<h3 id="c">C<a class="headerlink" href="#c" title="Permanent link">#</a></h3>
+<p>C# also has an object pooling mechanism that is similar to Java. The <code>ObjectPool&lt;T&gt;</code> class in C# is part of the <code>System.Buffers</code> namespace and is used to create a pool of objects that can be reused. The <code>ObjectPool&lt;T&gt;</code> class is generic and can be used to create a pool of any type of object.</p>
+<h3 id="python">Python<a class="headerlink" href="#python" title="Permanent link">#</a></h3>
+<p>Python, being an interpreted language, does not have the concept of object pooling built into the language itself. However, there are third-party libraries such as <code>objectpool</code> and <code>pooled-objects</code> that provide object pooling functionality. These libraries allow the developer to create a pool of objects that can be reused to improve performance.</p>
+<h3 id="c_1">C++<a class="headerlink" href="#c_1" title="Permanent link">#</a></h3>
+<p>C++ does not have a built-in object pooling mechanism, but it is possible to implement object pooling using custom code. The developer can create a pool of objects and manage the allocation and deallocation of objects manually. Alternatively, there are third-party libraries such as <code>Boost.Pool</code> that provide object pooling functionality.</p>
+<h3 id="ruby">Ruby<a class="headerlink" href="#ruby" title="Permanent link">#</a></h3>
+<p>Ruby, like Python, is an interpreted language and does not have a built-in object pooling mechanism. However, there are third-party libraries such as <code>pool</code> and <code>connection_pool</code> that provide object pooling functionality. These libraries allow the developer to create a pool of objects that can be reused to improve performance.</p>
+<p>Overall, while the implementation of object pooling may vary across different programming languages, the concept remains the same. Object pooling is a useful technique for improving performance in situations where the creation and destruction of objects are expensive operations.</p>
+<h2 id="the-role-of-server-in-object-pooling">The Role of Server in Object Pooling<a class="headerlink" href="#the-role-of-server-in-object-pooling" title="Permanent link">#</a></h2>
+<p>In Object Pool Pattern, a server plays a crucial role in managing the pool of objects. The server creates a pool of objects and manages their lifecycle. The server is responsible for allocating and deallocating objects from the pool based on the client's request.</p>
+<p>When a client requests an object from the pool, the server checks if any objects are available in the pool. If an object is available, the server returns the object to the client. If no object is available, the server creates a new object and returns it to the client.</p>
+<p>The server also manages the maximum number of objects that can be created in the pool. If the maximum number of objects is reached, the server stops creating new objects and returns an error message to the client.</p>
+<p>Object Pool Pattern is commonly used in network-based applications where creating and destroying objects is expensive. By using Object Pool Pattern, the server can create a pool of objects and reuse them, reducing the overhead of creating and destroying objects.</p>
+<p>In summary, the server plays a crucial role in Object Pool Pattern by creating a pool of objects, managing their lifecycle, and allocating and deallocating objects from the pool based on the client's request.</p>
+<h2 id="the-role-of-driver-in-object-pooling">The Role of Driver in Object Pooling<a class="headerlink" href="#the-role-of-driver-in-object-pooling" title="Permanent link">#</a></h2>
+<p>In Java, Object Pooling is widely used to improve the performance of applications that require frequent creation and destruction of objects. Object Pooling allows the reuse of already created objects, reducing the overhead of creating new objects and improving the overall performance of the application.</p>
+<p>One of the most important components of Object Pooling is the driver. A driver is a software component that provides a connection to a database or any other external resource. Without a driver, Object Pooling would not be possible.</p>
+<p>The driver is responsible for creating the connection to the external resource and managing the connection pool. The connection pool is a collection of connections that are created by the driver and are available for use by the application.</p>
+<p>When an application requests a connection, the driver checks if there are any available connections in the pool. If there are no available connections, the driver creates a new connection and adds it to the pool. If there are available connections, the driver returns one of the available connections to the application.</p>
+<p>The driver also manages the lifecycle of the connections in the pool. When a connection is returned to the pool, the driver checks if the connection is still valid. If the connection is not valid, the driver removes the connection from the pool and creates a new one.</p>
+<p>In conclusion, the driver is an essential component of Object Pooling in Java. It provides the connection to the external resource and manages the connection pool, improving the performance of the application by reusing already created connections.</p>
+<h2 id="maintaining-the-object-pool">Maintaining the Object Pool<a class="headerlink" href="#maintaining-the-object-pool" title="Permanent link">#</a></h2>
+<p>Once the Object Pool has been created, it needs to be maintained properly to ensure optimal performance. Here are some best practices for maintaining an Object Pool in Java:</p>
+<h3 id="limit-the-size-of-the-pool">Limit the Size of the Pool<a class="headerlink" href="#limit-the-size-of-the-pool" title="Permanent link">#</a></h3>
+<p>The size of the Object Pool should be limited to avoid overloading the system. It is important to determine the maximum number of objects that can be created and maintained in the pool. This can be done by analyzing the system requirements and the resources available.</p>
+<h3 id="monitor-the-pool">Monitor the Pool<a class="headerlink" href="#monitor-the-pool" title="Permanent link">#</a></h3>
+<p>It is important to monitor the Object Pool to ensure that it is functioning properly. This can be done by tracking the number of objects in the pool, the number of objects being used, and the number of objects being returned to the pool. This information can be used to identify any potential issues and to optimize the performance of the pool.</p>
+<h3 id="reuse-objects">Reuse Objects<a class="headerlink" href="#reuse-objects" title="Permanent link">#</a></h3>
+<p>The main goal of the Object Pool is to reuse objects instead of creating new ones. Therefore, it is important to ensure that objects are being reused as much as possible. This can be achieved by implementing a mechanism that checks if an object is available in the pool before creating a new one.</p>
+<h3 id="handle-exceptions">Handle Exceptions<a class="headerlink" href="#handle-exceptions" title="Permanent link">#</a></h3>
+<p>It is important to handle exceptions properly when using an Object Pool in Java. If an object is not available in the pool, an exception should be thrown. This exception should be handled properly to avoid any potential issues with the system.</p>
+<h3 id="destroy-objects">Destroy Objects<a class="headerlink" href="#destroy-objects" title="Permanent link">#</a></h3>
+<p>It is important to destroy objects properly when they are no longer needed. This can be achieved by implementing a mechanism that checks if an object has been idle for a certain period of time. If an object has been idle for too long, it should be destroyed to free up resources in the system.</p>
+<p>By following these best practices, the Object Pool in Java can be maintained properly and optimized for performance.</p>
+<h2 id="validating-and-synchronizing-the-object-pool">Validating and Synchronizing the Object Pool<a class="headerlink" href="#validating-and-synchronizing-the-object-pool" title="Permanent link">#</a></h2>
+<p>In Java, Object Pool Pattern is used to create a pool of objects that can be reused. This pattern is especially useful when creating new objects is expensive. To ensure that the objects in the pool are valid, it is necessary to validate them before returning them to the pool. This validation can be done by implementing the <code>validateObject()</code> method in the <code>ObjectPool</code> class.</p>
+<p>The <code>validateObject()</code> method should check if the object is still valid and return a Boolean value. If the object is not valid, it should be removed from the pool. This ensures that the objects in the pool are always valid and can be used without any issues.</p>
+<p>In addition to validating the objects in the pool, it is also important to synchronize the access to the pool. This is because multiple threads may try to access the pool at the same time, which can lead to race conditions and other synchronization issues.</p>
+<p>To synchronize the access to the pool, the <code>ObjectPool</code> class can use the <code>synchronized</code> keyword. This ensures that only one thread can access the pool at a time, which prevents race conditions and other synchronization issues.</p>
+<p>In summary, validating and synchronizing the object pool in Java is essential to ensure that the objects in the pool are always valid and can be used without any issues. By implementing the <code>validateObject()</code> method and using the <code>synchronized</code> keyword, developers can create a robust and reliable object pool that can be used in a wide range of applications.</p>
+<h2 id="understanding-dead-objects-in-object-pool">Understanding Dead Objects in Object Pool<a class="headerlink" href="#understanding-dead-objects-in-object-pool" title="Permanent link">#</a></h2>
+<p>When an object is no longer needed by the application, it becomes a dead object. Dead objects are objects that have been removed from the pool because they are no longer in use. They are not destroyed but are kept in a separate list so that they can be reused later.</p>
+<p>Dead objects can be identified by the pool manager and removed from the pool to free up resources. This is done by setting a time limit for how long an object can remain idle in the pool. If the object exceeds this time limit, it is considered dead and removed from the pool.</p>
+<p>Dead objects can also be removed from the pool if they fail validation checks. Validation checks are performed on objects when they are returned to the pool to ensure that they are still in a usable state. If an object fails validation, it is considered dead and removed from the pool.</p>
+<p>Keeping track of dead objects is important for efficient memory management. Dead objects take up memory space and can slow down the application if not properly managed. By removing dead objects from the pool, the application can free up memory space and improve performance.</p>
+<p>In summary, dead objects are objects that are no longer needed by the application and have been removed from the pool. They can be identified and removed from the pool by the pool manager based on time limits or validation checks. Removing dead objects is important for efficient memory management and improving application performance.</p>
+<h2 id="allocating-and-deallocating-objects">Allocating and Deallocating Objects<a class="headerlink" href="#allocating-and-deallocating-objects" title="Permanent link">#</a></h2>
+<p>In Java, allocating and deallocating objects can be an expensive operation, especially when thousands of similar-sized objects need to be created. This can lead to heap fragmentation, which can negatively impact performance. One solution to this problem is to use the object pool pattern.</p>
+<p>The object pool pattern is a creational design pattern that uses a set of initialized objects kept ready to use, rather than allocating and destroying them on demand. A client of the pool will request an object from the pool and perform operations on the returned object. When the client is finished with the object, it is returned to the pool, rather than being deallocated.</p>
+<p>By using an object pool, the cost of initializing a class instance is decreased, as objects are pre-initialized and ready to use. This can lead to improved performance, as there is no need to allocate and deallocate objects on demand.</p>
+<p>The following table summarizes the advantages and disadvantages of using the object pool pattern:</p>
+<p>Advantages</p>
+<p>Disadvantages</p>
+<p>Improved performance</p>
+<p>Increased memory usage</p>
+<p>Decreased cost of initializing class instances</p>
+<p>Requires additional code to manage the pool</p>
+<p>Reduced heap fragmentation</p>
+<p>Not suitable for all types of objects</p>
+<p>Overall, the object pool pattern can be a useful tool for improving performance in Java programs that require the creation of many similar-sized objects. However, it is important to carefully consider the advantages and disadvantages of using the pattern before implementing it in a program.</p>
+<h2 id="understanding-hashtable-in-object-pool">Understanding Hashtable in Object Pool<a class="headerlink" href="#understanding-hashtable-in-object-pool" title="Permanent link">#</a></h2>
+<p>In Object Pool Pattern, the <code>Hashtable</code> is a data structure that is used to store the objects that are currently being used and the objects that are not being used. The <code>Hashtable</code> is a thread-safe data structure that allows multiple threads to access and modify the data at the same time.</p>
+<p>The <code>Hashtable</code> is composed of key-value pairs, where the key is an object and the value is a long integer. The key represents the object that is being stored, while the value represents the time that the object was last accessed. When an object is added to the <code>Hashtable</code>, the current time is stored as the value for that object's key.</p>
+<p>The <code>Hashtable</code> is used to keep track of the objects that are currently being used and the objects that are not being used. When an object is requested from the pool, the <code>Hashtable</code> is checked to see if there are any available objects. If there are no available objects, a new object is created and added to the <code>Hashtable</code>. If there are available objects, the object with the oldest access time is returned.</p>
+<p>When an object is returned to the pool, the <code>Hashtable</code> is updated with the current time as the value for that object's key. This ensures that the object with the oldest access time is always the first object to be returned when a new object is requested from the pool.</p>
+<p>In summary, the <code>Hashtable</code> is a crucial component of the Object Pool Pattern in Java. It is used to store and manage the objects that are currently being used and the objects that are not being used. The use of a thread-safe data structure like <code>Hashtable</code> ensures that multiple threads can access and modify the data at the same time without any conflicts or race conditions.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2540 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JavaDesignPatterns.com is your go-to resource for mastering object-oriented design patterns in Java. Whether you're a beginner looking to understand the basics or an experienced developer aiming to sharpen your skills, our site offers comprehensive guides, real-world examples, and practical code snippets for all major design patterns. Dive into the world of software architecture, improve your coding practices, and enhance the flexibility and scalability of your Java applications. Join our community of developers to explore, learn, and apply the most effective design patterns for modern Java development.">
+      
+      
+      
+        <link rel="canonical" href="https://javadesignpatterns.com/catalog/other/data-transfer-object-pattern/">
+      
+      
+        <link rel="prev" href="../data-access-pattern/">
+      
+      
+        <link rel="next" href="../model-view-controller-pattern/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Data Transfer Object Pattern - The Java Design Patterns Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  <script
+  defer
+  data-domain="javadesignpatterns.com"
+  src="https://plausible.io/js/script.outbound-links.js"
+></script>
+
+<script>
+  window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+
+  /* Register event handlers after documented loaded */
+  document.addEventListener("DOMContentLoaded", function () {
+    /* Set up search tracking */
+    if (document.forms.search) {
+      var query = document.forms.search.query;
+      query.addEventListener("blur", function() {
+        if (this.value) plausible("Search", { props: { search_term: this.value } });
+      })
+    }
+
+    /* Set up feedback, i.e. "Was this page helpful?" */
+    document$.subscribe(function () {
+      var feedback = document.forms.feedback;
+      if (typeof feedback === "undefined") return;
+
+      /* Send feedback to Plausible */
+      for (var button of feedback.querySelectorAll("[type=submit]")) {
+        button.addEventListener("click", function (ev) {
+          ev.preventDefault();
+
+          var page = document.location.pathname;
+          var value = this.getAttribute("data-md-value");
+          console.log("[feedback] User clicked", { value });
+          plausible(`Feedback: ${value}`);
+
+          /* Disable form and show note, if given */
+          feedback.firstElementChild.disabled = true;
+          var note = feedback.querySelector(".md-feedback__note [data-md-value='" + value + "']");
+          if (note) note.hidden = false;
+        })
+
+        /* Show feedback */
+        feedback.hidden = false;
+      }
+    });
+  });
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+<!-- MailerLite Universal -->
+<script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1056154');
+</script>
+<!-- End MailerLite Universal -->
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+<p style="text-align: center">
+
+    This manual is managed by Java experts.
+    <a href="https://www.javanauts.dev"
+       style="color: white; text-decoration: underline">Join today by visiting Javanauts.dev</a>
+</p>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-header__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The Java Design Patterns Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Transfer Object Pattern
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Catalog
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/" class="md-tabs__link">
+          
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="The Java Design Patterns Manual" class="md-nav__button md-logo" aria-label="The Java Design Patterns Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    The Java Design Patterns Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Catalog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Catalog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Creational Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Creational Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/singleton-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Singleton Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/builder-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Builder Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/abstract-factory-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Abstract Factory Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/factory-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Factory Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../creational-patterns/prototype-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prototype Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Structural Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Structural Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/facade-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Façade Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/adapter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Adapter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/composite-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Composite Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/proxy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/flyweight-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flyweight Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/bridge-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bridge Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structural-patterns/decorator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Decorator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Behavioral Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Behavioral Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/chain-of-responsibility-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chain of responsibility Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/command-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/interpreter-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interpreter Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/iterator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Iterator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/mediator-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediator Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/memento-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memento Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/observer-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observer Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/state-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/strategy-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/template-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Template Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../behavioral-patterns/visitor-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Visitor Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other Patterns
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            Other Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lazy-initialization-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lazy Initialization Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Module Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../null-object-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Null Object Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../object-pool-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Object Pool Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-access-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Access Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Data Transfer Object Pattern
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-data-transfer-object-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Data Transfer Object Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fundamentals-of-java-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamentals of Java DTOs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#role-of-dtos-in-enterprise-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Role of DTOs in Enterprise Applications
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementing-dto-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing DTO Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementing DTO Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of-dto-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation of DTO Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-domain-objects-to-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping Domain Objects to DTOs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dtos-and-remote-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      DTOs and Remote Calls
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dtos-in-spring-and-hibernate" class="md-nav__link">
+    <span class="md-ellipsis">
+      DTOs in Spring and Hibernate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-and-serialization-of-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping and Serialization of DTOs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping and Serialization of DTOs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapping-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping DTOs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serialization-of-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Serialization of DTOs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations-with-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations with DTOs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-objects-vs-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Value Objects Vs DTOs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Value Objects Vs DTOs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#value-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Value Objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-transfer-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Transfer Objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equality-and-immutability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Equality and Immutability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pros-and-cons-of-using-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons of Using DTOs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pros and Cons of Using DTOs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-demo-of-dto-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Demo of DTO Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model-view-controller-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model View Controller Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../acyclic-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acyclic Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ambassador-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ambassador Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-gateway-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Api Gateway Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../async-method-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Async Method Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../balking-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Balking Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../business-delegate-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business Delegate Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Caching Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../callback-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Callback Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../circuit-braker-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Circuit Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client-session-pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Session Pattern
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/behaviour/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Behaviour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/hello/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hello
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/category/world/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    World
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-data-transfer-object-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Data Transfer Object Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fundamentals-of-java-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamentals of Java DTOs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#role-of-dtos-in-enterprise-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Role of DTOs in Enterprise Applications
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementing-dto-pattern-in-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing DTO Pattern in Java
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementing DTO Pattern in Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-of-dto-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation of DTO Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-domain-objects-to-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping Domain Objects to DTOs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dtos-and-remote-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      DTOs and Remote Calls
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dtos-in-spring-and-hibernate" class="md-nav__link">
+    <span class="md-ellipsis">
+      DTOs in Spring and Hibernate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-and-serialization-of-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping and Serialization of DTOs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping and Serialization of DTOs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapping-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping DTOs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serialization-of-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Serialization of DTOs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations-with-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations with DTOs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-objects-vs-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Value Objects Vs DTOs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Value Objects Vs DTOs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#value-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Value Objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-transfer-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Transfer Objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equality-and-immutability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Equality and Immutability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pros-and-cons-of-using-dtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and Cons of Using DTOs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pros and Cons of Using DTOs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-demo-of-dto-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Demo of DTO Pattern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Data Transfer Object Pattern</h1>
+
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p>In Java, a DTO is a simple Java class that contains fields and getter and setter methods for accessing those fields. The DTO class is used to transfer data between different layers of an application, and it is typically used to transfer data from the persistence layer to the business layer, or from the business layer to the presentation layer. The DTO pattern is particularly useful when working with large datasets, as it allows developers to transfer only the data that is needed, rather than transferring the entire dataset.</p>
+<p>In order to implement the DTO pattern in Java, developers must create a DTO class for each entity class in the application. The DTO class should contain fields that correspond to the fields in the entity class, and it should also contain getter and setter methods for accessing those fields. When data needs to be transferred between layers of the application, the entity class is converted to a DTO object, and the DTO object is then transferred to the other layer.</p>
+<h2 id="understanding-data-transfer-object-pattern">Understanding Data Transfer Object Pattern<a class="headerlink" href="#understanding-data-transfer-object-pattern" title="Permanent link">#</a></h2>
+<p>The Data Transfer Object (DTO) pattern is a design pattern used in Java to transfer data between different layers of an application. It is a part of the Patterns of Enterprise Application Architecture, which was introduced by Martin Fowler.</p>
+<p>The main purpose of the DTO pattern is to reduce the number of method calls and network traffic between the client and server. It does this by creating a container object that groups multiple data elements into a single object, which can be transferred in a single method call.</p>
+<p>The DTO pattern is particularly useful in situations where there is a large amount of data to be transferred between different layers of an application. For example, in a web application, a DTO object can be used to transfer data between the presentation layer and the business layer.</p>
+<p>The DTO pattern is implemented using simple POJO (Plain Old Java Object) classes that have getter and setter methods for each data element. These objects are then serialized and deserialized to transfer data over the network.</p>
+<p>One of the advantages of the DTO pattern is that it makes it easier to maintain a separation of concerns between different layers of an application. For example, the presentation layer can be designed to work with DTO objects, while the business logic layer can work with domain objects. This separation of concerns makes it easier to modify and test different layers of an application independently.</p>
+<p>Overall, the DTO pattern is a useful tool for simplifying the transfer of data between different layers of an application. By using DTO objects, developers can reduce the number of method calls and network traffic, while maintaining a separation of concerns between different layers of an application.</p>
+<h2 id="fundamentals-of-java-dtos">Fundamentals of Java DTOs<a class="headerlink" href="#fundamentals-of-java-dtos" title="Permanent link">#</a></h2>
+<p>In Java, a Data Transfer Object (DTO) is a design pattern that encapsulates data and passes it between different layers of an application.</p>
+<p>A DTO is a simple, lightweight object that contains fields for data storage and getters and setters for accessing and modifying that data. It is used to transfer data between different layers of an application, such as the presentation layer, the business layer, and the persistence layer.</p>
+<p>The purpose of using DTOs is to minimize the number of calls made between different layers of an application. Since DTOs are simple objects, they can be passed between layers more efficiently than complex domain objects.</p>
+<p>DTOs are often used in conjunction with a mapper component, which maps data from domain objects to DTOs and vice versa. This component is responsible for converting complex domain objects into simple DTOs that can be easily transferred between layers.</p>
+<p>In addition to reducing the number of calls between layers, DTOs can also help to improve the security of an application. By only exposing the necessary data to each layer of the application, it is possible to limit the amount of sensitive data that is exposed to potential attackers.</p>
+<p>Overall, DTOs are a fundamental component of many Java applications. They provide a simple and efficient way to transfer data between different layers of an application, while also helping to improve security.</p>
+<h2 id="role-of-dtos-in-enterprise-applications">Role of DTOs in Enterprise Applications<a class="headerlink" href="#role-of-dtos-in-enterprise-applications" title="Permanent link">#</a></h2>
+<p>DTOs or Data Transfer Objects are used to transfer data between different layers of an application. In enterprise applications, DTOs play a vital role in transferring data between the client and the server. They encapsulate data and provide a simple interface for the client to interact with the server.</p>
+<p>DTOs are used to reduce the number of method calls between the client and the server, which in turn reduces the overall network traffic. This is because DTOs allow the server to send multiple parameters in a single call, rather than sending each parameter separately. This reduces the number of roundtrips between the client and the server, which can significantly improve the performance of the application.</p>
+<p>In enterprise applications, DTOs are used to transfer data between different layers of the application. They are used to transfer data between the service layer and the presentation layer. The service layer contains the business logic of the application, while the presentation layer contains the user interface. DTOs are used to transfer data between these two layers, as they provide a simple interface for the service layer to interact with the presentation layer.</p>
+<p>DTOs are also used to transfer data between different services in an enterprise application. In a microservices architecture, each service has its own data model. DTOs are used to transfer data between these different services, as they provide a common interface for the services to interact with each other.</p>
+<p>In summary, DTOs play a crucial role in enterprise applications by providing a simple interface for transferring data between different layers of the application and reducing the overall network traffic. They are used to transfer data between the client and the server, between different layers of the application, and between different services in a microservices architecture.</p>
+<h2 id="implementing-dto-pattern-in-java">Implementing DTO Pattern in Java<a class="headerlink" href="#implementing-dto-pattern-in-java" title="Permanent link">#</a></h2>
+<p>In Java, the Data Transfer Object (DTO) pattern is used to transfer data between different layers of an application. The DTO pattern is a design pattern that is used to transfer data between objects. It is used to reduce the number of calls between different layers of an application and to make the communication between these layers more efficient.</p>
+<h3 id="implementation-of-dto-pattern">Implementation of DTO Pattern<a class="headerlink" href="#implementation-of-dto-pattern" title="Permanent link">#</a></h3>
+<p>To implement the DTO pattern in Java, you need to create a DTO class that contains the data that needs to be transferred between different layers of an application. The DTO class should have private instance variables and public getter and setter methods to access these variables.</p>
+<div class="language-text highlight"><pre><span></span><code>public class UserDTO {
+    private String name;
+    private int age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+</code></pre></div>
+<p>In the above example, the <code>UserDTO</code> class contains two private instance variables, <code>name</code> and <code>age</code>, and public getter and setter methods to access these variables.</p>
+<h3 id="mapping-domain-objects-to-dtos">Mapping Domain Objects to DTOs<a class="headerlink" href="#mapping-domain-objects-to-dtos" title="Permanent link">#</a></h3>
+<p>To transfer data between different layers of an application, you need to map domain objects to DTOs. A domain object is an object that represents a real-world entity, such as a user, a product, or an order. To map a domain object to a DTO, you need to create a mapper class that converts the domain object to a DTO and vice versa.</p>
+<div class="language-text highlight"><pre><span></span><code>public class UserMapper {
+    public static UserDTO toDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setName(user.getName());
+        userDTO.setAge(user.getAge());
+        return userDTO;
+    }
+
+    public static User toDomain(UserDTO userDTO) {
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setAge(userDTO.getAge());
+        return user;
+    }
+}
+</code></pre></div>
+<p>In the above example, the <code>UserMapper</code> class contains two static methods, <code>toDTO</code> and <code>toDomain</code>, that convert a <code>User</code> domain object to a <code>UserDTO</code> DTO and vice versa.</p>
+<h3 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">#</a></h3>
+<p>In conclusion, the DTO pattern is a useful pattern in Java that is used to transfer data between different layers of an application. To implement the DTO pattern, you need to create a DTO class that contains the data that needs to be transferred and a mapper class that maps domain objects to DTOs and vice versa.</p>
+<h2 id="dtos-and-remote-calls">DTOs and Remote Calls<a class="headerlink" href="#dtos-and-remote-calls" title="Permanent link">#</a></h2>
+<p>One of the primary reasons to use DTOs in Java is to reduce the number of remote calls made between client and server processes. Remote calls are often expensive, and sending a large number of small objects can result in a significant performance hit. By using DTOs, it is possible to batch up multiple parameters into a single call, reducing the number of remote calls that need to be made.</p>
+<p>When using DTOs in conjunction with remote interfaces, it is important to ensure that the DTOs are serializable. Serialization allows the DTOs to be passed across the network and reconstructed on the other side. Java provides built-in support for serialization, making it easy to ensure that DTOs can be used in remote calls.</p>
+<p>In addition to reducing the number of remote calls made, DTOs can also help to simplify the remote interface itself. By encapsulating the data that needs to be transferred into a single object, the remote interface can be made simpler and easier to use. This can be particularly useful when dealing with complex data structures or when working with legacy systems that have complex data structures.</p>
+<p>Overall, the use of DTOs in Java can be a powerful tool for simplifying remote calls and reducing the performance overhead associated with them. By encapsulating data into a single object, it is possible to reduce the number of remote calls made and simplify the remote interface itself.</p>
+<h2 id="dtos-in-spring-and-hibernate">DTOs in Spring and Hibernate<a class="headerlink" href="#dtos-in-spring-and-hibernate" title="Permanent link">#</a></h2>
+<p>Data Transfer Object (DTO) pattern is widely used in Spring and Hibernate. In Spring, DTOs are used to transfer data between the client and the server, and also between different layers of the application. In Hibernate, DTOs are used to transfer data between the database and the application.</p>
+<p>In Spring, DTOs are often used in conjunction with the Model-View-Controller (MVC) architecture. The DTOs are used to transfer data between the Controller and the View, and also between the Controller and the Service layer. This helps to reduce the coupling between the layers of the application, and also reduces the number of database queries.</p>
+<p>In Hibernate, DTOs are used to transfer data between the database and the application. Hibernate uses Plain Old Java Objects (POJOs) to represent the data in the database. The DTOs are used to transfer the data from the POJOs to the application, and vice versa. This helps to reduce the number of database queries, and also reduces the amount of data transferred between the database and the application.</p>
+<p>Spring Boot is a popular framework for building web applications in Spring. DTOs are often used in Spring Boot to transfer data between the client and the server, and also between different layers of the application. Spring Boot provides support for DTOs out of the box, making it easy to use them in the application.</p>
+<p>In conclusion, DTOs are an important part of Spring and Hibernate applications. They are used to transfer data between different layers of the application, and also between the application and the database. Spring Boot provides support for DTOs, making it easy to use them in applications.</p>
+<h2 id="mapping-and-serialization-of-dtos">Mapping and Serialization of DTOs<a class="headerlink" href="#mapping-and-serialization-of-dtos" title="Permanent link">#</a></h2>
+<p>One of the primary use cases for Data Transfer Objects (DTOs) is to transfer data between different layers of an application. This requires the ability to map the data from one layer to another and serialize it for transport. In Java, there are several libraries available to facilitate this process, including Jackson, Gson, and JAXB.</p>
+<h3 id="mapping-dtos">Mapping DTOs<a class="headerlink" href="#mapping-dtos" title="Permanent link">#</a></h3>
+<p>Mapping DTOs involves converting data from one format to another. This can be done manually, but it is often more efficient to use a mapping library. One popular library for mapping DTOs in Java is MapStruct. MapStruct generates mapping code at compile-time, which can improve performance and reduce errors.</p>
+<p>To use MapStruct, you define an interface that specifies the mapping between two classes. MapStruct generates an implementation of this interface at compile-time. For example, suppose you have a domain object <code>Person</code> and a DTO <code>PersonDTO</code>. You can define a mapping interface as follows:</p>
+<div class="language-text highlight"><pre><span></span><code>@Mapper
+public interface PersonMapper {
+    PersonDTO toDto(Person person);
+    Person toEntity(PersonDTO dto);
+}
+</code></pre></div>
+<p>This interface specifies two methods: <code>toDto</code> and <code>toEntity</code>. MapStruct generates an implementation of these methods that maps between <code>Person</code> and <code>PersonDTO</code>.</p>
+<h3 id="serialization-of-dtos">Serialization of DTOs<a class="headerlink" href="#serialization-of-dtos" title="Permanent link">#</a></h3>
+<p>Serialization is the process of converting an object to a format that can be transmitted over a network or stored in a file. In Java, there are several libraries available for serialization, including Jackson, Gson, and JAXB.</p>
+<p>One of the most popular libraries for serializing JSON in Java is Jackson. Jackson provides a simple API for serializing and deserializing JSON. To serialize a DTO to JSON using Jackson, you can use the following code:</p>
+<div class="language-text highlight"><pre><span></span><code>ObjectMapper mapper = new ObjectMapper();
+String json = mapper.writeValueAsString(dto);
+</code></pre></div>
+<p>This code creates an instance of <code>ObjectMapper</code> and uses it to serialize the <code>dto</code> object to a JSON string.</p>
+<p>Another popular library for serialization in Java is JAXB. JAXB is a standard library for mapping XML to Java objects. To use JAXB to serialize a DTO to XML, you can use the following code:</p>
+<div class="language-text highlight"><pre><span></span><code>JAXBContext jaxbContext = JAXBContext.newInstance(PersonDTO.class);
+Marshaller marshaller = jaxbContext.createMarshaller();
+marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+StringWriter writer = new StringWriter();
+marshaller.marshal(dto, writer);
+String xml = writer.toString();
+</code></pre></div>
+<p>This code creates a <code>JAXBContext</code> for the <code>PersonDTO</code> class and uses it to create a <code>Marshaller</code>. The <code>Marshaller</code> is then used to serialize the <code>dto</code> object to an XML string.</p>
+<h2 id="security-considerations-with-dtos">Security Considerations with DTOs<a class="headerlink" href="#security-considerations-with-dtos" title="Permanent link">#</a></h2>
+<p>When it comes to security considerations with DTOs, it is important to ensure that sensitive information is not exposed to unauthorized entities. One way to achieve this is by using encryption techniques to protect the data as it is transferred between subsystems. This can be done by encrypting the DTOs before they are sent and decrypting them once they are received.</p>
+<p>Another important consideration is to ensure that the DTOs are not tampered with during transmission. This can be achieved by using digital signatures to verify the integrity of the data. A digital signature is a mathematical technique used to ensure that the data has not been altered in transit.</p>
+<p>It is also important to ensure that the DTOs are validated before they are processed. This can be done by using input validation techniques to ensure that the data is in the correct format and does not contain any malicious code.</p>
+<p>In addition, it is important to limit the amount of data that is transferred between subsystems. This can be achieved by only transferring the data that is required for the subsystem to function. This reduces the amount of data that is exposed to potential attackers.</p>
+<p>Overall, DTOs can be an effective way to transfer data between subsystems in a secure manner. However, it is important to ensure that the appropriate security measures are in place to protect the data from unauthorized access and tampering.</p>
+<h2 id="value-objects-vs-dtos">Value Objects Vs DTOs<a class="headerlink" href="#value-objects-vs-dtos" title="Permanent link">#</a></h2>
+<p>In Java, <strong>Value Objects</strong> and <strong>Data Transfer Objects (DTOs)</strong> are two commonly used design patterns, but they have different purposes and characteristics. Understanding the differences between them is crucial to determine which one to use in a particular scenario.</p>
+<h3 id="value-objects">Value Objects<a class="headerlink" href="#value-objects" title="Permanent link">#</a></h3>
+<p>A <strong>Value Object</strong> is an object that represents a value, such as a number, a string, or a date. In Java, a Value Object is typically implemented as an immutable class, which means that its state cannot be changed once it is created. This is because Value Objects are designed to be used as values, not objects. They are often used to encapsulate a group of related values into a single object, and they are usually small and simple.</p>
+<p>One important characteristic of Value Objects is that they are compared by value, not by reference. This means that two Value Objects with the same state are considered equal, even if they are not the same object. This is different from regular objects, which are compared by reference.</p>
+<h3 id="data-transfer-objects">Data Transfer Objects<a class="headerlink" href="#data-transfer-objects" title="Permanent link">#</a></h3>
+<p>A <strong>Data Transfer Object (DTO)</strong>, on the other hand, is an object that is used to transfer data between layers of an application, such as between the presentation layer and the business layer. DTOs are often used to encapsulate a group of related values into a single object, just like Value Objects, but they are designed for a different purpose.</p>
+<p>DTOs are usually mutable, which means that their state can be changed after they are created. This is because DTOs are designed to be used as objects, not values. They are often used to transfer data between layers of an application, and they can be quite large and complex.</p>
+<p>One important characteristic of DTOs is that they are compared by reference, not by value. This means that two DTOs with the same state are not considered equal, unless they are the same object.</p>
+<h3 id="equality-and-immutability">Equality and Immutability<a class="headerlink" href="#equality-and-immutability" title="Permanent link">#</a></h3>
+<p>In summary, the main difference between Value Objects and DTOs is that Value Objects are designed to be used as values, while DTOs are designed to be used as objects. Value Objects are immutable and compared by value, while DTOs are mutable and compared by reference.</p>
+<p>When deciding which one to use, it is important to consider the requirements of the application. If the object represents a value, such as a date or a number, then a Value Object is probably the best choice. If the object represents data that needs to be transferred between layers of an application, then a DTO is probably the best choice.</p>
+<p>It is also important to consider the characteristics of the object. If the object needs to be compared by value, then it should be immutable. If the object needs to be compared by reference, then it should be mutable.</p>
+<h2 id="pros-and-cons-of-using-dtos">Pros and Cons of Using DTOs<a class="headerlink" href="#pros-and-cons-of-using-dtos" title="Permanent link">#</a></h2>
+<p>The Data Transfer Object (DTO) pattern has its advantages and disadvantages. Here are some of the pros and cons of using DTOs in Java.</p>
+<h3 id="pros">Pros<a class="headerlink" href="#pros" title="Permanent link">#</a></h3>
+<ul>
+<li>
+<p><strong>Reduced network traffic:</strong> DTOs can help reduce network traffic by transferring only the required data between the client and server. This is because DTOs are designed to carry only the data that is needed by the client, rather than the entire domain object. This can help improve performance and reduce latency.</p>
+</li>
+<li>
+<p><strong>Improved security:</strong> DTOs can help improve security by reducing the amount of sensitive data that is transferred between the client and server. This is because DTOs can be designed to exclude sensitive data, such as passwords and other personal information.</p>
+</li>
+<li>
+<p><strong>Improved maintainability:</strong> DTOs can help improve maintainability by reducing the coupling between the client and server. This is because DTOs can be designed to be independent of the domain objects, which makes it easier to modify the domain objects without affecting the DTOs.</p>
+</li>
+</ul>
+<h3 id="cons">Cons<a class="headerlink" href="#cons" title="Permanent link">#</a></h3>
+<ul>
+<li>
+<p><strong>Increased complexity:</strong> DTOs can increase the complexity of the codebase by adding an additional layer of abstraction. This can make the code harder to understand and maintain.</p>
+</li>
+<li>
+<p><strong>Increased development time:</strong> DTOs can increase the development time by requiring additional code to be written to map the data between the domain objects and DTOs.</p>
+</li>
+<li>
+<p><strong>Increased memory usage:</strong> DTOs can increase the memory usage of the application by requiring additional objects to be created to represent the DTOs.</p>
+</li>
+</ul>
+<p>In summary, while DTOs can provide benefits such as reduced network traffic, improved security, and improved maintainability, they can also increase the complexity of the codebase, increase development time, and increase memory usage. Therefore, it is important to carefully consider the use of DTOs in Java applications and weigh the pros and cons before implementing them.</p>
+<h2 id="practical-demo-of-dto-pattern">Practical Demo of DTO Pattern<a class="headerlink" href="#practical-demo-of-dto-pattern" title="Permanent link">#</a></h2>
+<p>To better understand the Data Transfer Object (DTO) pattern, let's consider a practical example in Java. Suppose that a developer wants to create an easy-to-use API for a car dealership's inventory management system. The system has a database with tables for cars, customers, and sales. The developer wants to expose certain functionality of the system via an API.</p>
+<p>First, the developer creates a CarDTO class that represents a car object in the system. The CarDTO class has private fields for the car's make, model, year, color, and price. It also has public getter and setter methods for each field. The CarDTO class does not contain any business logic, but only contains storage and accessors.</p>
+<p>Next, the developer creates a CarService class that handles interactions with the car table in the database. The CarService class has methods for creating, reading, updating, and deleting car objects in the database. When creating a car object, the CarService class maps the data from the incoming request to a CarDTO object and saves it to the database. When reading a car object, the CarService class retrieves the data from the database and maps it to a CarDTO object before returning it to the client.</p>
+<p>Similarly, the developer creates CustomerDTO and SaleDTO classes to represent customer and sale objects in the system. The CustomerDTO class has private fields for the customer's name, email, and phone number, while the SaleDTO class has private fields for the sale's date, car ID, and customer ID.</p>
+<p>The developer then creates CustomerService and SaleService classes that handle interactions with the customer and sale tables in the database, respectively. These classes have methods for creating, reading, updating, and deleting customer and sale objects in the database. When creating a customer or sale object, the corresponding service class maps the data from the incoming request to a CustomerDTO or SaleDTO object and saves it to the database. When reading a customer or sale object, the corresponding service class retrieves the data from the database and maps it to a CustomerDTO or SaleDTO object before returning it to the client.</p>
+<p>By using the DTO pattern, the developer has created a clean and easy-to-use API for the car dealership's inventory management system. The API exposes only the necessary functionality of the system via DTO objects, while hiding the underlying database structure and business logic.</p>
+<h2 id="conclusion_1">Conclusion<a class="headerlink" href="#conclusion_1" title="Permanent link">#</a></h2>
+<p>In conclusion, the Data Transfer Object (DTO) pattern is a useful design pattern in Java that allows for efficient and organized data transfer between different layers of an application. By encapsulating data into a single object, the DTO pattern reduces the number of method calls and network traffic, resulting in better performance and scalability.</p>
+<p>The DTO pattern is particularly useful in enterprise applications where data transfer between different layers is common. It is also useful when dealing with large amounts of data, as it allows for efficient transfer of data in a single call.</p>
+<p>When implementing the DTO pattern in Java, it is important to keep in mind the principles of good design and object-oriented programming. By following best practices and guidelines, developers can ensure that their DTOs are efficient, maintainable, and scalable.</p>
+<p>Overall, the DTO pattern is a valuable tool for developers working with Java, and should be considered when designing and implementing applications that require efficient data transfer between different layers.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="good">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="bad">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="good" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="bad" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by signing up for our <a href="https://nas.io/javanaut" target="_blank" rel="noopener">community</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.select", "content.code.annotate", "navigation.tabs", "navigation.instant", "header.autohide", "announce.dismiss"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
